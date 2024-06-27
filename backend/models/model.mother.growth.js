@@ -15,7 +15,7 @@ const schema = mongoose.model("mother_growth", {
   },
   circumStomach: { type: Number },
   circumHand: { type: Number },
-  mothers: {
+  mother: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "mother", // Reference to the Choice collection
   },

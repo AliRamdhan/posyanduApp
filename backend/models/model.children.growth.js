@@ -11,16 +11,15 @@ const schema = mongoose.model("children_growth", {
     type: mongoose.Schema.Types.ObjectId,
     ref: "children", // Reference to the Choice collection
   },
-  //   object_id_IBU: { type: String },
-  //   tgl_kelahiran: { type: Date, required: true },
-  //   jenis_kelamin: { type: String, enum: ["Male", "Female"], required: true },
-  //   lingkar_kepala: { type: String },
-  //   berat_badan: { type: Number },
-  //   tinggi_badan: { type: Number },
-  //   по_КК: { type: String },
+  heightBody: { type: Number },
+  weightBody: { type: Number },
+  imunisations: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "imunisations", // Reference to the Choice collection
+  },
 });
 
-module.export = schema;
+module.exports = schema
 
 /**
  * Bayi Baru Lahir (0-1 bulan)

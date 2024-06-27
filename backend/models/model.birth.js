@@ -14,4 +14,5 @@ const schema = mongoose.model("birth", {
     ref: "mother", // Reference to the Choice collection
   },
 });
+
 module.exports = schema;
