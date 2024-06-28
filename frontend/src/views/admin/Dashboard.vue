@@ -1,6 +1,17 @@
-<script setup></script>
 <template>
-  <div>Dashboard Admin</div>
+  <div>
+    <h1>Admin Dashboard</h1>
+    <!-- Admin specific content here -->
+  </div>
 </template>
 
-<style></style>
+<script setup>
+import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+onMounted(() => {
+  console.log('Admin Dashboard component mounted');
+});
+</script>

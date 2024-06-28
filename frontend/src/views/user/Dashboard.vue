@@ -1,6 +1,17 @@
-<script setup></script>
 <template>
-  <div>Dashboard User</div>
+  <div>
+    <h1>User Dashboard</h1>
+    <!-- User specific content here -->
+  </div>
 </template>
 
-<style></style>
+<script setup>
+import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+onMounted(() => {
+  console.log('User Dashboard component mounted');
+});
+</script>

@@ -1,4 +1,4 @@
-import AuthService from "../service/auth";
+import AuthService from "../../service/auth";
 
 const state = {
   user: null,
@@ -32,12 +32,22 @@ const actions = {
   },
   async login({ commit }, { email, password }) {
     try {
-      const { token, user } = await AuthService.login(email, password);
-      commit("setUser", user);
+      const { token } = await AuthService.login(email, password);
       commit("setToken", token);
+      const user = await AuthService.getProfile();
+      commit("setUser", user);
       return { token, user };
     } catch (error) {
       throw new Error(error.response.data.error);
+    }
+  },
+  async fetchProfile({ commit }) {
+    try {
+      const user = await AuthService.getProfile();
+      commit("setUser", user);
+    } catch (error) {
+      commit("clearAuthData");
+      throw new Error("Failed to fetch user profile");
     }
   },
   logout({ commit }) {
@@ -48,6 +58,7 @@ const actions = {
 const getters = {
   isAuthenticated: (state) => !!state.token,
   user: (state) => state.user,
+  // role: (state) => (state.user ? state.user : null),
 };
 
 export default {
