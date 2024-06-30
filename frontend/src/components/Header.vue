@@ -1,12 +1,17 @@
 <script setup>
-// import { ref } from "vue";
+import { computed } from "vue";
+import { useStore } from "vuex";
+import { FwbDropdown, FwbListGroup, FwbListGroupItem } from "flowbite-vue";
+const store = useStore();
 
-// defineProps({
-//   msg: String,
-// });
+const isAuthenticated = computed(() => store.getters.isAuthenticated);
+const user = computed(() => store.getters["user"]);
 
-// const count = ref(0);
+const handleLogout = () => {
+  store.dispatch("logout");
+};
 </script>
+
 <template>
   <section>
     <nav
@@ -132,25 +137,27 @@
                 </svg>
               </button>
 
-              <button
-                type="button"
-                class="flex items-center focus:outline-none"
-                aria-label="toggle profile dropdown"
-              >
-                <div
-                  class="w-8 h-8 overflow-hidden border-2 border-gray-400 rounded-full"
+              <div v-if="isAuthenticated" class="flex items-center">
+                <fwb-dropdown :text="user.data.username" align-to-end>
+                  <fwb-list-group>
+                    <fwb-list-group-item>
+                      {{ user.data.username }}
+                    </fwb-list-group-item>
+                    <fwb-list-group-item> Settings </fwb-list-group-item>
+                    <fwb-list-group-item> Messages </fwb-list-group-item>
+                    <fwb-list-group-item>
+                      <button @click="handleLogout">Logout</button>
+                    </fwb-list-group-item>
+                  </fwb-list-group>
+                </fwb-dropdown>
+              </div>
+              <router-link v-else to="/signin">
+                <button
+                  class="px-3 py-2 text-gray-700 transition-colors duration-300 transform rounded-md dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
-                  <img
-                    src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80"
-                    class="object-cover w-full h-full"
-                    alt="avatar"
-                  />
-                </div>
-
-                <h3 class="mx-2 text-gray-700 dark:text-gray-200 lg:hidden">
-                  Khatab wedaa
-                </h3>
-              </button>
+                  Login
+                </button>
+              </router-link>
             </div>
           </div>
         </div>
@@ -158,12 +165,6 @@
     </nav>
   </section>
 </template>
-
-<script>
-export default {
-  name: "ComponentName",
-};
-</script>
 
 <style scoped>
 /* Component Styles */

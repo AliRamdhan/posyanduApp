@@ -39,6 +39,4 @@ const logoutUser = () => {
   </div>
 </template>
 
-<style scoped>
-/* Add any styles specific to the profile component here */
-</style>
+<style scoped></style>

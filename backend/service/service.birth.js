@@ -3,7 +3,7 @@ const Birth = require("../models/model.birth");
 // Function to get all birth records
 const getAllBirth = async () => {
   try {
-    const birth = await Birth.find();
+    const birth = await Birth.find().populate("children").populate("mother");
     return birth;
   } catch (error) {
     throw error;

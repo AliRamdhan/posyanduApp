@@ -22,8 +22,7 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const { token, user } = await AuthService.login(email, password);
-    const jtw = process.env.JWT_SECRET;
-    res.status(200).json({ token, jtw });
+    res.status(200).json({ token });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

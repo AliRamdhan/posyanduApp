@@ -20,6 +20,24 @@ import DashboardUser from "../views/user/Dashboard.vue";
 
 // Admin
 import DashboardAdmin from "../views/admin/Dashboard.vue";
+// Mother
+import Mother from "../views/admin/mother/Mother.vue";
+import MotherCreate from "../views/admin/mother/MotherCreate.vue";
+import MotherUpdate from "../views/admin/mother/MotherUpdate.vue";
+// Children
+import Children from "../views/admin/children/Children.vue";
+// import Child from "../views/admin/children/Child.vue";
+import ChildrenCreate from "../views/admin/children/ChildrenCreate.vue";
+import ChildrenUpdate from "../views/admin/children/ChildrenUpdate.vue";
+
+// Birth
+import Birth from "../views/admin/birth/Birth.vue";
+import BirthCreate from "../views/admin/birth/BirthCreate.vue";
+import BirthUpdate from "../views/admin/birth/BirthUpdate.vue";
+// Imunisasi
+import Imunisation from "../views/admin/imunisation/Imunisation.vue"
+import ImunisationCreate from "../views/admin/imunisation/ImunisationCreate.vue"
+import ImunisationUpdate from "../views/admin/imunisation/ImunisationUpdate.vue"
 
 import Dashboard from "../views/Dashboard.vue";
 import Forbidden from "../views/Forbidden.vue";
@@ -64,6 +82,76 @@ const routes = [
     path: "/signup",
     name: "signup",
     component: Signup,
+  },
+  {
+    path: "/mother",
+    name: "mother",
+    component: Mother,
+  },
+  {
+    path: "/mother-create",
+    name: "mother-create",
+    component: MotherCreate,
+  },
+  {
+    path: "/mother-update/:id",
+    name: "mother-update",
+    component: MotherUpdate,
+  },
+  {
+    path: "/imunisasi",
+    name: "imunisasi",
+    component: Imunisation,
+  },
+  {
+    path: "/imunisasi-create",
+    name: "imunisasi-create",
+    component: ImunisationCreate,
+  },
+  {
+    path: "/imunisasi-update/:id",
+    name: "imunisasi-update",
+    component: ImunisationUpdate,
+  },
+  {
+    path: "/birth",
+    name: "birth",
+    component: Birth,
+  },
+  {
+    path: "/birth-create",
+    name: "birth-create",
+    component: BirthCreate,
+  },
+  {
+    path: "/birth-update",
+    name: "birth-update",
+    component: BirthUpdate,
+  },
+  // {
+  //   path: "/children-try",
+  //   name: "children-try",
+  //   component: Child,
+  // },
+  {
+    path: "/children",
+    name: "children",
+    component: Children,
+  },
+  {
+    path: "/children-create",
+    name: "children-create",
+    component: ChildrenCreate,
+  },
+  // {
+  //   path: "/children-creates",
+  //   name: "children-creates",
+  //   component: ChildrenCreates,
+  // },
+  {
+    path: "/children-update/:id",
+    name: "children-update",
+    component: ChildrenUpdate,
   },
   {
     path: "/profile",

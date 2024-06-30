@@ -1,11 +1,101 @@
 const Mother = require("../models/model.mother");
 
+// const GetAllData = async (req, res) => {
+//   try {
+//     const data = await Mother.find();
+//     return res.status(200).json({
+//       message: "List All Data",
+//       data,
+//     });
+//   } catch (error) {
+//     return res.status(400).json({ error: error.message });
+//   }
+// };
+// const GetAllData = async (req, res) => {
+//   try {
+//     const {
+//       name,
+//       husband,
+//       dob,
+//       KS,
+//       bpjs,
+//       sortField,
+//       sortOrder = "asc",
+//       page = 1,
+//       limit = 10,
+//     } = req.query;
+
+//     const filter = {};
+//     if (name) filter.name = name;
+//     if (husband) filter.husband = husband;
+//     if (dob) filter.dob = new Date(dob);
+//     if (KS) filter.KS = KS;
+//     if (bpjs !== undefined) filter.bpjs = bpjs === "true";
+
+//     const sortOptions = {};
+//     if (sortField) sortOptions[sortField] = sortOrder === "desc" ? -1 : 1;
+
+//     const data = await Mother.find(filter)
+//       .sort(sortOptions)
+//       .skip((page - 1) * limit)
+//       .limit(parseInt(limit));
+
+//     return res.status(200).json({
+//       message: "List All Data",
+//       data,
+//       pagination: {
+//         page,
+//         limit,
+//         total: await Mother.countDocuments(filter),
+//       },
+//     });
+//   } catch (error) {
+//     return res.status(400).json({ error: error.message });
+//   }
+// };
 const GetAllData = async (req, res) => {
   try {
-    const response = await Mother.find();
+    const {
+      name,
+      husband,
+      dob,
+      KS,
+      bpjs,
+      sortField,
+      sortOrder = "asc",
+      page = 1,
+      limit = 10,
+    } = req.query;
+
+    const filter = {};
+    if (name) {
+      // Case insensitive search with partial matching
+      filter.name = { $regex: new RegExp("^" + name, "i") };
+    }
+    if (husband) filter.husband = { $regex: new RegExp("^" + husband, "i") };
+    if (dob) filter.dob = new Date(dob);
+    if (KS) filter.KS = KS;
+    if (bpjs !== undefined) filter.bpjs = bpjs === "true";
+
+    const sortOptions = {};
+    if (sortField) sortOptions[sortField] = sortOrder === "desc" ? -1 : 1;
+
+    const countDocumentsPromise = Mother.countDocuments(filter);
+    const findQuery = Mother.find(filter)
+      .sort(sortOptions)
+      .skip((page - 1) * limit)
+      .limit(parseInt(limit));
+
+    const [data, total] = await Promise.all([findQuery, countDocumentsPromise]);
+
     return res.status(200).json({
       message: "List All Data",
-      response,
+      data,
+      pagination: {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        total,
+      },
     });
   } catch (error) {
     return res.status(400).json({ error: error.message });
@@ -14,11 +104,11 @@ const GetAllData = async (req, res) => {
 
 const GetDataById = async (req, res) => {
   try {
-    const response = await Mother.findOne({ _id: req.params.id });
-    if (!response) {
-      return res.status(404).json({message: "Data not found"});
+    const data = await Mother.findOne({ _id: req.params.id });
+    if (!data) {
+      return res.status(404).json({ message: "Data not found" });
     }
-    return res.status(200).json({ message: "Details Data", response });
+    return res.status(200).json({ message: "Details Data", data });
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }
@@ -108,8 +198,8 @@ const UpdateData = async (req, res) => {
       updateFields.amountChild = amountChild;
     }
 
-    const response = await Mother.findOne({ _id: req.params.id });
-    if (!response) {
+    const existingMother = await Mother.findOne({ _id: req.params.id });
+    if (!existingMother) {
       return res.status(404).json({ message: "Data not found" });
     }
 
@@ -122,8 +212,8 @@ const UpdateData = async (req, res) => {
 
 const DeleteData = async (req, res) => {
   try {
-    const response = await Mother.deleteOne({ _id: req.params.id });
-    if (!response) {
+    const data = await Mother.deleteOne({ _id: req.params.id });
+    if (!data) {
       return res.status(404).json({ message: "Data not found" });
     }
     return res.status(200).json({ message: "Data was deleted" });

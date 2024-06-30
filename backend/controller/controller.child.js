@@ -2,7 +2,7 @@ const Children = require("../models/model.children");
 const Mother = require("../models/model.mother");
 const GetAllData = async (req, res) => {
   try {
-    const data = await Children.find();
+    const data = await Children.find().populate("mother");
     return res.status(200).json({
       message: "List All Data",
       data,

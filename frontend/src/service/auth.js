@@ -1,6 +1,6 @@
 import axios from "axios";
-
-const API_URL = "http://localhost:9000/api/v1/auth";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+const API_URL = `${BASE_URL}/auth`;
 
 class AuthService {
   async register(userData) {

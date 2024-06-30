@@ -2,10 +2,10 @@ const Imunisation = require("../models/model.immunisation");
 
 const GetAllData = async (req, res) => {
   try {
-    const imunisations = await Imunisation.find();
+    const data = await Imunisation.find();
     return res.status(200).json({
       message: "List All Data",
-      imunisations,
+      data,
     });
   } catch (error) {
     return res.status(400).json({ error: error.message });
@@ -14,11 +14,11 @@ const GetAllData = async (req, res) => {
 
 const GetDataById = async (req, res) => {
   try {
-    const imunisations = await Imunisation.findOne({ _id: req.params.id });
-    if (!imunisations) {
+    const data = await Imunisation.findOne({ _id: req.params.id });
+    if (!data) {
       return res.status(404).json({ message: "Data not found" });
     }
-    return res.status(200).json({ message: "Details Data", imunisations });
+    return res.status(200).json({ message: "Details Data", data });
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }
@@ -27,13 +27,13 @@ const GetDataById = async (req, res) => {
 const CreateData = async (req, res) => {
   const { name, groupAge } = req.body;
   try {
-    const imunisations = await new Imunisation({
+    const data = await new Imunisation({
       name: name,
       groupAge: groupAge,
     }).save();
     return res
       .status(201)
-      .json({ message: "Success create data", imunisations });
+      .json({ message: "Success create data", data });
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }

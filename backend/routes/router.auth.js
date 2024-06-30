@@ -10,7 +10,17 @@ router.post("/register", register);
 router.post("/login", login);
 router.get("/user/:id", authenticate, authorize("Admin"), getUser); // Only Admin can get user by id
 router.get("/profile", authenticate, (req, res) => {
-  res.json({ message: `Welcome ${req.user.username}` });
+  const username = req.user.username;
+  const email = req.user.email;
+  const numberHp = req.user.numberHp;
+  const role = req.user.role;
+  const data = {
+    username,
+    email,
+    numberHp,
+    role,
+  };
+  res.json({ message: `Welcome ${req.user.username}`, data });
 });
 
 // Admin routes
