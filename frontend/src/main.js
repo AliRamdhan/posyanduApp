@@ -29,6 +29,8 @@ import {
   faUtensils,
   faGraduationCap,
   faStethoscope,
+  faAt,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 
 /* add icons to the library */
@@ -46,7 +48,9 @@ library.add(
   faSyringe,
   faUtensils,
   faGraduationCap,
-  faStethoscope
+  faStethoscope,
+  faAt,
+  faUser
 );
 
 DataTable.use(DataTablesLib);
