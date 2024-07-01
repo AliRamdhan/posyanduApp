@@ -25,10 +25,10 @@ const handleLogout = () => {
               <div class="flex justify-center items-center gap-4">
                 <img
                   class="w-auto h-8 sm:h-12"
-                  src="/public/assets\icon.png"
+                  src="/assets/icon.png"
                   alt=""
                 />
-                <h2 class="text-3xl font-black text-gray-800">POSYANDUBUNDA</h2>
+                <h2 class="text-3xl font-black text-gray-800">PosCare</h2>
               </div>
             </router-link>
 
@@ -89,13 +89,35 @@ const handleLogout = () => {
             <div
               class="flex flex-col -mx-6 lg:flex-row lg:items-center lg:mx-8"
             >
-              <router-link to="service">
+              <!-- <router-link to="service">
                 <p
                   class="px-3 py-2 mx-3 mt-2 text-gray-700 transition-colors duration-300 transform rounded-md lg:mt-0 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   Data Publik
                 </p>
-              </router-link>
+              </router-link> -->
+              <fwb-dropdown align-to-end>
+                <template #trigger>
+                  <span class="cursor-pointer"
+                    >Data Publik
+                    <font-awesome-icon icon="fa-solid fa-angle-down"
+                  /></span>
+                </template>
+                <fwb-list-group>
+                  <fwb-list-group-item>
+                    <router-link to="ibu-hamil"> Data Ibu Hamil </router-link>
+                  </fwb-list-group-item>
+                  <fwb-list-group-item>
+                    <router-link to="perkembangan-ibu"> Perkembangan Ibu </router-link>
+                  </fwb-list-group-item>
+                  <fwb-list-group-item>
+                    <router-link to="baduta">Baduta </router-link>
+                  </fwb-list-group-item>
+                  <fwb-list-group-item>
+                    <router-link to="perkembangan-anak">Perkembangan Anak</router-link>
+                  </fwb-list-group-item>
+                </fwb-list-group>
+              </fwb-dropdown>
               <router-link to="activity">
                 <p
                   class="px-3 py-2 mx-3 mt-2 text-gray-700 transition-colors duration-300 transform rounded-md lg:mt-0 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"

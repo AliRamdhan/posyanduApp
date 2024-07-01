@@ -35,12 +35,18 @@ import Birth from "../views/admin/birth/Birth.vue";
 import BirthCreate from "../views/admin/birth/BirthCreate.vue";
 import BirthUpdate from "../views/admin/birth/BirthUpdate.vue";
 // Imunisasi
-import Imunisation from "../views/admin/imunisation/Imunisation.vue"
-import ImunisationCreate from "../views/admin/imunisation/ImunisationCreate.vue"
-import ImunisationUpdate from "../views/admin/imunisation/ImunisationUpdate.vue"
+import Imunisation from "../views/admin/imunisation/Imunisation.vue";
+import ImunisationCreate from "../views/admin/imunisation/ImunisationCreate.vue";
+import ImunisationUpdate from "../views/admin/imunisation/ImunisationUpdate.vue";
 
 import Dashboard from "../views/Dashboard.vue";
 import Forbidden from "../views/Forbidden.vue";
+
+// Data Publik
+import GrowthIbu from "../views/DataPublik/GrowthIbu.vue"
+import GrowthAnak from "../views/DataPublik/GrowthAnak.vue"
+import Baduta from "../views/DataPublik/Baduta.vue"
+import Pregnant from "../views/DataPublik/Pregnant.vue"
 
 const routes = [
   {
@@ -153,6 +159,28 @@ const routes = [
     name: "children-update",
     component: ChildrenUpdate,
   },
+  // DATA PUBLIK
+  {
+    path: "/perkembangan-ibu",
+    name: "perkembangan-ibu",
+    component: GrowthIbu,
+  },
+  {
+    path: "/perkembangan-anak",
+    name: "perkembanganAnaka",
+    component: GrowthAnak,
+  },
+  {
+    path: "/ibu-hamil",
+    name: "ibuHamil",
+    component: Pregnant,
+  },
+  {
+    path: "/baduta",
+    name: "baduta",
+    component: Baduta,
+  },
+  // AUTHENTICATION
   {
     path: "/profile",
     name: "profile",

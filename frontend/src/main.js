@@ -20,6 +20,7 @@ import {
   faMagnifyingGlass,
   faCloudArrowDown,
   faCloudArrowUp,
+  faAngleDown,
 } from "@fortawesome/free-solid-svg-icons";
 
 /* add icons to the library */
@@ -28,7 +29,8 @@ library.add(
   faCalendar,
   faMagnifyingGlass,
   faCloudArrowDown,
-  faCloudArrowUp
+  faCloudArrowUp,
+  faAngleDown
 );
 
 DataTable.use(DataTablesLib);
