@@ -18,10 +18,18 @@ import {
   faUserSecret,
   faCalendar,
   faMagnifyingGlass,
+  faCloudArrowDown,
+  faCloudArrowUp,
 } from "@fortawesome/free-solid-svg-icons";
 
 /* add icons to the library */
-library.add(faUserSecret, faCalendar, faMagnifyingGlass);
+library.add(
+  faUserSecret,
+  faCalendar,
+  faMagnifyingGlass,
+  faCloudArrowDown,
+  faCloudArrowUp
+);
 
 DataTable.use(DataTablesLib);
 const app = createApp(App);

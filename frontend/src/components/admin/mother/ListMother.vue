@@ -274,8 +274,8 @@ onMounted(() => {
                   <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                     <div>
                       <h2 class="font-medium text-gray-800 dark:text-white">
-                        {{ mother.bpjs ? "Punya BPJS" : "Tidak Punya BPJS" }}/{{
-                          mother.KS
+                        {{ mother.bpjs ? "Punya BPJS" : "Tidak Punya BPJS" }} / {{
+                          mother.ks
                         }}
                       </h2>
                     </div>
@@ -283,7 +283,7 @@ onMounted(() => {
                   <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                     <div>
                       <h2 class="font-medium text-gray-800 dark:text-white">
-                        0{{ mother.RT }} / 0{{ mother.RW }}
+                        0{{ mother.rt }} / 0{{ mother.rw }}
                       </h2>
                     </div>
                   </td>

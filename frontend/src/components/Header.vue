@@ -22,11 +22,14 @@ const handleLogout = () => {
         <div class="lg:flex lg:items-center lg:justify-between">
           <div class="flex items-center justify-between">
             <router-link to="/">
-              <img
-                class="w-auto h-6 sm:h-7"
-                src="https://merakiui.com/images/full-logo.svg"
-                alt=""
-              />
+              <div class="flex justify-center items-center gap-4">
+                <img
+                  class="w-auto h-8 sm:h-12"
+                  src="/public/assets\icon.png"
+                  alt=""
+                />
+                <h2 class="text-3xl font-black text-gray-800">POSYANDUBUNDA</h2>
+              </div>
             </router-link>
 
             <!-- Mobile menu button -->
@@ -90,21 +93,14 @@ const handleLogout = () => {
                 <p
                   class="px-3 py-2 mx-3 mt-2 text-gray-700 transition-colors duration-300 transform rounded-md lg:mt-0 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
-                  Service
+                  Data Publik
                 </p>
               </router-link>
               <router-link to="activity">
                 <p
                   class="px-3 py-2 mx-3 mt-2 text-gray-700 transition-colors duration-300 transform rounded-md lg:mt-0 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
-                  Agenda
-                </p>
-              </router-link>
-              <router-link to="statistic">
-                <p
-                  class="px-3 py-2 mx-3 mt-2 text-gray-700 transition-colors duration-300 transform rounded-md lg:mt-0 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                  Statistik
+                  Artikel
                 </p>
               </router-link>
               <router-link to="contact">
