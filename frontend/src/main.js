@@ -21,6 +21,14 @@ import {
   faCloudArrowDown,
   faCloudArrowUp,
   faAngleDown,
+  faPersonPregnant,
+  faChild,
+  faPersonBreastfeeding,
+  faHeart,
+  faSyringe,
+  faUtensils,
+  faGraduationCap,
+  faStethoscope,
 } from "@fortawesome/free-solid-svg-icons";
 
 /* add icons to the library */
@@ -30,7 +38,15 @@ library.add(
   faMagnifyingGlass,
   faCloudArrowDown,
   faCloudArrowUp,
-  faAngleDown
+  faAngleDown,
+  faPersonPregnant,
+  faChild,
+  faPersonBreastfeeding,
+  faHeart,
+  faSyringe,
+  faUtensils,
+  faGraduationCap,
+  faStethoscope
 );
 
 DataTable.use(DataTablesLib);

@@ -23,8 +23,10 @@
     "dotenv": "^16.4.5",
     "flowbite": "^2.4.1",
     "flowbite-vue": "^0.1.5",
+    "swiper": "^11.1.4",
     "vue": "^3.4.29",
     "vue-axios": "^3.5.2",
+    "vue-countup-v3": "^1.4.2",
     "vue-router": "^4.4.0",
     "vuex": "^4.1.0",
     "vuex-persistedstate": "^4.1.0"
