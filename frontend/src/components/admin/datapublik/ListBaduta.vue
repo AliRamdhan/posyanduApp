@@ -1,4 +1,26 @@
-<script setup></script>
+<script setup>
+import ListHeader from "./ListHeader.vue";
+import { computed, onMounted, ref } from "vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+import formatTime from "../../../utils/FormatTime";
+const store = useStore();
+const router = useRouter();
+
+const childrens = computed(() => store.getters.childBaduta);
+
+const fetchChildrens = async () => {
+  try {
+    await store.dispatch("fetchChildrenBaduta");
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+onMounted(() => {
+  fetchChildrens();
+});
+</script>
 
 <template>
   <div class="flex flex-col mt-6">
@@ -50,6 +72,18 @@
                   scope="col"
                   class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
                 >
+                  TB / BB
+                </th>
+                <th
+                  scope="col"
+                  class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                >
+                  Group Fase / isBaduta
+                </th>
+                <th
+                  scope="col"
+                  class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                >
                   Gender
                 </th>
                 <th
@@ -63,13 +97,13 @@
                   scope="col"
                   class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
                 >
-                  Imunisasi
+                  Jumlah Imunisasi / Terakhir
                 </th>
                 <th
                   scope="col"
                   class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
                 >
-                  Ibu
+                  Tanggal Periksa
                 </th>
                 <th scope="col" class="relative py-3.5 px-4">
                   <span class="sr-only">Edit</span>
@@ -79,47 +113,51 @@
             <tbody
               class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900"
             >
-              <!-- <tr v-for="child in children" :key="child._id"> -->
-              <tr>
+              <tr v-for="child in childrens" :key="child._id">
                 <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                   <div>
                     <h2 class="font-medium text-gray-800 dark:text-white">
-                      <!-- {{ child.name }} -->
-                      sdaas
+                      {{ child.childrens?.name }}
                     </h2>
                     <p
                       class="text-sm font-normal text-gray-600 dark:text-gray-400"
                     >
-                      <!-- NIK : {{ child.nik }} -->
-                      NIK : 04832532
+                      NIK : {{ child.childrens?.nik }}
                     </p>
                   </div>
                 </td>
                 <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
-                  <!-- {{ child.gender }} -->
+                  {{ child.heightBody }} / {{ child.weightBody }}
                 </td>
-
+                <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                  {{ child.groupFase }} /
+                  {{ child.isBaduta ? "Baduta" : "Tidak Baduta" }}
+                </td>
+                <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                  {{ child.childrens?.gender }}
+                </td>
                 <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                   <h2 class="font-medium text-gray-800 dark:text-white">
-                    <!-- {{ formatTime(child.dob) }} -->
+                    {{ formatTime(child.childrens?.dob) }}
                   </h2>
                 </td>
 
                 <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
-                  <!-- {{ child.amountImunisation }}x -->dqdwq
+                  {{ child.childrens?.amountImunisation }} x /
+                  {{ child.imunisations?.name }}
                 </td>
 
                 <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                   <div>
                     <h2 class="font-medium text-gray-800 dark:text-white">
-                      <!-- {{ child.mother?.name }} -->dwdqw
+                      {{ formatTime(child.checkDate) }}
                     </h2>
                   </div>
                 </td>
-                <td class="px-4 py-4 flex gap-4">
+                <!-- <td class="px-4 py-4 flex gap-4">
                   <button @click="editChild(child._id)">Edit</button>
                   <button @click="removeChild(child._id)">Delete</button>
-                </td>
+                </td> -->
               </tr>
             </tbody>
           </table>

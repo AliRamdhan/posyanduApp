@@ -1,5 +1,5 @@
 <script setup>
-import ListPregnant from "../../components/admin/datapublik/ListPregnant.vue";
+import ListBaduta from "../../components/admin/datapublik/ListBaduta.vue";
 </script>
 <template>
   <div class="w-full min-h-screen flex flex-col items-center py-8">
@@ -10,7 +10,7 @@ import ListPregnant from "../../components/admin/datapublik/ListPregnant.vue";
       </p>
     </div>
     <div class="w-11/12">
-      <ListPregnant />
+      <ListBaduta />
     </div>
   </div>
 </template>
