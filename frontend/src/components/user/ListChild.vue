@@ -3,7 +3,7 @@ import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import formatTime from "../../utils/FormatTime";
-import ModalChildDetails from "./ModalChildDetails.vue";
+import ModalChildDetails from "../../components/user/ModalChildDetails.vue";
 const store = useStore();
 const router = useRouter();
 

@@ -1,4 +1,4 @@
-<script setup></script>
+
 <template>
   <div class="p-6 sm:p-12 dark:bg-gray-50 dark:text-gray-800">
     <div class="flex flex-col space-y-4 md:space-y-0 md:space-x-6 md:flex-row">
