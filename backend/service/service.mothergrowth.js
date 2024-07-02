@@ -1,9 +1,18 @@
-const Growth = require('../models/model.mother.growth')
+const Growth = require("../models/model.mother.growth");
 
 // Function to get all birth records
 const getAll = async () => {
   try {
-    const data = await Growth.find();
+    const data = await Growth.find().populate("mother");
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getPregnant = async () => {
+  try {
+    const data = await Growth.find({pregnantStatus: true}).populate("mother");
     return data;
   } catch (error) {
     throw error;
@@ -13,8 +22,7 @@ const getAll = async () => {
 // Function to get a birth record by ID
 const getById = async (id) => {
   try {
-    const data = await Growth.findById(id)
-      .populate("mother");
+    const data = await Growth.findById(id).populate("mother");
     if (!data) {
       throw new Error("Growth record not found");
     }
@@ -68,5 +76,6 @@ module.exports = {
   createData,
   getById,
   updateData,
-  deleteData
+  deleteData,
+  getPregnant
 };

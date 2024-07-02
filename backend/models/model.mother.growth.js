@@ -5,7 +5,7 @@ const schema = mongoose.model("mother_growth", {
   height: { type: Number, required: true },
   weight: { type: Number, required: true },
   kbtype: { type: String },
-  pregnantStatus: { type: String },
+  pregnantStatus: { type: Boolean },
   wombAge: { type: Number },
   numbChild: { type: Number },
   groupFase: {

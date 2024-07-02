@@ -11,6 +11,15 @@ const getAllGrowth = async (req, res) => {
   }
 };
 
+const getAllPregnant = async (req, res) => {
+  try {
+    const data = await service.getPregnant();
+    res.status(200).json({ message: "List All Data", data });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // Handler to get a growth record by ID
 const getGrowthById = async (req, res) => {
   try {
@@ -125,4 +134,5 @@ module.exports = {
   createGrowth,
   updateGrowth,
   deleteGrowth,
+  getAllPregnant,
 };

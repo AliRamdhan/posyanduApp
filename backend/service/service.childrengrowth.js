@@ -1,4 +1,4 @@
-const ChildrenGrowth = require('../models/model.children.growth');
+const ChildrenGrowth = require("../models/model.children.growth");
 
 // Function to get all children growth records
 const getAll = async () => {
@@ -10,10 +10,23 @@ const getAll = async () => {
   }
 };
 
+const getBaduta = async () => {
+  try {
+    const data = await ChildrenGrowth.find({ isBaduta: true }).populate(
+      "childrens imunisations"
+    );
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // Function to get a children growth record by ID
 const getById = async (id) => {
   try {
-    const data = await ChildrenGrowth.findById(id).populate("childrens imunisations");
+    const data = await ChildrenGrowth.findById(id).populate(
+      "childrens imunisations"
+    );
     if (!data) {
       throw new Error("Children growth record not found");
     }
@@ -64,8 +77,9 @@ const deleteData = async (id) => {
 
 module.exports = {
   getAll,
+  getBaduta,
   createData,
   getById,
   updateData,
-  deleteData
+  deleteData,
 };

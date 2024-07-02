@@ -8,10 +8,12 @@ const schema = mongoose.model("mother", {
   husbandnik: { type: String },
   dob: { type: Date, required: true },
   bpjs: { type: Boolean },
-  KS: { type: String, enum: ["KS1", "KS2", "KS3"], required: true },
-  RT: { type: Number },
-  RW: { type: Number },
+  ks: { type: String, enum: ["KS1", "KS2", "KS3"], required: true },
+  rt: { type: Number },
+  rw: { type: Number },
   amountChild: { type: Number },
+  createdAt: { type: Date, default: Date.now() },
+  updateAt: { type: Date, default: Date.now() },
 });
 // anak , auto update jmlh anak
 

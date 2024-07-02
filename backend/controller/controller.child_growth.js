@@ -12,6 +12,15 @@ const getAllGrowth = async (req, res) => {
   }
 };
 
+const getAllBaduta = async (req, res) => {
+  try {
+    const data = await service.getBaduta();
+    res.status(200).json({ message: "List All Data", data });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // Handler to get a children growth record by ID
 const getGrowthById = async (req, res) => {
   try {
@@ -31,6 +40,7 @@ const createGrowth = async (req, res) => {
     heightBody,
     weightBody,
     imunisations,
+    isBaduta,
   } = req.body;
   const growthData = {
     checkDate,
@@ -39,6 +49,7 @@ const createGrowth = async (req, res) => {
     heightBody,
     weightBody,
     imunisations,
+    isBaduta
   };
 
   try {
@@ -124,4 +135,5 @@ module.exports = {
   createGrowth,
   updateGrowth,
   deleteGrowth,
+  getAllBaduta
 };

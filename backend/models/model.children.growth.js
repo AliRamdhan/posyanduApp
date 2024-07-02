@@ -13,13 +13,14 @@ const schema = mongoose.model("children_growth", {
   },
   heightBody: { type: Number },
   weightBody: { type: Number },
+  isBaduta: { type: Boolean },
   imunisations: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "imunisations", // Reference to the Choice collection
   },
 });
 
-module.exports = schema
+module.exports = schema;
 
 /**
  * Bayi Baru Lahir (0-1 bulan)

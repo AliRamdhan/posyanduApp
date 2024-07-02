@@ -12,6 +12,24 @@ const GetAllData = async (req, res) => {
   }
 };
 
+const GetAllDatabyMother = async (req, res) => {
+  try {
+    const existingMother = await Mother.findOne({ _id: req.params.id });
+    if (!existingMother) {
+      return res.status(404).json({ message: "Data not found" });
+    }
+    const data = await Children.find({ mother: existingMother }).populate(
+      "mother"
+    );
+    return res.status(200).json({
+      message: "List All Data",
+      data,
+    });
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+
 const GetDataById = async (req, res) => {
   try {
     const data = await Children.findOne({ _id: req.params.id });
@@ -105,4 +123,5 @@ module.exports = {
   GetDataById,
   UpdateData,
   DeleteData,
+  GetAllDatabyMother,
 };

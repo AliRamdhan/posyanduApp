@@ -1,5 +1,6 @@
 const Mother = require("../models/model.mother");
-
+const { Parser } = require("json2csv");
+const xl = require("excel4node");
 // const GetAllData = async (req, res) => {
 //   try {
 //     const data = await Mother.find();
@@ -17,7 +18,7 @@ const Mother = require("../models/model.mother");
 //       name,
 //       husband,
 //       dob,
-//       KS,
+//       ks,
 //       bpjs,
 //       sortField,
 //       sortOrder = "asc",
@@ -29,7 +30,7 @@ const Mother = require("../models/model.mother");
 //     if (name) filter.name = name;
 //     if (husband) filter.husband = husband;
 //     if (dob) filter.dob = new Date(dob);
-//     if (KS) filter.KS = KS;
+//     if (ks) filter.ks = ks;
 //     if (bpjs !== undefined) filter.bpjs = bpjs === "true";
 
 //     const sortOptions = {};
@@ -59,7 +60,7 @@ const GetAllData = async (req, res) => {
       name,
       husband,
       dob,
-      KS,
+      ks,
       bpjs,
       sortField,
       sortOrder = "asc",
@@ -74,7 +75,7 @@ const GetAllData = async (req, res) => {
     }
     if (husband) filter.husband = { $regex: new RegExp("^" + husband, "i") };
     if (dob) filter.dob = new Date(dob);
-    if (KS) filter.KS = KS;
+    if (ks) filter.ks = ks;
     if (bpjs !== undefined) filter.bpjs = bpjs === "true";
 
     const sortOptions = {};
@@ -123,9 +124,9 @@ const CreateData = async (req, res) => {
     husbandnik,
     dob,
     bpjs,
-    KS,
-    RT,
-    RW,
+    ks,
+    rt,
+    rw,
     amountChild,
   } = req.body;
   try {
@@ -137,9 +138,9 @@ const CreateData = async (req, res) => {
       husbandnik: husbandnik,
       dob: dob,
       bpjs: bpjs,
-      KS: KS,
-      RT: RT,
-      RW: RW,
+      ks: ks,
+      rt: rt,
+      rw: rw,
       amountChild: amountChild,
     }).save();
     return res.status(201).json({ message: "Success create data", data });
@@ -157,9 +158,9 @@ const UpdateData = async (req, res) => {
     husbandnik,
     dob,
     bpjs,
-    KS,
-    RT,
-    RW,
+    ks,
+    rt,
+    rw,
     amountChild,
   } = req.body;
   const updateFields = {};
@@ -185,14 +186,14 @@ const UpdateData = async (req, res) => {
     if (bpjs) {
       updateFields.bpjs = bpjs;
     }
-    if (KS) {
-      updateFields.KS = KS;
+    if (ks) {
+      updateFields.ks = ks;
     }
-    if (RT) {
-      updateFields.RT = RT;
+    if (rt) {
+      updateFields.rt = rt;
     }
-    if (RW) {
-      updateFields.RW = RW;
+    if (rw) {
+      updateFields.rw = rw;
     }
     if (amountChild) {
       updateFields.amountChild = amountChild;
@@ -222,10 +223,144 @@ const DeleteData = async (req, res) => {
   }
 };
 
+const ExportDataToCSV = async (req, res) => {
+  try {
+    const { month } = req.query;
+    if (!month) {
+      return res.status(400).json({ error: "Month is required" });
+    }
+
+    const [year, monthIndex] = month.split("-").map(Number);
+    const startDate = new Date(year, monthIndex - 1, 1);
+    const endDate = new Date(year, monthIndex, 0, 23, 59, 59);
+
+    const data = await Mother.find({
+      createdAt: { $gte: startDate, $lte: endDate },
+    });
+
+    if (data.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No data found for the specified month and year" });
+    }
+
+    const fields = [
+      "name",
+      "nik",
+      "kk",
+      "husband",
+      "husbandnik",
+      "dob",
+      "bpjs",
+      "ks",
+      "rt",
+      "rw",
+      "amountChild",
+    ];
+    const opts = { fields };
+    const parser = new Parser(opts);
+    const csv = parser.parse(data);
+
+    const fileName = `mothers_${year}_${monthIndex}.csv`;
+
+    // Set headers to prompt download
+    res.set({
+      "Content-Type": "text/csv",
+      "Content-Disposition": `attachment; filename="${fileName}"`,
+    });
+
+    res.send(csv); // Send CSV data directly to client for download
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+
+const ExportDataToExcel = async (req, res) => {
+  try {
+    const { month } = req.query;
+    if (!month) {
+      return res.status(400).json({ error: "Month is required" });
+    }
+
+    const [year, monthIndex] = month.split("-").map(Number);
+    const startDate = new Date(year, monthIndex - 1, 1);
+    const endDate = new Date(year, monthIndex, 0, 23, 59, 59);
+
+    const data = await Mother.find({
+      createdAt: { $gte: startDate, $lte: endDate },
+    });
+
+    if (data.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No data found for the specified month and year" });
+    }
+
+    const wb = new xl.Workbook();
+    const ws = wb.addWorksheet("Mothers Data");
+
+    // Define the specific columns you want in the Excel
+    const headingColumnNames = [
+      "ID",
+      "Name",
+      "NIK",
+      "Suami",
+      "NIK Suami",
+      "No KK",
+      "Date of Birth",
+      "Punya BPJS",
+      "Tipe ks",
+      "RT",
+      "RW",
+      "Jumlah Anak",
+    ];
+
+    // Write Column Titles in Excel file
+    let headingColumnIndex = 1;
+    headingColumnNames.forEach((heading) => {
+      ws.cell(1, headingColumnIndex++).string(heading);
+    });
+
+    // Write Data in Excel file
+    let rowIndex = 2;
+    data.forEach((record) => {
+      console.log(record.rt);
+      console.log(record.rw);
+      ws.cell(rowIndex, 1).string(record._id.toString());
+      ws.cell(rowIndex, 2).string(record.name);
+      ws.cell(rowIndex, 3).string(record.nik);
+      ws.cell(rowIndex, 4).string(record.husband);
+      ws.cell(rowIndex, 5).string(record.husbandnik);
+      ws.cell(rowIndex, 6).string(record.kk);
+      ws.cell(rowIndex, 7).date(new Date(record.dob));
+      ws.cell(rowIndex, 8).string(record.bpjs ? "Punya" : "Tidak Punya");
+      ws.cell(rowIndex, 9).string(record.ks);
+      ws.cell(rowIndex, 10).string(record.rt.toString());
+      ws.cell(rowIndex, 11).string(record.rw.toString());
+      ws.cell(rowIndex, 12).number(record.amountChild);
+      rowIndex++;
+    });
+
+    const fileName = `mothers_${year}_${monthIndex}.xlsx`;
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader("Content-Disposition", `attachment; filename="${fileName}"`);
+
+    wb.write(fileName, res);
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+
 module.exports = {
   GetAllData,
   CreateData,
   GetDataById,
   UpdateData,
   DeleteData,
+  ExportDataToCSV,
+  ExportDataToExcel,
 };
