@@ -43,10 +43,10 @@ import Dashboard from "../views/Dashboard.vue";
 import Forbidden from "../views/Forbidden.vue";
 
 // Data Publik
-import GrowthIbu from "../views/DataPublik/GrowthIbu.vue"
-import GrowthAnak from "../views/DataPublik/GrowthAnak.vue"
-import Baduta from "../views/DataPublik/Baduta.vue"
-import Pregnant from "../views/DataPublik/Pregnant.vue"
+import GrowthIbu from "../views/DataPublik/GrowthIbu.vue";
+import GrowthAnak from "../views/DataPublik/GrowthAnak.vue";
+import Baduta from "../views/DataPublik/Baduta.vue";
+import Pregnant from "../views/DataPublik/Pregnant.vue";
 
 const routes = [
   {
@@ -222,9 +222,10 @@ router.beforeEach((to, from, next) => {
   if (requiresAuth && !isAuthenticated) {
     next({ name: "signin" });
   } else if (requiresAuth) {
-    if (to.name === "dashboardAdmin" && user.data.role !== "Admin") {
+    console.log(user.role);
+    if (to.name === "dashboardAdmin" && user.role !== "Admin") {
       next({ name: "forbidden" });
-    } else if (to.name === "dashboardUser" && user.data.role !== "User") {
+    } else if (to.name === "dashboardUser" && user.role !== "User") {
       next({ name: "forbidden" });
     } else {
       next();

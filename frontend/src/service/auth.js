@@ -20,6 +20,13 @@ class AuthService {
     });
     return response.data;
   }
+  // isTokenValid() {
+  //   const token = localStorage.getItem("token");
+  //   if (!token) return false;
+
+  //   // You can add more logic here to check token expiry if you store expiry information
+  //   return true; // Simplified for example purposes
+  // }
 }
 
 export default new AuthService();

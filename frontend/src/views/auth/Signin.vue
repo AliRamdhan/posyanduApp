@@ -1,31 +1,70 @@
 <script setup>
-import { ref } from "vue";
-import { FwbInput, FwbButton } from "flowbite-vue";
+import { ref, computed, watch } from "vue";
 import { useRouter } from "vue-router";
-const name = ref("");
+import { useStore } from "vuex";
+import { FwbButton, FwbInput } from "flowbite-vue";
+const email = ref("");
+const password = ref("");
+const error = ref(null);
+
+const router = useRouter();
+const store = useStore();
+
+const user = computed(() => store.getters["user"]);
+const isAuthenticated = computed(() => store.getters["isAuthenticated"]);
+const login = async () => {
+  try {
+    await store.dispatch("login", {
+      email: email.value,
+      password: password.value,
+    });
+    redirectUser();
+  } catch (err) {
+    error.value = err.message;
+  }
+};
+
+const redirectUser = () => {
+  if (user.value.role === "Admin") {
+    router.push({ name: "dashboardAdmin" });
+  } else if (user.value.role === "User") {
+    router.push({ name: "dashboardUser" });
+  } else {
+    alert(user.value.role);
+    console.log(user)
+    router.push("/unauthorize");
+  }
+};
+
+watch(isAuthenticated, (newValue) => {
+  if (newValue) {
+    redirectUser();
+  }
+});
 </script>
 
 <template>
   <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-lg text-center">
-      <h1 class="text-2xl font-bold sm:text-3xl">Masuk ke Akun Posyandu</h1>
+      <h1 class="text-2xl font-bold sm:text-3xl">Masuk ke PosCare</h1>
 
       <p class="mt-4 text-gray-500">
         Silakan masukkan email dan password Anda untuk mengakses akun Posyandu.
       </p>
     </div>
 
-    <form action="#" class="mx-auto mb-0 mt-8 max-w-lg space-y-4">
+    <form class="mx-auto mb-0 mt-8 max-w-lg space-y-4" @submit.prevent="login">
       <div>
         <fwb-input
-          v-model="name"
+          v-model="email"
+          required
           label="Email Anda"
           placeholder="Masukkan email Anda"
         >
           <template #prefix>
             <font-awesome-icon
               icon="fa-solid fa-at"
-              class="w-5 h-5 text-gray-500 dark:text-gray-400"
+              class="w-3 h-3 text-gray-500 dark:text-gray-400"
             />
           </template>
         </fwb-input>
@@ -33,7 +72,9 @@ const name = ref("");
 
       <div>
         <fwb-input
-          v-model="name"
+          v-model="password"
+          required
+          type="password"
           label="Password"
           placeholder="Masukkan password Anda"
         >
@@ -44,9 +85,7 @@ const name = ref("");
       <div class="flex items-center justify-between">
         <p class="text-sm text-gray-500">
           Belum punya akun?
-          <router-link class="underline" to="signup"
-            >Hubungi admin</router-link
-          >
+          <router-link class="underline" to="signup">Hubungi admin</router-link>
         </p>
 
         <fwb-button
@@ -56,6 +95,7 @@ const name = ref("");
           Masuk
         </fwb-button>
       </div>
+      <p v-if="error">{{ error }}</p>
     </form>
   </div>
 </template>

@@ -1,15 +1,31 @@
 <script setup>
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { FwbDropdown, FwbListGroup, FwbListGroupItem } from "flowbite-vue";
 const store = useStore();
 
 const isAuthenticated = computed(() => store.getters.isAuthenticated);
-const user = computed(() => store.getters["user"]);
+const user = computed(() => store.getters.user);
 
 const handleLogout = () => {
   store.dispatch("logout");
+  window.location.reload();
 };
+
+const fetchProfile = async () => {
+  try {
+    await store.dispatch("fetchProfile");
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+onMounted(() => {
+  fetchProfile();
+  // console.log(user.value);
+  // console.log(user.value.role);
+  console.log("Dashboard component mounted");
+});
 </script>
 
 <template>
@@ -23,11 +39,7 @@ const handleLogout = () => {
           <div class="flex items-center justify-between">
             <router-link to="/">
               <div class="flex justify-center items-center gap-4">
-                <img
-                  class="w-auto h-8 sm:h-12"
-                  src="/assets/icon.png"
-                  alt=""
-                />
+                <img class="w-auto h-8 sm:h-12" src="/assets/icon.png" alt="" />
                 <h2 class="text-3xl font-black text-gray-800">PosCare</h2>
               </div>
             </router-link>
@@ -89,13 +101,38 @@ const handleLogout = () => {
             <div
               class="flex flex-col -mx-6 lg:flex-row lg:items-center lg:mx-8"
             >
-              <!-- <router-link to="service">
-                <p
-                  class="px-3 py-2 mx-3 mt-2 text-gray-700 transition-colors duration-300 transform rounded-md lg:mt-0 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+              <!-- <div>
+                <router-link
+                  :class="
+                    isAuthenticated && user.role === 'User' ? 'block' : 'hidden'
+                  "
+                  to="/dashboard/user"
                 >
-                  Data Publik
-                </p>
-              </router-link> -->
+                  <p
+                    class="px-3 py-2 mx-3 mt-2 text-gray-700 transition-colors duration-300 transform rounded-md lg:mt-0 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    Dashboard
+                    {{ isAuthenticated && user.role ? user.role : "" }}
+                  </p>
+                </router-link>
+              </div> -->
+
+              <div :class="isAuthenticated ? 'block' : 'hidden'">
+                <router-link
+                  v-if="isAuthenticated && user && user.role"
+                  :to="
+                    user.role === 'Admin'
+                      ? '/dashboard/admin'
+                      : '/dashboard/user'
+                  "
+                >
+                  <p
+                    class="px-3 py-2 mx-3 mt-2 text-gray-700 transition-colors duration-300 transform rounded-md lg:mt-0 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    Dashboard
+                  </p>
+                </router-link>
+              </div>
               <fwb-dropdown align-to-end>
                 <template #trigger>
                   <span class="cursor-pointer"
@@ -105,16 +142,20 @@ const handleLogout = () => {
                 </template>
                 <fwb-list-group>
                   <fwb-list-group-item>
-                    <router-link to="ibu-hamil"> Data Ibu Hamil </router-link>
+                    <router-link to="/ibu-hamil"> Data Ibu Hamil </router-link>
                   </fwb-list-group-item>
                   <fwb-list-group-item>
-                    <router-link to="perkembangan-ibu"> Perkembangan Ibu </router-link>
+                    <router-link to="/perkembangan-ibu">
+                      Perkembangan Ibu
+                    </router-link>
                   </fwb-list-group-item>
                   <fwb-list-group-item>
-                    <router-link to="baduta">Baduta </router-link>
+                    <router-link to="/baduta">Baduta </router-link>
                   </fwb-list-group-item>
                   <fwb-list-group-item>
-                    <router-link to="perkembangan-anak">Perkembangan Anak</router-link>
+                    <router-link to="/perkembangan-anak"
+                      >Perkembangan Anak</router-link
+                    >
                   </fwb-list-group-item>
                 </fwb-list-group>
               </fwb-dropdown>
@@ -156,10 +197,10 @@ const handleLogout = () => {
               </button>
 
               <div v-if="isAuthenticated" class="flex items-center">
-                <fwb-dropdown :text="user.data.username" align-to-end>
+                <fwb-dropdown :text="user.username" align-to-end>
                   <fwb-list-group>
                     <fwb-list-group-item>
-                      {{ user.data.username }}
+                      {{ user.username }}
                     </fwb-list-group-item>
                     <fwb-list-group-item> Settings </fwb-list-group-item>
                     <fwb-list-group-item> Messages </fwb-list-group-item>

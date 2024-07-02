@@ -34,17 +34,19 @@ const actions = {
     try {
       const { token } = await AuthService.login(email, password);
       commit("setToken", token);
-      const user = await AuthService.getProfile();
-      commit("setUser", user);
-      return { token, user };
+      const response = await AuthService.getProfile();
+      const data = response.data;
+      commit("setUser", data);
+      return { token, data };
     } catch (error) {
       throw new Error(error.response.data.error);
     }
   },
   async fetchProfile({ commit }) {
     try {
-      const user = await AuthService.getProfile();
-      commit("setUser", user);
+      const response = await AuthService.getProfile();
+      commit("setUser", response.data);
+      return response.data;
     } catch (error) {
       commit("clearAuthData");
       throw new Error("Failed to fetch user profile");
