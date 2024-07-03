@@ -10,12 +10,12 @@ console.log(appTitle.value);
 </script>
 
 <template>
-  <main>
-    <Header />
-    <main class="w-full min-h-screen">
-      <router-view></router-view>
-    </main>
-    <Footer />
+  <main class="w-full min-h-screen">
+    <!-- <Header /> -->
+
+    <router-view></router-view>
+
+    <!-- <Footer /> -->
   </main>
 </template>
 

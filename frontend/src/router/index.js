@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import store from "../store/store";
 
 // Public
+import Public from "../views/Public.vue";
 import Home from "../views/Home.vue";
 import Contact from "../views/Contact.vue";
 import Activity from "../views/Activity.vue";
@@ -16,10 +17,12 @@ import Signup from "../views/auth/Signup.vue";
 import Profile from "../views/user/Profile.vue";
 
 // User
-import DashboardUser from "../views/user/Dashboard.vue";
+import DashboardUserTemplate from "../views/user/Dashboard.vue";
+import DashboardUser from "../views/Dashboard.vue";
 
 // Admin
-import DashboardAdmin from "../views/admin/Dashboard.vue";
+import DashboardAdminTemplate from "../views/admin/AuthRoute.vue";
+import DashboardAdmin from "../views/admin/dashboard/Dashboard.vue";
 // Mother
 import Mother from "../views/admin/mother/Mother.vue";
 import MotherCreate from "../views/admin/mother/MotherCreate.vue";
@@ -39,7 +42,6 @@ import Imunisation from "../views/admin/imunisation/Imunisation.vue";
 import ImunisationCreate from "../views/admin/imunisation/ImunisationCreate.vue";
 import ImunisationUpdate from "../views/admin/imunisation/ImunisationUpdate.vue";
 
-import Dashboard from "../views/Dashboard.vue";
 import Forbidden from "../views/Forbidden.vue";
 
 // Data Publik
@@ -52,17 +54,55 @@ const routes = [
   {
     path: "/",
     name: "welcome",
-    component: Home,
+    component: Public,
+    children: [
+      // DATA PUBLIK
+      {
+        path: "",
+        name: "welcome",
+        component: Home,
+      },
+      {
+        path: "/contact",
+        name: "contact",
+        component: Contact,
+      },
+      {
+        path: "/signin",
+        name: "signin",
+        component: Signin,
+      },
+      {
+        path: "/signup",
+        name: "signup",
+        component: Signup,
+      },
+      {
+        path: "/perkembangan-ibu",
+        name: "perkembangan-ibu",
+        component: GrowthIbu,
+      },
+      {
+        path: "/perkembangan-anak",
+        name: "perkembanganAnaka",
+        component: GrowthAnak,
+      },
+      {
+        path: "/ibu-hamil",
+        name: "ibuHamil",
+        component: Pregnant,
+      },
+      {
+        path: "/baduta",
+        name: "baduta",
+        component: Baduta,
+      },
+    ],
   },
   {
     path: "/forbidden",
     name: "forbidden",
     component: Forbidden,
-  },
-  {
-    path: "/contact",
-    name: "contact",
-    component: Contact,
   },
   {
     path: "/service",
@@ -79,21 +119,11 @@ const routes = [
     name: "statistic",
     component: Statistic,
   },
-  {
-    path: "/signin",
-    name: "signin",
-    component: Signin,
-  },
-  {
-    path: "/signup",
-    name: "signup",
-    component: Signup,
-  },
-  {
-    path: "/mother",
-    name: "mother",
-    component: Mother,
-  },
+  // {
+  //   path: "/dashboard/admin/mother",
+  //   name: "mother",
+  //   component: Mother,
+  // },
   {
     path: "/mother-create",
     name: "mother-create",
@@ -104,11 +134,11 @@ const routes = [
     name: "mother-update",
     component: MotherUpdate,
   },
-  {
-    path: "/imunisasi",
-    name: "imunisasi",
-    component: Imunisation,
-  },
+  // {
+  //   path: "/dashboard/admin/imunisasi",
+  //   name: "imunisasi",
+  //   component: Imunisation,
+  // },
   {
     path: "/imunisasi-create",
     name: "imunisasi-create",
@@ -119,11 +149,11 @@ const routes = [
     name: "imunisasi-update",
     component: ImunisationUpdate,
   },
-  {
-    path: "/birth",
-    name: "birth",
-    component: Birth,
-  },
+  // {
+  //   path: "/dashboard/admin/birth",
+  //   name: "birth",
+  //   component: Birth,
+  // },
   {
     path: "/birth-create",
     name: "birth-create",
@@ -139,11 +169,11 @@ const routes = [
   //   name: "children-try",
   //   component: Child,
   // },
-  {
-    path: "/children",
-    name: "children",
-    component: Children,
-  },
+  // {
+  //   path: "/dashboard/admin/children",
+  //   name: "children",
+  //   component: Children,
+  // },
   {
     path: "/children-create",
     name: "children-create",
@@ -159,27 +189,6 @@ const routes = [
     name: "children-update",
     component: ChildrenUpdate,
   },
-  // DATA PUBLIK
-  {
-    path: "/perkembangan-ibu",
-    name: "perkembangan-ibu",
-    component: GrowthIbu,
-  },
-  {
-    path: "/perkembangan-anak",
-    name: "perkembanganAnaka",
-    component: GrowthAnak,
-  },
-  {
-    path: "/ibu-hamil",
-    name: "ibuHamil",
-    component: Pregnant,
-  },
-  {
-    path: "/baduta",
-    name: "baduta",
-    component: Baduta,
-  },
   // AUTHENTICATION
   {
     path: "/profile",
@@ -188,23 +197,62 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: "/dashboard",
+    path: "/dashboard/user",
     name: "dashboard",
-    component: Dashboard,
+    component: DashboardUserTemplate,
+    meta: { requiresAuth: true },
+    children: [
+      // {
+      //   path: "admin",
+      //   name: "dashboardAdmin",
+      //   component: DashboardAdmin,
+      //   meta: { requiresAuth: true },
+      // },
+      {
+        path: "",
+        name: "dashboardUser",
+        component: DashboardUser,
+        meta: { requiresAuth: true },
+      },
+    ],
+  },
+  {
+    path: "/dashboard/admin",
+    name: "dashboard",
+    component: DashboardAdminTemplate,
     meta: { requiresAuth: true },
     children: [
       {
-        path: "admin",
+        path: "",
         name: "dashboardAdmin",
         component: DashboardAdmin,
         meta: { requiresAuth: true },
       },
       {
-        path: "user",
-        name: "dashboardUser",
-        component: DashboardUser,
+        path: "ibu",
+        name: "dashboardAdminIbu",
+        component: Mother,
         meta: { requiresAuth: true },
       },
+      {
+        path: "imunisasi",
+        name: "dashboardAdminImunisasi",
+        component: Imunisation,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "anak",
+        name: "dashboardAdminAnak",
+        component: Children,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "kelahiran",
+        name: "dashboardAdminKelahiran",
+        component: Birth,
+        meta: { requiresAuth: true },
+      },
+      
     ],
   },
 ];

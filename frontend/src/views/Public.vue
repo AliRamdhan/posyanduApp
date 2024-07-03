@@ -1,8 +1,8 @@
 <script setup>
 import Header from "../components/Header.vue";
 import Footer from "../components/Footer.vue";
+import { ref } from "vue";
 </script>
-
 <template>
   <div>
     <Header />
@@ -12,3 +12,9 @@ import Footer from "../components/Footer.vue";
     <Footer />
   </div>
 </template>
+
+<script>
+export default {};
+</script>
+
+<style></style>

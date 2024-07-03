@@ -149,12 +149,12 @@ onMounted(fetchBirths);
                   <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                     <div>
                       <h2 class="font-medium text-gray-800 dark:text-white">
-                        {{ birth.mother.name }}
+                        {{ birth.mother?.name }}
                       </h2>
                       <p
                         class="text-sm font-normal text-gray-600 dark:text-gray-400"
                       >
-                        NIK : {{ birth.mother.nik }}
+                        NIK : {{ birth.mother?.nik }}
                       </p>
                     </div>
                   </td>

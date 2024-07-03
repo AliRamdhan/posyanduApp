@@ -10,7 +10,7 @@ import ListMother from "../../../components/admin/mother/ListMother.vue";
         Data Statistik Data Ibu
       </p>
     </div>
-    <div class="w-11/12">
+    <div class="w-full border border-black">
       <ListMother />
     </div>
   </div>
