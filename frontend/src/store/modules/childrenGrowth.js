@@ -1,44 +1,44 @@
-// store/index.js
+// store/modules/childrenGrowth.js
 
-import ChildrenService from "../../service/childrenGrowth";
+import ChildrenGrowthService from "../../service/childrenGrowth";
 
 const state = {
-  children: [],
-  childBaduta: [],
-  child: null,
+  childrensGrowth: [],
+  childBadutas: [],
+  childBaduta: null,
 };
 
 const mutations = {
-  setChildren(state, children) {
-    state.children = children;
+  setChildrenBaduta(state, childrensGrowth) {
+    state.childrensGrowth = childrensGrowth;
   },
-  setChildBaduta(state, childBaduta) {
+  setChildBaduta(state, childBadutas) {
+    state.childBadutas = childBadutas;
+  },
+  setChild(state, childBaduta) {
     state.childBaduta = childBaduta;
   },
-  setChild(state, child) {
-    state.child = child;
-  },
-  addChild(state, child) {
-    state.children.push(child);
+  addChild(state, childBaduta) {
+    state.childrensGrowth.push(childBaduta);
   },
   updateChild(state, updatedChild) {
-    const index = state.children.findIndex(
+    const index = state.childrensGrowth.findIndex(
       (child) => child._id === updatedChild._id
     );
     if (index !== -1) {
-      state.children.splice(index, 1, updatedChild);
+      state.childrensGrowth.splice(index, 1, updatedChild);
     }
   },
   deleteChild(state, id) {
-    state.children = state.children.filter((child) => child._id !== id);
+    state.childrensGrowth = state.childrensGrowth.filter((child) => child._id !== id);
   },
 };
 
 const actions = {
-  async fetchChildren({ commit }) {
+  async fetchChildrenBadutas({ commit }) {
     try {
-      const response = await ChildrenService.getAll();
-      commit("setChildren", response.data);
+      const response = await ChildrenGrowthService.getAll();
+      commit("setChildrenBaduta", response.data);
       return response.data;
     } catch (error) {
       console.error("Error fetching children:", error);
@@ -46,52 +46,52 @@ const actions = {
   },
   async fetchChildrenBaduta({ commit }) {
     try {
-      const response = await ChildrenService.getAll();
+      const response = await ChildrenGrowthService.getAll();
       commit("setChildBaduta", response.data);
       return response.data;
     } catch (error) {
       console.error("Error fetching children:", error);
     }
   },
-  async fetchChild({ commit }, id) {
+  async fetchChildBaduta({ commit }, id) {
     try {
-      const response = await ChildrenService.getById(id);
+      const response = await ChildrenGrowthService.getById(id);
       commit("setChild", response.data);
       return response.data;
     } catch (error) {
       console.error(`Error fetching child with id ${id}:`, error);
     }
   },
-  async createChild({ commit }, childData) {
+  async createChildBaduta({ commit }, childData) {
     try {
-      const response = await ChildrenService.createData(childData);
+      const response = await ChildrenGrowthService.createData(childData);
       commit("addChild", response.data);
       return response.data;
     } catch (error) {
       console.error("Error creating child:", error);
     }
   },
-  async updateChild({ commit }, { id, childData }) {
+  async updateChildBaduta({ commit }, { id, childData }) {
     try {
-      const response = await ChildrenService.updateData(id, childData);
+      const response = await ChildrenGrowthService.updateData(id, childData);
       commit("updateChild", response.data);
       return response.data;
     } catch (error) {
       console.error(`Error updating data with id ${id}:`, error);
     }
   },
-  async deleteChild({ commit }, id) {
+  async deleteChildBaduta({ commit }, id) {
     try {
-      await ChildrenService.deleteData(id);
+      await ChildrenGrowthService.deleteData(id);
       commit("deleteChild", id);
     } catch (error) {
       console.error(`Error deleting data with id ${id}:`, error);
     }
   },
   // Ensure addChild action is defined
-  async addChild({ commit }, childData) {
+  async addChildBaduta({ commit }, childData) {
     try {
-      const response = await ChildrenService.createData(childData);
+      const response = await ChildrenGrowthService.createData(childData);
       commit("addChild", response.data);
       return response.data;
     } catch (error) {
@@ -101,9 +101,9 @@ const actions = {
 };
 
 const getters = {
-  children: (state) => state.children,
-  childBaduta: (state) => state.childBaduta,
-  child: (state) => state.child,
+  childrensGrowth: (state) => state.childrensGrowth,
+  childBadutas: (state) => state.childBaduta,
+  childBaduta: (state) => state.child,
 };
 
 export default {

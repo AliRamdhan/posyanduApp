@@ -2,7 +2,7 @@ import axios from "axios";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const API_URL = `${BASE_URL}/growth-children`;
 
-class ChildrenService {
+class ChildrenGrowthService {
   async getAll() {
     try {
       const response = await axios.get(`${API_URL}`);
@@ -64,4 +64,4 @@ class ChildrenService {
   }
 }
 
-export default new ChildrenService();
+export default new ChildrenGrowthService();

@@ -34,7 +34,6 @@ const editImmunisation = (id) => {
   router.push({ name: "imunisasi-update", params: { id } });
 };
 
-
 const formatDOB = (dob) => {
   return formatTime(dob); // Assuming formatTime is correctly implemented elsewhere
 };
@@ -43,67 +42,80 @@ onMounted(fetchImmunisations);
 </script>
 
 <template>
-  <section class="container px-4">
-    <ListHeader nameData="Data Imunisasi" :numberData="immunisations.length" />
-    <ListFilter />
+  <section class="w-full flex justify-end px-4 overflow-hidden">
+    <div class="w-full">
+      <ListHeader
+        nameData="Data Imunisasi"
+        :numberData="immunisations.length"
+      />
+      <ListFilter />
 
-    <div class="flex flex-col mt-6">
-      <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-        <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+      <div class="flex flex-col mt-6">
+        <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div
-            class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg"
+            class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8"
           >
-            <table
-              class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
+            <div
+              class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg"
             >
-              <thead class="bg-gray-50 dark:bg-gray-800">
-                <tr>
-                  <th
-                    scope="col"
-                    class="py-3.5 px-4 text-sm font-normal text-left text-gray-500 dark:text-gray-400"
-                  >
-                    Nama
-                  </th>
-                  <th
-                    scope="col"
-                    class="px-4 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400"
-                  >
-                    Kelompok Umur
-                  </th>
-                  <th scope="col" class="relative py-3.5 px-4">
-                    <span class="sr-only">Edit</span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody
-                class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900"
+              <table
+                class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
               >
-                <tr v-for="immunisation in immunisations" :key="immunisation._id">
-                  <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
-                    <div>
+                <thead class="bg-gray-50 dark:bg-gray-800">
+                  <tr>
+                    <th
+                      scope="col"
+                      class="py-3.5 px-4 text-sm font-normal text-left text-gray-500 dark:text-gray-400"
+                    >
+                      Nama
+                    </th>
+                    <th
+                      scope="col"
+                      class="px-4 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400"
+                    >
+                      Kelompok Umur
+                    </th>
+                    <th scope="col" class="relative py-3.5 px-4">
+                      <span class="sr-only">Edit</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody
+                  class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900"
+                >
+                  <tr
+                    v-for="immunisation in immunisations"
+                    :key="immunisation._id"
+                  >
+                    <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                      <div>
+                        <h2 class="font-medium text-gray-800 dark:text-white">
+                          {{ immunisation.name }}
+                        </h2>
+                      </div>
+                    </td>
+                    <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                       <h2 class="font-medium text-gray-800 dark:text-white">
-                        {{ immunisation.name }}
+                        {{ immunisation.groupAge }}
                       </h2>
-                    </div>
-                  </td>
-                  <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
-                    <h2 class="font-medium text-gray-800 dark:text-white">
-                      {{ immunisation.groupAge }}
-                    </h2>
-                  </td>
-                  <td class="px-4 py-4 flex gap-4">
-                    <button @click="editImmunisation(immunisation._id)">Edit</button>
-                    <button @click="deleteImmunisation(immunisation._id)">Delete</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                    </td>
+                    <td class="px-4 py-4 flex gap-4">
+                      <button @click="editImmunisation(immunisation._id)">
+                        Edit
+                      </button>
+                      <button @click="deleteImmunisation(immunisation._id)">
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
+      <ListPagination />
     </div>
-
-    <ListPagination />
   </section>
 </template>
 

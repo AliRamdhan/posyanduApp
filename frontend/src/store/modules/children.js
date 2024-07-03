@@ -35,6 +35,7 @@ const actions = {
     try {
       const response = await ChildrenService.getAll();
       commit("setChildren", response.data);
+      console.log(response.data)
       return response.data;
     } catch (error) {
       console.error("Error fetching children:", error);
@@ -44,6 +45,7 @@ const actions = {
     try {
       const response = await ChildrenService.getById(id);
       commit("setChild", response.data);
+      console.log(response.data)
       return response.data;
     } catch (error) {
       console.error(`Error fetching child with id ${id}:`, error);

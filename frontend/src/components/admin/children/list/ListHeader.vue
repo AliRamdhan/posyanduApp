@@ -4,6 +4,10 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 const props = defineProps({
+  name: {
+    type: String,
+    required: true,
+  },
   numberData: {
     type: Number,
     required: true,
@@ -19,7 +23,7 @@ const addChild = () => {
     <div>
       <div class="flex items-center gap-x-3">
         <h2 class="text-lg font-medium text-gray-800 dark:text-white">
-          Customers
+          {{name}}
         </h2>
 
         <span
