@@ -1,10 +1,24 @@
 const Growth = require("../models/model.mother.growth");
 
 // Function to get all birth records
-const getAll = async () => {
+// const getAll = async () => {
+//   try {
+//     const data = await Growth.find().populate("mother");
+//     return data;
+//   } catch (error) {
+//     throw error;
+//   }
+// };
+const getAll = async (filter = {}, sortOptions = {}, skip = 0, limit = 10) => {
   try {
-    const data = await Growth.find().populate("mother");
-    return data;
+    const findQuery = await Growth.find(filter)
+      .sort(sortOptions)
+      .skip(skip)
+      .limit(limit)
+      .populate("mother")
+    const countDocumentsPromise = await Growth.countDocuments(filter);
+    const [data, total] = await Promise.all([findQuery, countDocumentsPromise]);
+    return { data, total };
   } catch (error) {
     throw error;
   }

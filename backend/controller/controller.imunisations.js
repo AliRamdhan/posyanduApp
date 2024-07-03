@@ -1,11 +1,54 @@
 const Imunisation = require("../models/model.immunisation");
 
+// const GetAllData = async (req, res) => {
+//   try {
+//     const data = await Imunisation.find();
+//     return res.status(200).json({
+//       message: "List All Data",
+//       data,
+//     });
+//   } catch (error) {
+//     return res.status(400).json({ error: error.message });
+//   }
+// };
+
 const GetAllData = async (req, res) => {
   try {
-    const data = await Imunisation.find();
+    const {
+      name,
+      groupAge,
+      sortField,
+      sortOrder = "asc",
+      page = 1,
+      limit = 10,
+    } = req.query;
+
+    const filter = {};
+    if (name) {
+      // Case insensitive search with partial matching
+      filter.name = { $regex: new RegExp("^" + name, "i") };
+    }
+    if (groupAge) filter.groupAge = groupAge;
+
+    const sortOptions = {};
+    if (sortField) sortOptions[sortField] = sortOrder === "desc" ? -1 : 1;
+
+    const countDocumentsPromise = Imunisation.countDocuments(filter);
+    const findQuery = Imunisation.find(filter)
+      .sort(sortOptions)
+      .skip((page - 1) * limit)
+      .limit(parseInt(limit));
+
+    const [data, total] = await Promise.all([findQuery, countDocumentsPromise]);
+
     return res.status(200).json({
       message: "List All Data",
       data,
+      pagination: {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        total,
+      },
     });
   } catch (error) {
     return res.status(400).json({ error: error.message });
@@ -31,9 +74,7 @@ const CreateData = async (req, res) => {
       name: name,
       groupAge: groupAge,
     }).save();
-    return res
-      .status(201)
-      .json({ message: "Success create data", data });
+    return res.status(201).json({ message: "Success create data", data });
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }

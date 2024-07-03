@@ -3,10 +3,62 @@ const Children = require("../models/model.children");
 const Imunisations = require("../models/model.immunisation");
 
 // Handler to get all children growth records
+// const getAllGrowth = async (req, res) => {
+//   try {
+//     const data = await service.getAll();
+//     res.status(200).json({ message: "List All Data", data });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
 const getAllGrowth = async (req, res) => {
   try {
-    const data = await service.getAll();
-    res.status(200).json({ message: "List All Data", data });
+    const {
+      checkDate,
+      groupFase,
+      heightBody,
+      weightBody,
+      sortField,
+      isBaduta,
+      sortOrder = "asc",
+      page = 1,
+      limit = 10,
+    } = req.query;
+
+    // Build the filter object based on the query parameters
+    const filter = {};
+    if (checkDate) filter.checkDate = new Date(checkDate);
+    if (groupFase) filter.groupFase = groupFase;
+    if (heightBody) filter.heightBody = heightBody;
+    if (weightBody) filter.weightBody = weightBody;
+    if (isBaduta) filter.isBaduta = isBaduta;
+    
+    // Build the sort options
+    const sortOptions = {};
+    if (sortField) sortOptions[sortField] = sortOrder === "desc" ? -1 : 1;
+
+    // Calculate pagination options
+    const skip = (page - 1) * limit;
+    const limitNumber = parseInt(limit);
+
+    const { data, total } = await service.getAll(
+      filter,
+      sortOptions,
+      skip,
+      limitNumber
+    );
+
+    // Respond with the data and pagination info
+    res.status(200).json({
+      message: "List All Data",
+      data,
+      pagination: {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        total,
+      },
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -49,7 +101,7 @@ const createGrowth = async (req, res) => {
     heightBody,
     weightBody,
     imunisations,
-    isBaduta
+    isBaduta,
   };
 
   try {
@@ -135,5 +187,5 @@ module.exports = {
   createGrowth,
   updateGrowth,
   deleteGrowth,
-  getAllBaduta
+  getAllBaduta,
 };

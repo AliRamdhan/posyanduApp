@@ -2,10 +2,71 @@ const service = require("../service/service.mothergrowth");
 const Mother = require("../models/model.mother");
 
 // Handler to get all growth records
+// const getAllGrowth = async (req, res) => {
+//   try {
+//     const data = await service.getAll();
+//     res.status(200).json({ message: "List All Data", data });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
 const getAllGrowth = async (req, res) => {
   try {
-    const data = await service.getAll();
-    res.status(200).json({ message: "List All Data", data });
+    const {
+      checkDate,
+      height,
+      weight,
+      kbtype,
+      pregnantStatus,
+      wombAge,
+      numbChild,
+      groupFase,
+      circumStomach,
+      circumHand,
+      sortField,
+      sortOrder = "asc",
+      page = 1,
+      limit = 10,
+    } = req.query;
+
+    // Build the filter object based on the query parameters
+    const filter = {};
+    if (checkDate) filter.checkDate = new Date(checkDate);
+    if (groupFase) filter.groupFase = groupFase;
+    if (height) filter.height = height;
+    if (weight) filter.weight = weight;
+    if (kbtype) filter.kbtype = kbtype;
+    if (pregnantStatus) filter.pregnantStatus = pregnantStatus;
+    if (wombAge) filter.wombAge = wombAge;
+    if (numbChild) filter.numbChild = numbChild;
+    if (circumStomach) filter.circumStomach = circumStomach;
+    if (circumHand) filter.circumHand = circumHand;
+
+    // Build the sort options
+    const sortOptions = {};
+    if (sortField) sortOptions[sortField] = sortOrder === "desc" ? -1 : 1;
+
+    // Calculate pagination options
+    const skip = (page - 1) * limit;
+    const limitNumber = parseInt(limit);
+
+    const { data, total } = await service.getAll(
+      filter,
+      sortOptions,
+      skip,
+      limitNumber
+    );
+
+    // Respond with the data and pagination info
+    res.status(200).json({
+      message: "List All Data",
+      data,
+      pagination: {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        total,
+      },
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
