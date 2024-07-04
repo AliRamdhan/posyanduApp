@@ -7,6 +7,8 @@ const schema = mongoose.model("imunisations", {
   groupAge: {
     type: String,
   },
+  createdAt: { type: Date, default: Date.now() },
+  updateAt: { type: Date, default: Date.now() },
 });
 
 module.exports = schema;

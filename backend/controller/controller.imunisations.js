@@ -1,5 +1,5 @@
 const Imunisation = require("../models/model.immunisation");
-
+const xl = require("excel4node");
 // const GetAllData = async (req, res) => {
 //   try {
 //     const data = await Imunisation.find();
@@ -118,10 +118,68 @@ const DeleteData = async (req, res) => {
   }
 };
 
+const ExportDataToExcel = async (req, res) => {
+  try {
+    const { month } = req.query;
+    if (!month) {
+      return res.status(400).json({ error: "Month is required" });
+    }
+
+    const [year, monthIndex] = month.split("-").map(Number);
+    const startDate = new Date(year, monthIndex - 1, 1);
+    const endDate = new Date(year, monthIndex, 0, 23, 59, 59);
+
+    const data = await Imunisation.find({
+      createdAt: { $gte: startDate, $lte: endDate },
+    });
+
+    if (data.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No data found for the specified month and year" });
+    }
+
+    const wb = new xl.Workbook();
+    const ws = wb.addWorksheet("Childrens Data");
+
+    // Define the specific columns you want in the Excel
+    const headingColumnNames = ["ID", "Name", "Group Age"];
+
+    // Write Column Titles in Excel file
+    let headingColumnIndex = 1;
+    headingColumnNames.forEach((heading) => {
+      ws.cell(1, headingColumnIndex++).string(heading);
+    });
+
+    // Write Data in Excel file
+    let rowIndex = 2;
+    data.forEach((record) => {
+      ws.cell(rowIndex, 1).string(record._id.toString());
+      ws.cell(rowIndex, 2).string(record.name || "");
+      ws.cell(rowIndex, 3).string(record.groupAge || "");
+
+      rowIndex++;
+    });
+
+    const fileName = `imunisasi_${year}_${monthIndex}.xlsx`;
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader("Content-Disposition", `attachment; filename="${fileName}"`);
+
+    wb.write(fileName, res);
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+
 module.exports = {
   GetAllData,
   CreateData,
   GetDataById,
   UpdateData,
   DeleteData,
+  ExportDataToExcel,
 };

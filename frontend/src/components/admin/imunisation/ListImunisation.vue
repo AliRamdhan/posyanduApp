@@ -2,8 +2,8 @@
 import ListHeader from "./list/ListHeader.vue";
 import ListPagination from "./list/ListPagination.vue";
 import ListFilter from "./list/ListFilter.vue";
-
-import { computed, onMounted } from "vue";
+import { FwbInput, FwbSelect } from "flowbite-vue";
+import { computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import formatTime from "../../../utils/FormatTime";
@@ -11,11 +11,47 @@ import formatTime from "../../../utils/FormatTime";
 const store = useStore();
 const router = useRouter();
 
-const immunisations = computed(() => store.getters["immunisations"]);
+const pagination = computed(() => store.getters.paginationChild);
+const immunisations = computed(() => store.getters.immunisations);
 
+const searchName = ref("");
+const searchGroupAge = ref("");
+const sortField = ref("");
+const sortOrder = ref("asc");
+const currentPage = ref(1);
+const limit = ref(10);
+
+const selectLimit = [
+  { value: "5", name: "5" },
+  { value: "10", name: "10" },
+  { value: "25", name: "25" },
+  { value: "50", name: "50" },
+  { value: "100", name: "100" },
+];
+
+const selectGroupAge = [
+  { value: "0-1", name: "0-1" },
+  { value: "1-10", name: "1-10" },
+  { value: "10-15", name: "10-15" },
+  { value: "15-20", name: "15-20" },
+  { value: "20-25", name: "20-25" },
+];
+
+const handlePageChange = (page) => {
+  currentPage.value = page;
+  fetchChildren();
+};
 const fetchImmunisations = async () => {
   try {
-    await store.dispatch("fetchImmunisations");
+    const params = {
+      name: searchName.value,
+      groupAge: searchGroupAge.value,
+      sortField: sortField.value,
+      sortOrder: sortOrder.value,
+      page: currentPage.value,
+      limit: limit.value,
+    };
+    await store.dispatch("fetchImmunisations", params);
   } catch (error) {
     console.error("Error fetching immunisations:", error);
   }
@@ -38,7 +74,9 @@ const formatDOB = (dob) => {
   return formatTime(dob); // Assuming formatTime is correctly implemented elsewhere
 };
 
-onMounted(fetchImmunisations);
+onMounted(() => {
+  fetchImmunisations();
+});
 </script>
 
 <template>
@@ -48,8 +86,38 @@ onMounted(fetchImmunisations);
         nameData="Data Imunisasi"
         :numberData="immunisations.length"
       />
-      <ListFilter />
-
+      <div class="mt-6 md:flex md:items-center md:justify-between">
+        <div class="inline-flex gap-4">
+          <div class="flex gap-2 items-center text-sm">
+            <p>Show</p>
+            <fwb-select
+              v-model="limit"
+              @change="fetchImmunisations"
+              :options="selectLimit"
+              class="w-20"
+            />
+            Entries
+          </div>
+          <fwb-input
+            v-model="searchName"
+            @input="fetchImmunisations"
+            placeholder="Search by name"
+          >
+            <template #prefix>
+              <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
+            </template>
+          </fwb-input>
+          <div class="flex gap-2 items-center text-sm">
+            <p>Group</p>
+            <fwb-select
+              v-model="searchGroupAge"
+              @change="fetchImmunisations"
+              :options="selectGroupAge"
+            />
+            <p>Age</p>
+          </div>
+        </div>
+      </div>
       <div class="flex flex-col mt-6">
         <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div
@@ -75,6 +143,12 @@ onMounted(fetchImmunisations);
                     >
                       Kelompok Umur
                     </th>
+                    <th
+                      scope="col"
+                      class="px-4 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400"
+                    >
+                      Create At
+                    </th>
                     <th scope="col" class="relative py-3.5 px-4">
                       <span class="sr-only">Edit</span>
                     </th>
@@ -97,6 +171,11 @@ onMounted(fetchImmunisations);
                     <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                       <h2 class="font-medium text-gray-800 dark:text-white">
                         {{ immunisation.groupAge }}
+                      </h2>
+                    </td>
+                    <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                      <h2 class="font-medium text-gray-800 dark:text-white">
+                        {{ formatTime(immunisation.createdAt) }}
                       </h2>
                     </td>
                     <td class="px-4 py-4 flex gap-4">

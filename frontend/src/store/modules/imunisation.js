@@ -5,11 +5,19 @@ import ImmunisationService from "../../service/imunisation";
 const state = {
   immunisations: [], // Array to store immunisation records
   immunisation: null, // Single immunisation record for detailed view/edit
+  paginationImmunisation: {
+    page: 1,
+    limit: 10,
+    total: 0,
+  },
 };
 
 const mutations = {
   setImmunisations(state, immunisations) {
     state.immunisations = immunisations;
+  },
+  setPaginationImmunisation(state, paginationImmunisation) {
+    state.paginationImmunisation = paginationImmunisation;
   },
   setImmunisation(state, immunisation) {
     state.immunisation = immunisation;
@@ -33,13 +41,38 @@ const mutations = {
 };
 
 const actions = {
-  async fetchImmunisations({ commit }) {
+  async fetchImmunisations({ commit }, params) {
     try {
-      const response = await ImmunisationService.getAll();
-      commit("setImmunisations", response.data);
-      return response.data;
+      const response = await ImmunisationService.getAll(params);
+      const { data, pagination } = response;
+      commit("setImmunisations", data);
+      commit("setPaginationImmunisation", pagination);
+      return response;
     } catch (error) {
       console.error("Error fetching immunisations:", error);
+    }
+  },
+  async exportDataImunisation({ commit }, month) {
+    try {
+      const data = await ImmunisationService.exportImunisationData(month);
+      if (data.size === 0) {
+        console.error("No data found for the selected month");
+        alert("No data found for the selected month");
+        return;
+      }
+      // Perform file download
+      const blob = new Blob([data], { type: "text/csv" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `imunisasi_${month}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error exporting data:", error);
+      alert("Error exporting data. Please try again later.");
     }
   },
   async fetchImmunisation({ commit }, id) {
@@ -62,7 +95,10 @@ const actions = {
   },
   async updateImmunisation({ commit }, { id, immunisationData }) {
     try {
-      const response = await ImmunisationService.updateData(id, immunisationData);
+      const response = await ImmunisationService.updateData(
+        id,
+        immunisationData
+      );
       commit("updateImmunisation", response.data);
       return response.data;
     } catch (error) {
@@ -82,6 +118,7 @@ const actions = {
 const getters = {
   immunisations: (state) => state.immunisations,
   immunisation: (state) => state.immunisation,
+  paginationImmunisations: (state) => state.paginationImmunisation,
 };
 
 export default {
