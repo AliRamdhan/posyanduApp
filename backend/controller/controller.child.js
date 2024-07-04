@@ -1,11 +1,54 @@
 const Children = require("../models/model.children");
 const Mother = require("../models/model.mother");
 const GetAllData = async (req, res) => {
+  // try {
+  //   const data = await Children.find().populate("mother");
+  //   return res.status(200).json({
+  //     message: "List All Data",
+  //     data,
+  //   });
+  // }
   try {
-    const data = await Children.find().populate("mother");
+    const {
+      name,
+      nik,
+      gender,
+      dob,
+      amountImunisation,
+      sortField,
+      sortOrder = "asc",
+      page = 1,
+      limit = 10,
+    } = req.query;
+
+    const filter = {};
+    if (name) {
+      filter.name = { $regex: new RegExp("^" + name, "i") };
+    }
+    if (nik) filter.nik = { $regex: new RegExp("^" + nik, "i") };
+    if (dob) filter.dob = new Date(dob);
+    if (gender) filter.gender = gender;
+    if (amountImunisation) filter.amountImunisation = amountImunisation;
+
+    const sortOptions = {};
+    if (sortField) sortOptions[sortField] = sortOrder === "desc" ? -1 : 1;
+
+    const countDocumentsPromise = Children.countDocuments(filter);
+    const findQuery = Children.find(filter)
+      .sort(sortOptions)
+      .skip((page - 1) * limit)
+      .limit(parseInt(limit));
+
+    const [data, total] = await Promise.all([findQuery, countDocumentsPromise]);
+
     return res.status(200).json({
       message: "List All Data",
       data,
+      pagination: {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        total,
+      },
     });
   } catch (error) {
     return res.status(400).json({ error: error.message });
