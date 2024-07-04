@@ -3,10 +3,15 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 const API_URL = `${BASE_URL}/children`;
 
 class ChildrenService {
-  async getAll() {
+  async getAll(params) {
     try {
-      const response = await axios.get(`${API_URL}`);
-      return response.data;
+      const response = await axios.get(`${API_URL}`, { params });
+      if (response.data && response.data.data && response.data.pagination) {
+        return {
+          data: response.data.data,
+          pagination: response.data.pagination,
+        };
+      }
     } catch (error) {
       console.error("Error fetching all data:", error);
       throw error;

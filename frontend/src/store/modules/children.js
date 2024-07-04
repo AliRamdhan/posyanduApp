@@ -5,11 +5,19 @@ import ChildrenService from "../../service/children";
 const state = {
   children: [],
   child: null,
+  paginationChild: {
+    page: 1,
+    limit: 10,
+    total: 0,
+  },
 };
 
 const mutations = {
   setChildren(state, children) {
     state.children = children;
+  },
+  setPaginationChild(state, paginationChild) {
+    state.paginationChild = paginationChild;
   },
   setChild(state, child) {
     state.child = child;
@@ -31,11 +39,12 @@ const mutations = {
 };
 
 const actions = {
-  async fetchChildren({ commit }) {
+  async fetchChildren({ commit }, params) {
     try {
-      const response = await ChildrenService.getAll();
-      commit("setChildren", response.data);
-      console.log(response.data)
+      const response = await ChildrenService.getAll(params);
+      const { data, pagination } = response;
+      commit("setChildren", data);
+      commit("setPaginationChild", pagination);
       return response.data;
     } catch (error) {
       console.error("Error fetching children:", error);
@@ -45,7 +54,7 @@ const actions = {
     try {
       const response = await ChildrenService.getById(id);
       commit("setChild", response.data);
-      console.log(response.data)
+      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error(`Error fetching child with id ${id}:`, error);
@@ -92,6 +101,7 @@ const actions = {
 const getters = {
   children: (state) => state.children,
   child: (state) => state.child,
+  paginationChild: (state) => state.paginationChild,
 };
 
 export default {
