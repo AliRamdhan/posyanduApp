@@ -96,6 +96,29 @@ const actions = {
       console.error("Error adding data:", error);
     }
   },
+  async exportDataChildren({ commit }, month) {
+    try {
+      const data = await ChildrenService.exportData(month);
+      if (data.size === 0) {
+        console.error("No data found for the selected month");
+        alert("No data found for the selected month");
+        return;
+      }
+      // Perform file download
+      const blob = new Blob([data], { type: "text/csv" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `mothers_${month}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error exporting data:", error);
+      alert("Error exporting data. Please try again later.");
+    }
+  },
 };
 
 const getters = {

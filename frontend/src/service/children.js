@@ -17,6 +17,20 @@ class ChildrenService {
       throw error;
     }
   }
+  async exportData(month) {
+    try {
+      const response = await axios.get(
+        `${API_URL}/export/excel?month=${month}`,
+        {
+          responseType: "blob", // Ensure response is treated as binary data (for file download)
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error exporting data:", error);
+      throw error;
+    }
+  }
 
   async getById(id) {
     try {

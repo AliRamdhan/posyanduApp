@@ -324,8 +324,8 @@ const ExportDataToExcel = async (req, res) => {
     // Write Data in Excel file
     let rowIndex = 2;
     data.forEach((record) => {
-      console.log(record.rt);
-      console.log(record.rw);
+      // console.log(record.rt);
+      // console.log(record.rw);
       ws.cell(rowIndex, 1).string(record._id.toString());
       ws.cell(rowIndex, 2).string(record.name);
       ws.cell(rowIndex, 3).string(record.nik);
