@@ -5,11 +5,19 @@ import BirthService from "../../service/birth";
 const state = {
   births: [],
   birth: null,
+  paginationBirth: {
+    page: 1,
+    limit: 10,
+    total: 0,
+  },
 };
 
 const mutations = {
   setBirths(state, births) {
     state.births = births;
+  },
+  setPaginationBirth(state, paginationBirth) {
+    state.paginationBirth = paginationBirth;
   },
   setBirth(state, birth) {
     state.birth = birth;
@@ -31,13 +39,38 @@ const mutations = {
 };
 
 const actions = {
-  async fetchBirths({ commit }) {
+  async fetchBirths({ commit }, params) {
     try {
-      const response = await BirthService.getAll();
-      commit("setBirths", response.data);
+      const response = await BirthService.getAll(params);
+      const { data, pagination } = response;
+      commit("setBirths", data);
+      commit("setPaginationBirth", pagination);
       return response.data;
     } catch (error) {
       console.error("Error fetching births:", error);
+    }
+  },
+  async exportDataBirth({ commit }, month) {
+    try {
+      const data = await BirthService.exportBirthData(month);
+      if (data.size === 0) {
+        console.error("No data found for the selected month");
+        alert("No data found for the selected month");
+        return;
+      }
+      // Perform file download
+      const blob = new Blob([data], { type: "text/csv" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `birth_${month}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error exporting data:", error);
+      alert("Error exporting data. Please try again later.");
     }
   },
   async fetchBirth({ commit }, id) {
@@ -80,6 +113,7 @@ const actions = {
 const getters = {
   births: (state) => state.births,
   birth: (state) => state.birth,
+  paginationBirth: (state) => state.paginationBirth,
 };
 
 export default {

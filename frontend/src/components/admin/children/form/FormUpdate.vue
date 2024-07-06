@@ -52,7 +52,7 @@ const fetchChild = async (id) => {
       name: data.name,
       nik: data.nik,
       gender: data.gender,
-      dob: data.dob,
+      dob:  data.dob ? new Date(data.dob).toISOString().split("T")[0] : "",
       amountImunisation: data.amountImunisation,
       mother: data.mother,
     };
@@ -75,7 +75,7 @@ const handleSubmit = async () => {
       },
     });
     alert(`Child with ID ${route.params.id} updated`);
-    router.push({ name: "children" }); // Redirect to children list after action
+    router.push({ name: "dashboardAdminAnak" }); // Redirect to children list after action
   } catch (error) {
     console.error("Error updating child:", error);
   }
@@ -115,6 +115,7 @@ const handleSubmit = async () => {
         />
       </div>
       <div>
+        <p>{{childData.mother}}</p>
         <fwb-select
           v-model="childData.mother"
           :options="mothers"
@@ -127,7 +128,7 @@ const handleSubmit = async () => {
       <fwb-button
         class="py-2 px-4 bg-white border border-gray-200 text-gray-600 rounded hover:bg-gray-100 active:bg-gray-200 disabled:opacity-50"
         type="button"
-        @click="router.push({ name: 'children' })"
+        @click="router.push({ name: 'dashboardAdminAnak' })"
       >
         Cancel
       </fwb-button>

@@ -11,6 +11,7 @@ const store = useStore();
 const router = useRouter();
 const pagination = computed(() => store.getters.paginationChild);
 const children = computed(() => store.getters.children);
+console.log(children);
 
 const searchName = ref("");
 const searchNIK = ref("");
@@ -23,7 +24,7 @@ const currentPage = ref(1);
 const limit = ref(10);
 
 const selectLimit = [
-  { value: "5", name: "5" },
+  { value: "1", name: "5" },
   { value: "10", name: "10" },
   { value: "25", name: "25" },
   { value: "50", name: "50" },
@@ -55,22 +56,49 @@ const fetchChildren = async () => {
   }
 };
 
-const deleteChild = async (id) => {
-  try {
-    await store.dispatch("deleteChild", id);
-    fetchChildren();
-  } catch (error) {
-    console.error(`Error deleting child with id ${id} in component:`, error);
-  }
-};
+// const deleteChild = async (id) => {
+//   try {
+//     await store.dispatch("deleteChild", id);
+//     fetchChildren();
+//   } catch (error) {
+//     console.error(`Error deleting child with id ${id} in component:`, error);
+//   }
+// };
 
 const editChild = (id) => {
-  router.push({ name: "children-update", params: { id } });
+  router.push({ name: "anak-update", params: { id } });
 };
 
 const addChild = () => {
-  router.push({ name: "children-create" });
+  router.push({ name: "anak-create" });
 };
+
+const deleteChild = async (id) => {
+  try {
+    await store.dispatch( "deleteChild", id); // Removed namespacing
+    console.log(`Deleted mother with id ${id}`);
+  } catch (error) {
+    console.error(`Error deleting mother with id ${id} in component:`, error);
+    console.error(
+      "Details:",
+      error.response ? error.response.data : error.message
+    );
+  }
+};
+
+const removeChild = async (id) => {
+  try {
+    await deleteChild(id);
+    await fetchChildren();
+  } catch (error) {
+    console.error(`Error removing child with id ${id}:`, error);
+    console.error(
+      "Details:",
+      error.response ? error.response.data : error.message
+    );
+  }
+};
+
 
 const handlePageChange = (page) => {
   currentPage.value = page;
@@ -234,7 +262,7 @@ onMounted(() => {
                       </div>
                     </td>
                     <td
-                      class="px-12 py-4 text-sm font-medium whitespace-nowrap"
+                      class="px-12 py-4 text-sm font-medium whitespace-nowrap flex gap-4"
                     >
                       <button
                         @click="editChild(child._id)"
@@ -243,7 +271,7 @@ onMounted(() => {
                         Edit
                       </button>
                       <button
-                        @click="deleteChild(child._id)"
+                        @click="removeChild(child._id)"
                         class="inline px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-500"
                       >
                         Delete
@@ -252,10 +280,10 @@ onMounted(() => {
                   </tr>
                 </tbody>
               </table>
-              <!-- <ListPagination
+              <ListPagination
                 :pagination="pagination"
                 @page-changed="handlePageChange"
-              /> -->
+              />
             </div>
           </div>
         </div>

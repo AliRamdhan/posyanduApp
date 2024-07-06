@@ -24,17 +24,22 @@ const data = ref({
   husbandnik: "",
   dob: "",
   bpjs: null,
-  KS: "",
+  ks: "",
   RT: null,
   RW: null,
   amountChild: 0,
 });
 
 const handleSubmit = async () => {
+  // Ensure kk, nik, and husbandnik are strings
+  // data.value.kk = String(data.value.kk);
+  // data.value.nik = String(data.value.nik);
+  // data.value.husbandnik = String(data.value.husbandnik);
+
   try {
     await store.dispatch("createMother", data.value);
     alert("New data added");
-    router.push({ name: "mother" }); // Redirect to mothers list after action
+    router.push({ name: "dashboardAdminIbu" }); // Redirect to mothers list after action
   } catch (error) {
     console.error("Error adding mother:", error);
   }
@@ -48,16 +53,21 @@ const handleSubmit = async () => {
         <fwb-input v-model="data.name" label="Nama" required />
       </div>
       <div>
-        <fwb-input v-model="data.nik" label="NIK" required />
+        <fwb-input v-model="data.nik" label="NIK" type="number" required />
       </div>
       <div>
-        <fwb-input v-model="data.kk" label="KK" required />
+        <fwb-input v-model="data.kk" label="KK" type="number" required />
       </div>
       <div>
         <fwb-input v-model="data.husband" label="Nama Suami" required />
       </div>
       <div>
-        <fwb-input v-model="data.husbandnik" label="NIK Suami" required />
+        <fwb-input
+          v-model="data.husbandnik"
+          label="NIK Suami"
+          type="number"
+          required
+        />
       </div>
       <div>
         <fwb-input
@@ -72,13 +82,13 @@ const handleSubmit = async () => {
         <fwb-select v-model="data.bpjs" :options="bpjs" label="Select BPJS" />
       </div>
       <div>
-        <fwb-select v-model="data.KS" :options="kss" label="Select KS" />
+        <fwb-select v-model="data.ks" :options="kss" label="Select KS" />
       </div>
       <div>
-        <fwb-input v-model="data.RT" type="number" label="RT" />
+        <fwb-input v-model="data.rt" type="number" label="RT" />
       </div>
       <div>
-        <fwb-input v-model="data.RW" type="number" label="RW" />
+        <fwb-input v-model="data.rw" type="number" label="RW" />
       </div>
       <div>
         <fwb-input
@@ -91,12 +101,14 @@ const handleSubmit = async () => {
     </div>
     <div class="space-x-4 mt-8">
       <fwb-button type="submit" color="default">Save</fwb-button>
-      <fwb-button
-        class="py-2 px-4 bg-white border border-gray-200 text-gray-600 rounded hover:bg-gray-100 active:bg-gray-200 disabled:opacity-50"
-        type="button"
-      >
-        Cancel
-      </fwb-button>
+      <router-link to="/dashboard/admin/ibu">
+        <fwb-button
+          class="py-2 px-4 bg-white border border-gray-200 text-gray-600 rounded hover:bg-gray-100 active:bg-gray-200 disabled:opacity-50"
+          type="button"
+        >
+          Cancel
+        </fwb-button>
+      </router-link>
     </div>
   </form>
 </template>

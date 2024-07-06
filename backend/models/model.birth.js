@@ -13,6 +13,8 @@ const schema = mongoose.model("birth", {
     type: mongoose.Schema.Types.ObjectId,
     ref: "mother", // Reference to the Choice collection
   },
+  createdAt: { type: Date, default: Date.now() },
+  updateAt: { type: Date, default: Date.now() },
 });
 
 module.exports = schema;

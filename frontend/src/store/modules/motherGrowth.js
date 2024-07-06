@@ -4,11 +4,19 @@ const state = {
   motherGrowths: [],
   motherPregnant: [],
   motherGrowth: null,
+  paginationMotherGrowth: {
+    page: 1,
+    limit: 10,
+    total: 0,
+  },
 };
 
 const mutations = {
   setMotherGrowths(state, motherGrowths) {
     state.motherGrowths = motherGrowths;
+  },
+  setPaginationMothersGrowth(state, paginationMotherGrowth) {
+    state.paginationMotherGrowth = paginationMotherGrowth;
   },
   setMotherPregnant(state, motherPregnant) {
     state.motherPregnant = motherPregnant;
@@ -35,13 +43,24 @@ const mutations = {
 };
 
 const actions = {
-  async fetchMotherGrowths({ commit }) {
+  // async fetchMotherGrowths({ commit }) {
+  //   try {
+  //     const response = await MotherService.getAll();
+  //     commit("setMotherGrowths", response.data);
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error("Error fetching motherGrowths:", error);
+  //   }
+  // },
+  async fetchMotherGrowths({ commit }, params) {
     try {
-      const response = await MotherService.getAll();
-      commit("setMotherGrowths", response.data);
+      const response = await MotherService.getAll(params);
+      const { data, pagination } = response;
+      commit("setMotherGrowths", data);
+      commit("setPaginationMothersGrowth", pagination);
       return response.data;
     } catch (error) {
-      console.error("Error fetching motherGrowths:", error);
+      console.error("Error fetching children:", error);
     }
   },
   async fetchMotherPregnants({ commit }) {
@@ -58,6 +77,7 @@ const actions = {
     try {
       const response = await MotherService.getById(id);
       commit("setMotherGrowth", response.data);
+      console.log(response.data)
       return response.data;
     } catch (error) {
       console.error(`Error fetching motherGrowth with id ${id}:`, error);
@@ -95,6 +115,7 @@ const getters = {
   motherGrowths: (state) => state.motherGrowths,
   motherPregnant: (state) => state.motherPregnant,
   motherGrowth: (state) => state.motherGrowth,
+  paginationMotherGrowth: (state) => state.paginationMotherGrowth,
 };
 
 export default {

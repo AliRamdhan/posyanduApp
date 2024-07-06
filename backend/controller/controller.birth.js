@@ -67,9 +67,10 @@ const getAllBirth = async (req, res) => {
     // Build the filter object based on the query parameters
     const filter = {};
     if (dob) filter.dob = new Date(dob);
-    if (circumHead) filter.circumHead = circumHead;
-    if (heightBody) filter.heightBody = heightBody;
-    if (weightBody) filter.weightBody = weightBody;
+
+    if (circumHead) filter.circumHead = parseFloat(circumHead);
+    if (heightBody) filter.heightBody = parseFloat(heightBody);
+    if (weightBody) filter.weightBody = parseFloat(weightBody);
 
     // Build the sort options
     const sortOptions = {};
@@ -191,6 +192,30 @@ const deleteBirth = async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 };
+const exportDataExcel = async (req, res) => {
+  try {
+    const { month } = req.query;
+    if (!month) {
+      return res.status(400).json({ error: "Month is required" });
+    }
+
+    const [year, monthIndex] = month.split("-").map(Number);
+
+    const wb = await birthService.exportDataToExcel(year, monthIndex);
+
+    const fileName = `childrens_${year}_${monthIndex}.xlsx`;
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader("Content-Disposition", `attachment; filename="${fileName}"`);
+
+    wb.write(fileName, res);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 
 module.exports = {
   getAllBirth,
@@ -198,4 +223,5 @@ module.exports = {
   createBirth,
   updateBirth,
   deleteBirth,
+  exportDataExcel,
 };

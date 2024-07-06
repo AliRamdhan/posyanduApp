@@ -1,3 +1,30 @@
+<script setup>
+import { computed, onMounted } from "vue";
+import { useStore } from "vuex";
+import { FwbDropdown, FwbListGroup, FwbListGroupItem } from "flowbite-vue";
+
+import { ref } from "vue";
+
+const sidebarOpen = ref(false);
+const submenuOpen = ref(false);
+
+const openSidebar = () => {
+  sidebarOpen.value = !sidebarOpen.value;
+};
+
+const dropdown = () => {
+  submenuOpen.value = !submenuOpen.value;
+};
+
+const store = useStore();
+
+
+const handleLogout = () => {
+  store.dispatch("logout");
+  window.location.reload();
+};
+</script>
+
 <template>
   <div class="bg-blue-600">
     <!-- <span
@@ -55,7 +82,9 @@
           class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
         >
           <i class="bi bi-bookmark-fill"></i>
-          <span class="text-[15px] ml-4 text-gray-200 font-bold">Data Anak</span>
+          <span class="text-[15px] ml-4 text-gray-200 font-bold"
+            >Data Anak</span
+          >
         </div>
       </router-link>
       <router-link to="/dashboard/admin/imunisasi">
@@ -85,7 +114,9 @@
       >
         <i class="bi bi-chat-left-text-fill"></i>
         <div class="flex justify-between w-full items-center">
-          <span class="text-[15px] ml-4 text-gray-200 font-bold">Chatbox</span>
+          <span class="text-[15px] ml-4 text-gray-200 font-bold"
+            >Perkembangan</span
+          >
           <span class="text-sm" :class="{ 'rotate-180': submenuOpen }">
             <i class="bi bi-chevron-down"></i>
           </span>
@@ -95,40 +126,31 @@
         class="text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold"
         :class="{ hidden: !submenuOpen }"
       >
-        <h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">
-          Social
-        </h1>
-        <h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">
-          Personal
-        </h1>
-        <h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">
-          Friends
-        </h1>
+        <router-link to="/dashboard/admin/perkembangan-anak">
+          <h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">
+            Anak
+          </h1>
+        </router-link>
+        <router-link to="/dashboard/admin/perkembangan-ibu">
+          <h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">
+            Ibu
+          </h1>
+        </router-link>
       </div>
       <div
         class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
       >
-        <i class="bi bi-box-arrow-in-right"></i>
-        <span class="text-[15px] ml-4 text-gray-200 font-bold">Logout</span>
+        <button class="w-full" @click="handleLogout">
+          <i class="bi bi-box-arrow-in-right"></i>
+          <span class="text-[15px] ml-4 text-gray-200 font-bold">Logout</span>
+        </button>
+      </div>
+      <div>
+        <!-- {{ user.username }} -->
       </div>
     </div>
   </div>
 </template>
-
-<script setup>
-import { ref } from "vue";
-
-const sidebarOpen = ref(false);
-const submenuOpen = ref(false);
-
-const openSidebar = () => {
-  sidebarOpen.value = !sidebarOpen.value;
-};
-
-const dropdown = () => {
-  submenuOpen.value = !submenuOpen.value;
-};
-</script>
 
 <style scoped>
 .rotate-180 {

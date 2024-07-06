@@ -7,27 +7,28 @@ import { FwbInput, FwbButton, FwbSelect } from "flowbite-vue";
 const store = useStore();
 const router = useRouter();
 
-const gender = [
-  { value: "Male", name: "Laki-laki" },
-  { value: "Female", name: "Perempuan" },
-];
-
-const birthData = ref({
-  dob: "",
-  circumHead: null,
+const childrenGrowthData = ref({
+  checkDate: "",
+  groupFase: "",
   heightBody: null,
   weightBody: null,
-  children: "",
-  mother: "",
+  isBaduta: true,
+  childrens: null,
+  imunisations: null
 });
 
 const handleSubmit = async () => {
+  if (!childrenGrowthData.value.childrens) {
+    console.error("Children must be selected");
+    return;
+  }
+
   try {
-    await store.dispatch("createBirth", birthData.value);
-    console.log("New birth added");
-    router.push({ name: "dashboardAdminKelahiran" }); // Redirect to births list after action
+    await store.dispatch("createChildBaduta", childrenGrowthData.value);
+    console.log("Children growth record created");
+    router.push({ name: "dashboardAdminPerkembanganAnak" }); // Uncomment to enable redirect after creation
   } catch (error) {
-    console.error("Error adding birth:", error);
+    console.error("Error creating children growth:", error);
   }
 };
 
@@ -43,10 +44,10 @@ const fetchMothers = async () => {
   }
 };
 
-const mothers = computed(() =>
-  store.getters.mothers.map((mother) => ({
-    value: mother._id,
-    name: mother.name,
+const imunisations = computed(() =>
+  store.getters.immunisations.map((immunisation) => ({
+    value: immunisation._id,
+    name: immunisation.name,
   }))
 );
 
@@ -69,6 +70,15 @@ const children = computed(() =>
   }))
 );
 
+const groupFase = [
+  { value: "0-1", name: "0-1" },
+  { value: "1-3", name: "1-3" },
+  { value: "3-6", name: "3-6" },
+  { value: "9-12", name: "9-12" },
+  { value: "12-18", name: "12-18" },
+  { value: "18-24", name: "18-24" },
+];
+
 onMounted(() => {
   fetchMothers();
   fetchChildren();
@@ -81,55 +91,56 @@ onMounted(() => {
       <div>
         <fwb-input
           type="date"
-          v-model="birthData.dob"
-          label="Tanggal Lahir"
+          v-model="childrenGrowthData.checkDate"
+          label="Tanggal Periksa"
           required
         />
       </div>
       <div>
         <fwb-input
           type="number"
-          v-model.number="birthData.circumHead"
-          label="Lingkar Kepala"
-        />
-      </div>
-      <div>
-        <fwb-input
-          type="number"
-          v-model.number="birthData.heightBody"
+          v-model.number="childrenGrowthData.heightBody"
           label="Tinggi Badan"
         />
       </div>
       <div>
         <fwb-input
           type="number"
-          v-model.number="birthData.weightBody"
+          v-model.number="childrenGrowthData.weightBody"
           label="Berat Badan"
         />
       </div>
       <div>
         <fwb-select
-          v-model="birthData.children"
-          :options="children"
-          label="Pilih Anak"
+          v-model="childrenGrowthData.groupFase"
+          :options="groupFase"
+          label="Pilih Fase"
         />
       </div>
       <div>
         <fwb-select
-          v-model="birthData.mother"
-          :options="mothers"
-          label="Pilih Ibu"
+          v-model="childrenGrowthData.childrens"
+          :options="children"
+          label="Pilih Anak"
+          required
+        />
+      </div>
+      <div>
+        <fwb-select
+          v-model="childrenGrowthData.imunisations"
+          :options="imunisations"
+          label="Pilih Imunisasi"
         />
       </div>
     </div>
     <div class="space-x-4 mt-8">
-      <fwb-button type="submit" color="default">Simpan</fwb-button>
+      <fwb-button type="submit" color="default">Save</fwb-button>
       <fwb-button
         class="py-2 px-4 bg-white border border-gray-200 text-gray-600 rounded hover:bg-gray-100 active:bg-gray-200 disabled:opacity-50"
         type="button"
-        @click="router.push({ name: 'dashboardAdminKelahiran' })"
+        @click="router.push({ name: 'dashboardAdminPerkembanganAnak' })"
       >
-        Batal
+        Cancel
       </fwb-button>
     </div>
   </form>

@@ -41,7 +41,15 @@ import BirthUpdate from "../views/admin/birth/BirthUpdate.vue";
 import Imunisation from "../views/admin/imunisation/Imunisation.vue";
 import ImunisationCreate from "../views/admin/imunisation/ImunisationCreate.vue";
 import ImunisationUpdate from "../views/admin/imunisation/ImunisationUpdate.vue";
-
+// Growth
+import GrowthIbuAdmin from "../views/admin/growth/mother/GrowthMother.vue";
+import GrowthAnakAdmin from "../views/admin/growth/children/GrowthAnak.vue";
+// // Anak
+import GrowthAnakCreate from "../views/admin/growth/children/GrowthAnakCreate.vue"
+import GrowthAnakUpdate from "../views/admin/growth/children/GrowthAnakUpdate.vue"
+// // Ibu
+import GrowthIbuCreate from "../views/admin/growth/mother/GrowthMotherCreate.vue"
+import GrowthIbuUpdate from "../views/admin/growth/mother/GrowthMotherUpdate.vue"
 import Forbidden from "../views/Forbidden.vue";
 
 // Data Publik
@@ -124,46 +132,16 @@ const routes = [
   //   name: "mother",
   //   component: Mother,
   // },
-  {
-    path: "/mother-create",
-    name: "mother-create",
-    component: MotherCreate,
-  },
-  {
-    path: "/mother-update/:id",
-    name: "mother-update",
-    component: MotherUpdate,
-  },
   // {
   //   path: "/dashboard/admin/imunisasi",
   //   name: "imunisasi",
   //   component: Imunisation,
   // },
-  {
-    path: "/imunisasi-create",
-    name: "imunisasi-create",
-    component: ImunisationCreate,
-  },
-  {
-    path: "/imunisasi-update/:id",
-    name: "imunisasi-update",
-    component: ImunisationUpdate,
-  },
   // {
   //   path: "/dashboard/admin/birth",
   //   name: "birth",
   //   component: Birth,
   // },
-  {
-    path: "/birth-create",
-    name: "birth-create",
-    component: BirthCreate,
-  },
-  {
-    path: "/birth-update",
-    name: "birth-update",
-    component: BirthUpdate,
-  },
   // {
   //   path: "/children-try",
   //   name: "children-try",
@@ -174,21 +152,11 @@ const routes = [
   //   name: "children",
   //   component: Children,
   // },
-  {
-    path: "/children-create",
-    name: "children-create",
-    component: ChildrenCreate,
-  },
   // {
   //   path: "/children-creates",
   //   name: "children-creates",
   //   component: ChildrenCreates,
   // },
-  {
-    path: "/children-update/:id",
-    name: "children-update",
-    component: ChildrenUpdate,
-  },
   // AUTHENTICATION
   {
     path: "/profile",
@@ -252,7 +220,95 @@ const routes = [
         component: Birth,
         meta: { requiresAuth: true },
       },
-      
+      {
+        path: "perkembangan-anak",
+        name: "dashboardAdminPerkembanganAnak",
+        component: GrowthAnakAdmin,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "perkembangan-ibu",
+        name: "dashboardAdminPerkembanganIbu",
+        component: GrowthIbuAdmin,
+        meta: { requiresAuth: true },
+      },
+      //IBU
+      {
+        path: "ibu-create",
+        name: "ibu-create",
+        component: MotherCreate,
+      },
+      {
+        path: "ibu-update/:id",
+        name: "ibu-update",
+        component: MotherUpdate,
+        meta: { requiresAuth: true },
+      },
+      // ANAK
+      {
+        path: "anak-create",
+        name: "anak-create",
+        component: ChildrenCreate,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "anak-update/:id",
+        name: "anak-update",
+        component: ChildrenUpdate,
+        meta: { requiresAuth: true },
+      },
+      //Imunisasi
+      {
+        path: "imunisasi-create",
+        name: "imunisasi-create",
+        component: ImunisationCreate,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "imunisasi-update/:id",
+        name: "imunisasi-update",
+        component: ImunisationUpdate,
+        meta: { requiresAuth: true },
+      },
+      // Kelahiran
+      {
+        path: "kelahiran-create",
+        name: "kelahiran-create",
+        component: BirthCreate,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "kelahiran-update/:id",
+        name: "kelahiran-update",
+        component: BirthUpdate,
+        meta: { requiresAuth: true },
+      },
+      // Perkembangan Anak
+      {
+        path: "perkembangan-anak-create",
+        name: "perkembangan-anak-create",
+        component: GrowthAnakCreate,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "perkembangan-anak-update/:id",
+        name: "perkembangan-anak-update",
+        component: GrowthAnakUpdate,
+        meta: { requiresAuth: true },
+      },
+       // Perkembangan Ibu
+       {
+        path: "perkembangan-ibu-create",
+        name: "perkembangan-ibu-create",
+        component: GrowthIbuCreate,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "perkembangan-ibu-update/:id",
+        name: "perkembangan-ibu-update",
+        component: GrowthIbuUpdate,
+        meta: { requiresAuth: true },
+      },
     ],
   },
 ];

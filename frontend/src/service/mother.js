@@ -23,7 +23,7 @@ class MotherService {
   async exportMotherData(month) {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/v1/mother/export/excel?month=${month}`,
+        `${API_URL}/export/excel?month=${month}`,
         {
           responseType: "blob", // Ensure response is treated as binary data (for file download)
         }
@@ -48,6 +48,7 @@ class MotherService {
   async createData(data) {
     try {
       const response = await axios.post(`${API_URL}/create`, data);
+      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error("Error creating data:", error);

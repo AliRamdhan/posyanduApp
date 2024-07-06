@@ -65,13 +65,13 @@ const handleSubmit = async () => {
     </div>
     <div class="space-x-4 mt-8">
       <fwb-button type="submit" color="default">Save</fwb-button>
-      <router-link to="/imunisasi">
-        <fwb-button
-          type="button"
-          class="py-2 px-4 bg-white border border-gray-200 text-gray-600 rounded hover:bg-gray-100 active:bg-gray-200 disabled:opacity-50"
-          >Cancel</fwb-button
-        >
-      </router-link>
+
+      <fwb-button
+        @click="router.push({ name: 'dashboardAdminImunisasi' })"
+        type="button"
+        class="py-2 px-4 bg-white border border-gray-200 text-gray-600 rounded hover:bg-gray-100 active:bg-gray-200 disabled:opacity-50"
+        >Cancel</fwb-button
+      >
     </div>
   </form>
 </template>

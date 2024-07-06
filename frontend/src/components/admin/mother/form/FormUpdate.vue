@@ -36,18 +36,20 @@ const kss = [
 ];
 const fetchMother = async (id) => {
   try {
-    const data = await store.dispatch("fetchMother", id);
+    const response = await store.dispatch("fetchMother", id);
+    const data = response.data;
+    console.log(data);
     existData.value = {
       name: data.name,
       nik: data.nik,
       kk: data.kk,
       husband: data.husband,
       husbandnik: data.husbandnik,
-      dob: data.dob,
+      dob: data.dob ? new Date(data.dob).toISOString().split("T")[0] : "",
       bpjs: data.bpjs,
-      KS: data.KS,
-      RT: data.RT,
-      RW: data.RW,
+      ks: data.ks,
+      rt: data.rt,
+      rw: data.rw,
       amountChild: data.amountChild,
     };
   } catch (error) {
@@ -67,14 +69,14 @@ const handleSubmit = async () => {
         husbandnik: existData.value.husbandnik,
         dob: existData.value.dob,
         bpjs: existData.value.bpjs,
-        KS: existData.value.KS,
-        RT: existData.value.RT,
-        RW: existData.value.RW,
+        ks: existData.value.ks,
+        rt: existData.value.rt,
+        rw: existData.value.rw,
         amountChild: existData.value.amountChild,
       },
     });
     alert(`Data with ID ${route.params.id} updated`);
-    router.push({ name: "mother" }); // Redirect to mothers list after action
+    router.push({ name: "dashboardAdminIbu" }); // Redirect to mothers list after action
   } catch (error) {
     console.error("Error updating mother:", error);
   }
@@ -116,13 +118,13 @@ const handleSubmit = async () => {
         />
       </div>
       <div>
-        <fwb-select v-model="existData.KS" :options="kss" label="Select KS" />
+        <fwb-select v-model="existData.ks" :options="kss" label="Select KS" />
       </div>
       <div>
-        <fwb-input v-model="existData.RT" label="RT" />
+        <fwb-input v-model="existData.rt" label="RT" />
       </div>
       <div>
-        <fwb-input v-model="existData.RW" label="RW" />
+        <fwb-input v-model="existData.rw" label="RW" />
       </div>
       <div>
         <fwb-input

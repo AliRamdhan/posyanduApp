@@ -3,19 +3,48 @@ import ListHeader from "./list/ListHeader.vue";
 import ListPagination from "./list/ListPagination.vue";
 import ListFilter from "./list/ListFilter.vue";
 
-import { computed, onMounted } from "vue";
+import { FwbInput, FwbSelect } from "flowbite-vue";
+import { computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import formatTime from "../../../utils/FormatTime";
 
 const store = useStore();
 const router = useRouter();
+const pagination = computed(() => store.getters.paginationBirth);
+const births = computed(() => store.getters.births);
+// const children = computed(() => store.getters.children);
 
-const births = computed(() => store.getters["births"]);
+const searchHeight = ref("");
+const searchWeight = ref("");
+const searchCircumHead = ref("");
+const searchDob = ref("");
+const sortField = ref("");
+const sortOrder = ref("asc");
+const currentPage = ref(1);
+const limit = ref(10);
+
+const selectLimit = [
+  { value: "1", name: "5" },
+  { value: "10", name: "10" },
+  { value: "25", name: "25" },
+  { value: "50", name: "50" },
+  { value: "100", name: "100" },
+];
 
 const fetchBirths = async () => {
   try {
-    await store.dispatch("fetchBirths");
+    const params = {
+      circumHead: searchCircumHead.value,
+      dob: searchDob.value,
+      heightBody: searchHeight.value,
+      weightBody: searchWeight.value,
+      sortField: sortField.value,
+      sortOrder: sortOrder.value,
+      page: currentPage.value,
+      limit: limit.value,
+    };
+    await store.dispatch("fetchBirths", params);
   } catch (error) {
     console.error("Error fetching data:", error);
   }
@@ -31,25 +60,94 @@ const deleteBirth = async (id) => {
 };
 
 const editBirth = (id) => {
-  router.push({ name: "birth-update", params: { id } });
+  router.push({ name: "kelahiran-update", params: { id } });
 };
 
 const addBirth = () => {
-  router.push({ name: "birth-create" });
+  router.push({ name: "kelahiran-create" });
 };
 
 const formatDOB = (dob) => {
   return formatTime(dob); // Assuming formatTime is correctly implemented elsewhere
 };
 
-onMounted(fetchBirths);
+const handlePageChange = (page) => {
+  currentPage.value = page;
+  fetchBirths();
+};
+
+// onMounted(() => {
+//   fetchChildren();
+// });
+
+onMounted(() => {
+  fetchBirths();
+});
 </script>
 
 <template>
   <section class="w-full flex justify-end px-4 overflow-hidden">
     <div class="w-full">
       <ListHeader nameData="Data Kelahiran" :numberData="births.length" />
-      <ListFilter />
+      <div class="mt-6 md:flex md:items-center md:justify-between">
+        <div class="inline-flex gap-4">
+          <div class="flex gap-2 items-center text-sm">
+            <p>Show</p>
+            <fwb-select
+              v-model="limit"
+              @change="fetchBirths"
+              :options="selectLimit"
+              class="w-20"
+            />
+            Entries
+          </div>
+          <fwb-input
+            v-model="searchWeight"
+            @input="fetchBirths"
+            placeholder="Search by weight body"
+          >
+            <template #prefix>
+              <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
+            </template>
+          </fwb-input>
+          <fwb-input
+            v-model="searchHeight"
+            @input="fetchBirths"
+            placeholder="Search by height body"
+          >
+            <template #prefix>
+              <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
+            </template>
+          </fwb-input>
+          <fwb-input
+            v-model="searchDob"
+            @input="fetchBirths"
+            type="date"
+            placeholder="Search by DOB"
+          >
+            <template #prefix>
+              <font-awesome-icon icon="fa-solid fa-calendar" />
+            </template>
+          </fwb-input>
+          <fwb-input
+            v-model="searchCircumHead"
+            @input="fetchBirths"
+            placeholder="Search by circum head"
+          >
+            <template #prefix>
+              <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
+            </template>
+          </fwb-input>
+          <!-- <div class="flex gap-2 items-center">
+            <p>Gender</p>
+            <fwb-select
+              v-model="searchGender"
+              @change="fetchBirths"
+              :options="genderOptions"
+            />
+          </div> -->
+        </div>
+      </div>
 
       <div class="flex flex-col mt-6">
         <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -129,7 +227,7 @@ onMounted(fetchBirths);
                       </div>
                     </td>
                     <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
-                      {{ birth.children.gender }}
+                      {{ birth.children?.gender }}
                     </td>
                     <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                       {{ birth.circumHead }}
@@ -147,7 +245,7 @@ onMounted(fetchBirths);
                       </h2>
                     </td>
                     <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
-                      {{ birth.children.amountImunisation }}x
+                      {{ birth.children?.amountImunisation }}x
                     </td>
                     <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                       <div>
@@ -182,7 +280,11 @@ onMounted(fetchBirths);
           </div>
         </div>
       </div>
-      <ListPagination />
+
+      <ListPagination
+        :pagination="pagination"
+        @page-changed="handlePageChange"
+      />
     </div>
   </section>
 </template>

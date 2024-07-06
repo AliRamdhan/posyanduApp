@@ -118,7 +118,7 @@ const actions = {
 const getters = {
   immunisations: (state) => state.immunisations,
   immunisation: (state) => state.immunisation,
-  paginationImmunisations: (state) => state.paginationImmunisation,
+  paginationImmunisation: (state) => state.paginationImmunisation,
 };
 
 export default {

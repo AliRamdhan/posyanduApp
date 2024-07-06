@@ -1,7 +1,13 @@
 <script setup>
-import { defineProps } from "vue";
+import { defineProps,ref } from "vue";
 import { useRouter } from "vue-router";
-
+import { useStore } from "vuex";
+import { FwbInput, FwbSelect, FwbCheckbox } from "flowbite-vue";
+const currentDate = new Date();
+const currentYear = currentDate.getFullYear();
+const currentMonth = String(currentDate.getMonth() + 1).padStart(2, "0");
+const selectedMonth = ref(`${currentYear}-${currentMonth}`);
+const store = useStore();
 const router = useRouter();
 const props = defineProps({
   numberData: {
@@ -14,8 +20,13 @@ const props = defineProps({
   },
 });
 
+
+const exportData = () => {
+  store.dispatch("exportDataBirth", selectedMonth.value);
+};
+
 const addBirth = () => {
-  router.push({ name: "birth-create" });
+  router.push({ name: "kelahiran-create" });
 };
 </script>
 <template>
@@ -38,6 +49,20 @@ const addBirth = () => {
     </div>
 
     <div class="flex items-center mt-4 gap-x-3">
+      <fwb-input
+        v-model="selectedMonth"
+        @input="updateMonth"
+        type="month"
+        placeholder="Search by time"
+      />
+
+      <button
+        class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto dark:hover:bg-gray-800 dark:bg-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:border-gray-700"
+        @click="exportData"
+      >
+        <font-awesome-icon icon="fa-solid fa-cloud-arrow-down" />
+        <span>Export</span>
+      </button>
       <button
         class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto dark:hover:bg-gray-800 dark:bg-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:border-gray-700"
       >

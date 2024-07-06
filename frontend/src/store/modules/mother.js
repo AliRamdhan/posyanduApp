@@ -84,6 +84,7 @@ const actions = {
     try {
       const response = await MotherService.createData(motherData);
       commit("addMother", response);
+      console.log(response)
       return response;
     } catch (error) {
       console.error("Error creating mother:", error);

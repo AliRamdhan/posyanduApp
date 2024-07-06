@@ -17,7 +17,7 @@ const handleSubmit = async () => {
   try {
     await store.dispatch("createImmunisation", data.value);
     alert("New data added");
-    router.push({ name: "imunisasi" }); // Redirect to children list after action
+    router.push({ name: "dashboardAdminImunisasi" }); // Redirect to children list after action
   } catch (error) {
     console.error("Error adding child:", error);
   }
@@ -49,8 +49,9 @@ const handleSubmit = async () => {
     <div class="space-x-4 mt-8">
       <fwb-button type="submit" color="default">Save</fwb-button>
       <fwb-button
+        @click="router.push({ name: 'dashboardAdminImunisasi' })"
         class="py-2 px-4 bg-white border border-gray-200 text-gray-600 rounded hover:bg-gray-100 active:bg-gray-200 disabled:opacity-50"
-        >Save</fwb-button
+        >Cancel</fwb-button
       >
     </div>
   </form>

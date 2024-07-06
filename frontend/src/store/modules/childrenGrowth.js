@@ -6,11 +6,19 @@ const state = {
   childrensGrowth: [],
   childBadutas: [],
   childBaduta: null,
+  paginationChildrensGrowth: {
+    page: 1,
+    limit: 10,
+    total: 0,
+  },
 };
 
 const mutations = {
   setChildrenBaduta(state, childrensGrowth) {
     state.childrensGrowth = childrensGrowth;
+  },
+  setPaginationChildrensGrowth(state, paginationChildrensGrowth) {
+    state.paginationChildrensGrowth = paginationChildrensGrowth;
   },
   setChildBaduta(state, childBadutas) {
     state.childBadutas = childBadutas;
@@ -30,24 +38,40 @@ const mutations = {
     }
   },
   deleteChild(state, id) {
-    state.childrensGrowth = state.childrensGrowth.filter((child) => child._id !== id);
+    state.childrensGrowth = state.childrensGrowth.filter(
+      (child) => child._id !== id
+    );
   },
 };
 
 const actions = {
-  async fetchChildrenBadutas({ commit }) {
+  async fetchChildrenBadutas({ commit }, params) {
     try {
-      const response = await ChildrenGrowthService.getAll();
-      commit("setChildrenBaduta", response.data);
+      const response = await ChildrenGrowthService.getAll(params);
+      const { data, pagination } = response;
+      commit("setChildrenBaduta", data);
+      commit("setPaginationChildrensGrowth", pagination);
       return response.data;
     } catch (error) {
       console.error("Error fetching children:", error);
     }
   },
+  // async fetchChildrenBadutas({ commit }) {
+  //   try {
+  //     const response = await ChildrenGrowthService.getAll();
+  //     const { data, pagination } = response;
+  // commit("setChildrenBaduta", data);
+  // commit("setPaginationChildrensGrowth", pagination);
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error("Error fetching children:", error);
+  //   }
+  // },
   async fetchChildrenBaduta({ commit }) {
     try {
       const response = await ChildrenGrowthService.getAll();
       commit("setChildBaduta", response.data);
+      console.log(response.data)
       return response.data;
     } catch (error) {
       console.error("Error fetching children:", error);
@@ -104,6 +128,7 @@ const getters = {
   childrensGrowth: (state) => state.childrensGrowth,
   childBadutas: (state) => state.childBaduta,
   childBaduta: (state) => state.child,
+  paginationChildrensGrowth: (state) => state.paginationChildrensGrowth,
 };
 
 export default {

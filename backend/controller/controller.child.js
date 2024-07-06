@@ -38,7 +38,7 @@ const GetAllData = async (req, res) => {
     const findQuery = Children.find(filter)
       .sort(sortOptions)
       .skip((page - 1) * limit)
-      .limit(parseInt(limit));
+      .limit(parseInt(limit)).populate("mother");
 
     const [data, total] = await Promise.all([findQuery, countDocumentsPromise]);
 
@@ -160,6 +160,7 @@ const DeleteData = async (req, res) => {
     return res.status(400).json({ error: error.message });
   }
 };
+
 const ExportDataToExcel = async (req, res) => {
   try {
     const { month } = req.query;

@@ -3,7 +3,7 @@ const birthController = require("../controller/controller.birth");
 
 // Route to get all birth records
 router.get("/", birthController.getAllBirth);
-
+router.get("/export/excel", birthController.exportDataExcel);
 // Route to get a birth record by ID
 router.get("/:id", birthController.getBirthById);
 

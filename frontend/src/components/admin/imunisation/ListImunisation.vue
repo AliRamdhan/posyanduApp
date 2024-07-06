@@ -11,8 +11,9 @@ import formatTime from "../../../utils/FormatTime";
 const store = useStore();
 const router = useRouter();
 
-const pagination = computed(() => store.getters.paginationChild);
+const pagination = computed(() => store.getters.paginationImmunisation);
 const immunisations = computed(() => store.getters.immunisations);
+console.log(immunisations)
 
 const searchName = ref("");
 const searchGroupAge = ref("");
@@ -22,7 +23,7 @@ const currentPage = ref(1);
 const limit = ref(10);
 
 const selectLimit = [
-  { value: "5", name: "5" },
+  { value: "1", name: "5" },
   { value: "10", name: "10" },
   { value: "25", name: "25" },
   { value: "50", name: "50" },
@@ -37,10 +38,6 @@ const selectGroupAge = [
   { value: "20-25", name: "20-25" },
 ];
 
-const handlePageChange = (page) => {
-  currentPage.value = page;
-  fetchChildren();
-};
 const fetchImmunisations = async () => {
   try {
     const params = {
@@ -72,6 +69,11 @@ const editImmunisation = (id) => {
 
 const formatDOB = (dob) => {
   return formatTime(dob); // Assuming formatTime is correctly implemented elsewhere
+};
+
+const handlePageChange = (page) => {
+  currentPage.value = page;
+  fetchImmunisations();
 };
 
 onMounted(() => {
@@ -178,14 +180,30 @@ onMounted(() => {
                         {{ formatTime(immunisation.createdAt) }}
                       </h2>
                     </td>
-                    <td class="px-4 py-4 flex gap-4">
+                    <td
+                      class="px-12 py-4 text-sm font-medium whitespace-nowrap flex gap-4"
+                    >
+                      <button
+                        @click="editImmunisation(immunisation._id)"
+                        class="inline px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-500"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        @click="deleteImmunisation(immunisation._id)"
+                        class="inline px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-500"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                    <!-- <td class="px-4 py-4 flex gap-4">
                       <button @click="editImmunisation(immunisation._id)">
                         Edit
                       </button>
                       <button @click="deleteImmunisation(immunisation._id)">
                         Delete
                       </button>
-                    </td>
+                    </td> -->
                   </tr>
                 </tbody>
               </table>
@@ -193,7 +211,10 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <ListPagination />
+      <ListPagination
+        :pagination="pagination"
+        @page-change="handlePageChange"
+      />
     </div>
   </section>
 </template>

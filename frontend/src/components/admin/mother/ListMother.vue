@@ -47,7 +47,7 @@ const ks = [
 ];
 
 const selectLimit = [
-  { value: "5", name: "5" },
+  { value: "1", name: "5" },
   { value: "10", name: "10" },
   { value: "25", name: "25" },
   { value: "50", name: "50" },
@@ -57,6 +57,36 @@ const selectLimit = [
 const handlePageChange = (page) => {
   currentPage.value = page;
   fetchMothers();
+};
+
+const editMother = (id) => {
+  router.push({ name: "ibu-update", params: { id } });
+};
+
+const deleteMother = async (id) => {
+  try {
+    await store.dispatch( "deleteMother", id); // Removed namespacing
+    console.log(`Deleted mother with id ${id}`);
+  } catch (error) {
+    console.error(`Error deleting mother with id ${id} in component:`, error);
+    console.error(
+      "Details:",
+      error.response ? error.response.data : error.message
+    );
+  }
+};
+
+const removeMother = async (id) => {
+  try {
+    await deleteMother(id);
+    await fetchMothers();
+  } catch (error) {
+    console.error(`Error removing child with id ${id}:`, error);
+    console.error(
+      "Details:",
+      error.response ? error.response.data : error.message
+    );
+  }
 };
 
 onMounted(() => {
@@ -274,14 +304,12 @@ onMounted(() => {
                     <td
                       class="px-12 py-4 text-sm whitespace-nowrap dark:text-gray-300"
                     >
-                      {{ formatTime(mother.dob) }}
+                      {{ mother.dob ? formatTime(mother.dob) : null }}
                     </td>
                     <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                       <div>
                         <h2 class="font-medium text-gray-800 dark:text-white">
-                          {{
-                            mother.bpjs ? "Punya BPJS" : "Tidak Punya BPJS"
-                          }}
+                          {{ mother.bpjs ? "Punya BPJS" : "Tidak Punya BPJS" }}
                           / {{ mother.ks }}
                         </h2>
                       </div>
@@ -294,7 +322,7 @@ onMounted(() => {
                       </div>
                     </td>
                     <td
-                      class="px-12 py-4 text-sm font-medium whitespace-nowrap"
+                      class="px-12 py-4 text-sm font-medium whitespace-nowrap flex gap-4"
                     >
                       <button
                         @click="editMother(mother._id)"
