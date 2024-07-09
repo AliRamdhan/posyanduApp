@@ -142,6 +142,7 @@ const createBirth = async (req, res) => {
     }
 
     const data = await birthService.createBirth(birthData);
+    await Mother.findByIdAndUpdate(mother, { $inc: { amountChild: 1 } });
     res.status(201).json({ message: "Created data successfully", data });
   } catch (error) {
     res.status(500).json({ message: error.message });

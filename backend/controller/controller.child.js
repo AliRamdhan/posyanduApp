@@ -38,7 +38,8 @@ const GetAllData = async (req, res) => {
     const findQuery = Children.find(filter)
       .sort(sortOptions)
       .skip((page - 1) * limit)
-      .limit(parseInt(limit)).populate("mother");
+      .limit(parseInt(limit))
+      .populate("mother");
 
     const [data, total] = await Promise.all([findQuery, countDocumentsPromise]);
 
@@ -101,45 +102,81 @@ const CreateData = async (req, res) => {
       amountImunisation: amountImunisation,
       mother: existingMother,
     }).save();
+    await Mother.findByIdAndUpdate(mother, { $inc: { amountChild: 1 } });
     return res.status(200).json({ message: "Success create data", data });
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }
 };
 
+// const UpdateData = async (req, res) => {
+//   const { name, nik, gender, dob, amountImunisation, mother } = req.body;
+//   const updateFields = {};
+//   try {
+//     if (name) {
+//       updateFields.name = name;
+//     }
+//     if (nik) {
+//       updateFields.nik = nik;
+//     }
+//     if (dob) {
+//       updateFields.dob = dob;
+//     }
+//     if (gender) {
+//       updateFields.gender = gender;
+//     }
+//     if (amountImunisation) {
+//       updateFields.amountImunisation = amountImunisation;
+//     }
+//     if (mother) {
+//       updateFields.mother = mother;
+//     }
+
+//     if (mother) {
+//       const existingMother = await Mother.findOne({ _id: mother });
+//       if (!existingMother) {
+//         return res.status(404).json({ message: "Mother not found" });
+//       }
+//     }
+
+//     const existingChildren = await Children.findOne({ _id: req.params.id });
+//     if (!existingChildren) {
+//       return res.status(404).json({ message: "Data not found" });
+//     }
+
+//     const data = await Children.updateOne({ _id: req.params.id }, updateFields);
+//     return res.status(200).json({ message: "Data was updated", data });
+//   } catch (error) {
+//     return res.status(400).json({ error: error.message });
+//   }
+// };
 const UpdateData = async (req, res) => {
   const { name, nik, gender, dob, amountImunisation, mother } = req.body;
   const updateFields = {};
   try {
-    if (name) {
-      updateFields.name = name;
-    }
-    if (nik) {
-      updateFields.nik = nik;
-    }
-    if (dob) {
-      updateFields.dob = dob;
-    }
-    if (gender) {
-      updateFields.gender = gender;
-    }
-    if (amountImunisation) {
-      updateFields.amountImunisation = amountImunisation;
-    }
-    if (mother) {
-      updateFields.mother = mother;
-    }
-
-    if (mother) {
-      const existingMother = await Mother.findOne({ _id: mother });
-      if (!existingMother) {
-        return res.status(404).json({ message: "Mother not found" });
-      }
-    }
+    if (name) updateFields.name = name;
+    if (nik) updateFields.nik = nik;
+    if (dob) updateFields.dob = dob;
+    if (gender) updateFields.gender = gender;
+    if (amountImunisation) updateFields.amountImunisation = amountImunisation;
+    if (mother) updateFields.mother = mother;
 
     const existingChildren = await Children.findOne({ _id: req.params.id });
     if (!existingChildren) {
       return res.status(404).json({ message: "Data not found" });
+    }
+
+    if (mother && existingChildren.mother.toString() !== mother) {
+      const previousMotherId = existingChildren.mother;
+      const newMother = await Mother.findOne({ _id: mother });
+      if (!newMother) {
+        return res.status(404).json({ message: "New mother not found" });
+      }
+
+      await Mother.findByIdAndUpdate(previousMotherId, {
+        $inc: { amountChild: -1 },
+      });
+      await Mother.findByIdAndUpdate(mother, { $inc: { amountChild: 1 } });
     }
 
     const data = await Children.updateOne({ _id: req.params.id }, updateFields);
