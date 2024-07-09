@@ -22,7 +22,7 @@ const props = defineProps({
 });
 
 const addChild = () => {
-  router.push({ name: "children-create" });
+  router.push({ name: "anak-create" });
 };
 const exportData = () => {
   store.dispatch("exportDataChildren", selectedMonth.value);

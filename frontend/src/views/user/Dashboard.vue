@@ -3,7 +3,7 @@ import { computed, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 
-import Header from "../../components/HeaderDashboard.vue";
+// import Header from "../../components/HeaderDashboard.vue";
 // import ProfileBox from "../../components/user/ProfileBox.vue";
 import Statistic from "../../components/user/StatistikUser.vue";
 import ListChild from "../../components/user/ListChild.vue";
@@ -28,7 +28,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <Header :username="user.username" />
+    <!-- <Header :username="user.username" /> -->
     <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
       <!-- <h1>Dashboard</h1>
       <router-view></router-view> -->

@@ -138,7 +138,7 @@ onMounted(() => {
                 </td>
                 <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                   <h2 class="font-medium text-gray-800 dark:text-white">
-                    {{ formatTime(child.childrens?.dob) }}
+                    <!-- {{ formatTime(child.childrens?.dob) }} -->
                   </h2>
                 </td>
 
@@ -150,7 +150,7 @@ onMounted(() => {
                 <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                   <div>
                     <h2 class="font-medium text-gray-800 dark:text-white">
-                      {{ formatTime(child.checkDate) }}
+                      <!-- {{ formatTime(child.checkDate) }} -->
                     </h2>
                   </div>
                 </td>

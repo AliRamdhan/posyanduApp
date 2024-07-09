@@ -25,7 +25,7 @@ const handleSubmit = async () => {
   try {
     await store.dispatch("addChild", childData.value);
     console.log("New child added");
-    router.push({ name: "children" }); // Redirect to children list after action
+    router.push({ name: "dashboardAdminAnak" }); // Redirect to dashboardAdminAnak list after action
   } catch (error) {
     console.error("Error adding child:", error);
   }
@@ -95,6 +95,7 @@ const mothers = computed(() =>
       <fwb-button type="submit" color="default">Save</fwb-button>
       <fwb-button
         class="py-2 px-4 bg-white border border-gray-200 text-gray-600 rounded hover:bg-gray-100 active:bg-gray-200 disabled:opacity-50"
+        @click="router.push({ name: 'dashboardAdminAnak' })"
         type="button"
       >
         Cancel

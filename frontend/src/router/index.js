@@ -17,8 +17,8 @@ import Signup from "../views/auth/Signup.vue";
 import Profile from "../views/user/Profile.vue";
 
 // User
-import DashboardUserTemplate from "../views/user/Dashboard.vue";
-import DashboardUser from "../views/Dashboard.vue";
+import DashboardUser  from "../views/user/Dashboard.vue";
+import DashboardUserTemplate from "../views/Dashboard.vue";
 
 // Admin
 import DashboardAdminTemplate from "../views/admin/AuthRoute.vue";
@@ -166,7 +166,7 @@ const routes = [
   },
   {
     path: "/dashboard/user",
-    name: "dashboard",
+    // name: "dashboardu",
     component: DashboardUserTemplate,
     meta: { requiresAuth: true },
     children: [
@@ -180,13 +180,12 @@ const routes = [
         path: "",
         name: "dashboardUser",
         component: DashboardUser,
-        meta: { requiresAuth: true },
       },
     ],
   },
   {
     path: "/dashboard/admin",
-    name: "dashboard",
+    // name: "dashboard",
     component: DashboardAdminTemplate,
     meta: { requiresAuth: true },
     children: [

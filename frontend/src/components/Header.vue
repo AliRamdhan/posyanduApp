@@ -9,7 +9,7 @@ const user = computed(() => store.getters.user);
 
 const handleLogout = () => {
   store.dispatch("logout");
-  window.location.reload();
+  // window.location.reload();
 };
 
 const fetchProfile = async () => {
