@@ -21,7 +21,7 @@ const store = useStore();
 
 const handleLogout = () => {
   store.dispatch("logout");
-  window.location.reload();
+  route.push({ name: "signin" });
 };
 </script>
 

@@ -2,14 +2,16 @@
 import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { FwbDropdown, FwbListGroup, FwbListGroupItem } from "flowbite-vue";
+import { useRouter } from "vue-router";
 const store = useStore();
-
+const route = useRouter();
 const isAuthenticated = computed(() => store.getters.isAuthenticated);
 const user = computed(() => store.getters.user);
 
 const handleLogout = () => {
   store.dispatch("logout");
   // window.location.reload();
+  route.push({ name: "signin" });
 };
 
 const fetchProfile = async () => {
