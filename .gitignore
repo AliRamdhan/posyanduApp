@@ -24,7 +24,14 @@ dist-ssr
 *.sw?
 
 *.env
+.next/
+.swc/
+*.env.development
+*.env.local
+*.env.staging
 *.jpg 
 *.png
 try/
 .vscode/
+
+
