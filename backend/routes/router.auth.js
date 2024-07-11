@@ -14,11 +14,15 @@ router.get("/profile", authenticate, (req, res) => {
   const email = req.user.email;
   const numberHp = req.user.numberHp;
   const role = req.user.role;
+  const id = req.user._id
+  const motherId = req.user.mother
   const data = {
     username,
     email,
     numberHp,
     role,
+    id,
+    motherId
   };
   res.json({ message: `Welcome ${req.user.username}`, data });
 });

@@ -4,6 +4,7 @@ import ChildrenService from "../../service/children";
 
 const state = {
   children: [],
+  childrenMom: [],
   child: null,
   paginationChild: {
     page: 1,
@@ -15,6 +16,9 @@ const state = {
 const mutations = {
   setChildren(state, children) {
     state.children = children;
+  },
+  setChildrenMom(state, childrenMom) {
+    state.childrenMom = childrenMom;
   },
   setPaginationChild(state, paginationChild) {
     state.paginationChild = paginationChild;
@@ -48,6 +52,15 @@ const actions = {
       return response.data;
     } catch (error) {
       console.error("Error fetching children:", error);
+    }
+  },
+  async fetchChildrenMom({ commit }, motherId) {
+    try {
+      const response = await ChildrenService.getAllByMom(motherId);
+      commit("setChildrenMom", response.data);
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching child with id ${id}:`, error);
     }
   },
   async fetchChild({ commit }, id) {
@@ -123,6 +136,7 @@ const actions = {
 
 const getters = {
   children: (state) => state.children,
+  childrenMom: (state) => state.childrenMom,
   child: (state) => state.child,
   paginationChild: (state) => state.paginationChild,
 };

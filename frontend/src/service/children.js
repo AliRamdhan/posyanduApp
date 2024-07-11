@@ -17,6 +17,15 @@ class ChildrenService {
       throw error;
     }
   }
+  async getAllByMom(motherId) {
+    try {
+      const response = await axios.get(`${API_URL}/mother/${motherId}`);
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching data with id ${id}:`, error);
+      throw error;
+    }
+  }
   async exportData(month) {
     try {
       const response = await axios.get(

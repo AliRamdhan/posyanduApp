@@ -74,8 +74,8 @@ const actions = {
   async fetchMother({ commit }, id) {
     try {
       const response = await MotherService.getById(id);
-      commit("setMother", response);
-      return response;
+      commit("setMother", response.data);
+      return response.data;
     } catch (error) {
       console.error(`Error fetching mother with id ${id}:`, error);
     }
