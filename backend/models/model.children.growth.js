@@ -4,7 +4,7 @@ const schema = mongoose.model("children_growth", {
   checkDate: { type: Date, required: true },
   groupFase: {
     type: String,
-    enum: ["0-1", "1-3", "3-6", "6-9", "9-12", "12-18", "18-24"],
+    enum: ["Trimester 1", "Trimester 2", "Trimester 3"],
     required: true,
   },
   childrens: {

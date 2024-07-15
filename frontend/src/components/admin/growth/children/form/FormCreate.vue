@@ -71,12 +71,9 @@ const children = computed(() =>
 );
 
 const groupFase = [
-  { value: "0-1", name: "0-1" },
-  { value: "1-3", name: "1-3" },
-  { value: "3-6", name: "3-6" },
-  { value: "9-12", name: "9-12" },
-  { value: "12-18", name: "12-18" },
-  { value: "18-24", name: "18-24" },
+  { value: "Trimester 1", name: "Trimester 1" },
+  { value: "Trimester 2", name: "Trimester 2" },
+  { value: "Trimester 3", name: "Trimester 3" },
 ];
 
 onMounted(() => {
