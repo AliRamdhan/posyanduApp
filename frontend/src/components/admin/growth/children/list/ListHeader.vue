@@ -111,7 +111,7 @@ const addBirth = () => {
           />
         </svg>
 
-        <span>Tambah Data Kelahiran</span>
+        <span>Tambah Data Perkembangan</span>
       </button>
     </div>
   </div>

@@ -1,14 +1,8 @@
 const Children = require("../models/model.children");
 const Mother = require("../models/model.mother");
+const childService = require("../service/service.children");
 const xl = require("excel4node");
 const GetAllData = async (req, res) => {
-  // try {
-  //   const data = await Children.find().populate("mother");
-  //   return res.status(200).json({
-  //     message: "List All Data",
-  //     data,
-  //   });
-  // }
   try {
     const {
       name,
@@ -66,6 +60,36 @@ const GetAllDatabyMother = async (req, res) => {
     const data = await Children.find({ mother: existingMother }).populate(
       "mother"
     );
+    return res.status(200).json({
+      message: "List All Data",
+      data,
+    });
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+
+const GetAllBaduta = async (req, res) => {
+  try {
+    const data = await childService.getAllBaduta();
+    if (!data) {
+      return res.status(404).json({ message: "Data not found" });
+    }
+    return res.status(200).json({
+      message: "List All Data",
+      data,
+    });
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+
+const GetAllBalita = async (req, res) => {
+  try {
+    const data = await childService.getAllBalita();
+    if (!data) {
+      return res.status(404).json({ message: "Data not found" });
+    }
     return res.status(200).json({
       message: "List All Data",
       data,
@@ -276,4 +300,6 @@ module.exports = {
   DeleteData,
   GetAllDatabyMother,
   ExportDataToExcel,
+  GetAllBaduta,
+  GetAllBalita,
 };

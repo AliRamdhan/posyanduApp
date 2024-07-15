@@ -5,6 +5,8 @@ import ChildrenService from "../../service/children";
 const state = {
   children: [],
   childrenMom: [],
+  childBaduta: [],
+  childBalita: [],
   child: null,
   paginationChild: {
     page: 1,
@@ -19,6 +21,12 @@ const mutations = {
   },
   setChildrenMom(state, childrenMom) {
     state.childrenMom = childrenMom;
+  },
+  setChildrenBaduta(state, childBaduta) {
+    state.childBaduta = childBaduta;
+  },
+  setChildrenBalita(state, childBalita) {
+    state.childBalita = childBalita;
   },
   setPaginationChild(state, paginationChild) {
     state.paginationChild = paginationChild;
@@ -61,6 +69,24 @@ const actions = {
       return response.data;
     } catch (error) {
       console.error(`Error fetching child with id ${id}:`, error);
+    }
+  },
+  async fetchChildrenBaduta({ commit }) {
+    try {
+      const response = await ChildrenService.getAllBaduta();
+      commit("setChildrenBaduta", response.data);
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching child:`, error);
+    }
+  },
+  async fetchChildrenBalita({ commit }) {
+    try {
+      const response = await ChildrenService.getAllBalita();
+      commit("setChildrenBalita", response.data);
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching child:`, error);
     }
   },
   async fetchChild({ commit }, id) {
@@ -137,6 +163,8 @@ const actions = {
 const getters = {
   children: (state) => state.children,
   childrenMom: (state) => state.childrenMom,
+  childBaduta: (state) => state.childBaduta,
+  childBalita: (state) => state.childBalita,
   child: (state) => state.child,
   paginationChild: (state) => state.paginationChild,
 };

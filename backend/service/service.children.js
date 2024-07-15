@@ -1,5 +1,23 @@
 const Children = require("../models/model.children");
 
+const getAllBaduta = async () => {
+  try {
+    const children = await Children.find({ isBaduta: true });
+    return children;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getAllBalita = async () => {
+  try {
+    const children = await Children.find({ isBalita: true });
+    return children;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // Function to create a new children record
 const createChildren = async (data) => {
   try {
@@ -28,4 +46,6 @@ const deleteChildren = async (id) => {
 module.exports = {
   createChildren,
   deleteChildren,
+  getAllBaduta,
+  getAllBalita,
 };

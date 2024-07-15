@@ -8,10 +8,14 @@ const {
   DeleteData,
   GetAllDatabyMother,
   ExportDataToExcel,
+  GetAllBaduta,
+  GetAllBalita,
 } = require("../controller/controller.child"); // Adjust path as per your project structure
 
 // Define routes
 router.get("/", GetAllData); // Route to get all data
+router.get("/baduta", GetAllBaduta); // Route to get all data
+router.get("/balita", GetAllBalita); // Route to get all data
 router.get("/mother/:id", GetAllDatabyMother);
 router.get("/:id", GetDataById); // Route to get data by ID
 router.post("/create", CreateData); // Route to create new data

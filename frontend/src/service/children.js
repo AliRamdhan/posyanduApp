@@ -26,6 +26,24 @@ class ChildrenService {
       throw error;
     }
   }
+  async getAllBaduta() {
+    try {
+      const response = await axios.get(`${API_URL}/baduta`);
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching data:`, error);
+      throw error;
+    }
+  }
+  async getAllBalita() {
+    try {
+      const response = await axios.get(`${API_URL}/balita`);
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching data:`, error);
+      throw error;
+    }
+  }
   async exportData(month) {
     try {
       const response = await axios.get(
