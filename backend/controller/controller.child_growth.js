@@ -33,7 +33,7 @@ const getAllGrowth = async (req, res) => {
     if (heightBody) filter.heightBody = heightBody;
     if (weightBody) filter.weightBody = weightBody;
     if (isBaduta) filter.isBaduta = isBaduta;
-    
+
     // Build the sort options
     const sortOptions = {};
     if (sortField) sortOptions[sortField] = sortOrder === "desc" ? -1 : 1;
@@ -67,6 +67,18 @@ const getAllGrowth = async (req, res) => {
 const getAllBaduta = async (req, res) => {
   try {
     const data = await service.getBaduta();
+    res.status(200).json({ message: "List All Data", data });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const getGrowthByChildren = async (req, res) => {
+  try {
+    const data = await service.getChild(req.params.childId);
+    if (!data) {
+      return res.status(404).json({ message: "Data not found" });
+    }
     res.status(200).json({ message: "List All Data", data });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -188,4 +200,5 @@ module.exports = {
   updateGrowth,
   deleteGrowth,
   getAllBaduta,
+  getGrowthByChildren,
 };

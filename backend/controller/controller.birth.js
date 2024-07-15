@@ -1,4 +1,5 @@
 const birthService = require("../service/service.birth");
+const childService = require("../service/service.children");
 const Children = require("../models/model.children");
 const Mother = require("../models/model.mother");
 
@@ -113,26 +114,65 @@ const getBirthById = async (req, res) => {
 };
 
 // Handler to create a new birth record
+// const createBirth = async (req, res) => {
+//   const { dob, circumHead, heightBody, weightBody, children, mother } =
+//     req.body;
+//   const birthData = {
+//     dob,
+//     circumHead,
+//     heightBody,
+//     weightBody,
+//     children,
+//     mother,
+//   };
+//   try {
+//     // Check if the provided children ID exists
+//     if (children) {
+//       const childrenExists = await Children.findById(children);
+//       if (!childrenExists) {
+//         return res.status(404).json({ message: "Children record not found" });
+//       }
+//     }
+
+//     // Check if the provided mother ID exists
+//     if (mother) {
+//       const motherExists = await Mother.findById(mother);
+//       if (!motherExists) {
+//         return res.status(404).json({ message: "Mother record not found" });
+//       }
+//     }
+
+//     const data = await birthService.createBirth(birthData);
+//     await Mother.findByIdAndUpdate(mother, { $inc: { amountChild: 1 } });
+//     res.status(201).json({ message: "Created data successfully", data });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
 const createBirth = async (req, res) => {
-  const { dob, circumHead, heightBody, weightBody, children, mother } =
-    req.body;
-  const birthData = {
+  const {
+    name,
+    nik,
+    gender,
+    amountImunisation,
     dob,
     circumHead,
     heightBody,
     weightBody,
-    children,
+    mother,
+  } = req.body;
+  // const { name, nik, gender, dob, amountImunisation, mother } = req.body; ANAK
+  const childData = {
+    name,
+    nik,
+    gender,
+    dob,
+    amountImunisation,
     mother,
   };
+  let children;
   try {
-    // Check if the provided children ID exists
-    if (children) {
-      const childrenExists = await Children.findById(children);
-      if (!childrenExists) {
-        return res.status(404).json({ message: "Children record not found" });
-      }
-    }
-
     // Check if the provided mother ID exists
     if (mother) {
       const motherExists = await Mother.findById(mother);
@@ -141,10 +181,45 @@ const createBirth = async (req, res) => {
       }
     }
 
-    const data = await birthService.createBirth(birthData);
+    children = await childService.createChildren(childData);
+    // console.log(children);
     await Mother.findByIdAndUpdate(mother, { $inc: { amountChild: 1 } });
-    res.status(201).json({ message: "Created data successfully", data });
+    // return res.status(200).json({ message: "Success create data", data });
+    // Check if the provided children ID exists
+    if (children) {
+      const childrenExists = await Children.findById(children._id);
+      if (!childrenExists) {
+        return res.status(404).json({ message: "Children record not found" });
+      }
+      const birthData = {
+        dob,
+        circumHead,
+        heightBody,
+        weightBody,
+        children: childrenExists,
+        mother,
+      };
+      const birth = await birthService.createBirth(birthData);
+      const data = {
+        children,
+        birth,
+      };
+      await Mother.findByIdAndUpdate(mother, { $inc: { amountChild: 1 } });
+      res.status(201).json({ message: "Created data successfully", data });
+    } else {
+      return res.status(404).json({ message: "Children record failed found" });
+    }
   } catch (error) {
+    if (children) {
+      try {
+        await childService.deleteChildren(children._id);
+        await Mother.findByIdAndUpdate(mother, { $inc: { amountChild: -1 } });
+      } catch (rollbackError) {
+        return res
+          .status(500)
+          .json({ message: `Rollback failed: ${rollbackError.message}` });
+      }
+    }
     res.status(500).json({ message: error.message });
   }
 };

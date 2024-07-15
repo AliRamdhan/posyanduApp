@@ -30,6 +30,8 @@ const schema = mongoose.model("children", {
   gender: { type: String, enum: ["Male", "Female"], required: true },
   dob: { type: Date, required: true },
   amountImunisation: { type: Number, default: 0 },
+  isBaduta: { type: Boolean, required: true, default: true },
+  isBalita: { type: Boolean, required: true, default: false },
   mother: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "mother", // Reference to the Choice collection

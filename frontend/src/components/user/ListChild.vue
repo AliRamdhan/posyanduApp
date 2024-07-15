@@ -1,20 +1,35 @@
 <script setup>
-import { computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import formatTime from "../../utils/FormatTime";
 import ModalChildDetails from "../../components/user/ModalChildDetails.vue";
+import { FwbButton, FwbModal } from "flowbite-vue";
+
 const store = useStore();
 const router = useRouter();
 
 // const children = computed(() => store.getters["children"]); // Directly access the getter
-// // Define props for the main component
+// Define props for the main component
 const props = defineProps({
   children: {
     type: Array,
     required: true,
   },
 });
+
+const isShowModal = ref(false);
+const selectedChildId = ref(null);
+
+function closeModal() {
+  isShowModal.value = false;
+  selectedChildId.value = null;
+}
+
+function showModal(childId) {
+  selectedChildId.value = childId;
+  isShowModal.value = true;
+}
 
 onMounted(() => {
   console.log(props.children);
@@ -50,11 +65,31 @@ onMounted(() => {
           </dd>
 
           <dt class="font-medium text-gray-900">Perkembangan Anak</dt>
-          <dd class="text-gray-700 sm:col-span-2">Link</dd>
+          <dd class="text-gray-700 sm:col-span-2">
+            <button
+              @click="showModal(child._id)"
+              class="text-sm text-blue-900 font-bold"
+            >
+              Lihat Perkembangan
+            </button>
+          </dd>
         </dl>
       </div>
     </div>
+    <fwb-modal v-if="isShowModal" @close="closeModal" size="5xl">
+      <template #header>
+        <div class="flex items-center text-2xl font-semibold">Child Details</div>
+      </template>
+      <template #body>
+        <ModalChildDetails :childId="selectedChildId" />
+      </template>
+      <template #footer>
+        <div class="flex justify-end">
+          <fwb-button @click="closeModal" color="dark" class="px-16">
+            Back
+          </fwb-button>
+        </div>
+      </template>
+    </fwb-modal>
   </section>
 </template>
-
-<style></style>

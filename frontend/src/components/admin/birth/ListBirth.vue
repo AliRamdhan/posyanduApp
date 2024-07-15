@@ -240,7 +240,8 @@ onMounted(() => {
                     </td>
                     <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                       <h2 class="font-medium text-gray-800 dark:text-white">
-                        {{ formatTime(birth.dob) }}
+                        <!-- {{ formatTime(birth.dob) }} -->
+                        {{ birth.dob ? formatTime(birth.dob) : birth.dob }}
                         <!-- Assuming formatTime function is available -->
                       </h2>
                     </td>

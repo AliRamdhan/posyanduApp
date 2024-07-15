@@ -7,6 +7,7 @@ router.get("/baduta", controller.getAllBaduta);
 
 // Route to get a children growth record by ID
 router.get("/:id", controller.getGrowthById);
+router.get("/child/:childId", controller.getGrowthByChildren);
 
 // Route to create a new children growth record
 router.post("/create", controller.createGrowth);

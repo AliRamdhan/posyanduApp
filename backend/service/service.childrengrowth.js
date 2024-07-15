@@ -1,5 +1,5 @@
 const ChildrenGrowth = require("../models/model.children.growth");
-
+const Children = require("../models/model.children");
 // Function to get all children growth records
 // const getAll = async () => {
 //   try {
@@ -30,6 +30,22 @@ const getBaduta = async () => {
     const data = await ChildrenGrowth.find({ isBaduta: true }).populate(
       "childrens imunisations"
     );
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getChild = async (childId) => {
+  try {
+    const existingChild = await Children.findOne({ _id: childId });
+    console.log(existingChild);
+    if (!existingChild) {
+      return null;
+    }
+    const data = await ChildrenGrowth.find({
+      childrens: existingChild,
+    }).populate("childrens imunisations");
     return data;
   } catch (error) {
     throw error;
@@ -97,4 +113,5 @@ module.exports = {
   getById,
   updateData,
   deleteData,
+  getChild,
 };

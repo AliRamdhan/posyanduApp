@@ -6,6 +6,7 @@ const state = {
   childrensGrowth: [],
   childBadutas: [],
   childBaduta: null,
+  childGrowth: [],
   paginationChildrensGrowth: {
     page: 1,
     limit: 10,
@@ -22,6 +23,9 @@ const mutations = {
   },
   setChildBaduta(state, childBadutas) {
     state.childBadutas = childBadutas;
+  },
+  setChildGrowth(state, childGrowth) {
+    state.childGrowth = childGrowth;
   },
   setChild(state, childBaduta) {
     state.childBaduta = childBaduta;
@@ -71,7 +75,27 @@ const actions = {
     try {
       const response = await ChildrenGrowthService.getAll();
       commit("setChildBaduta", response.data);
-      console.log(response.data)
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching children:", error);
+    }
+  },
+  async fetchGrowthChildren({ commit }, childId) {
+    try {
+      const response = await ChildrenGrowthService.getByChildren(childId);
+      commit("setChildGrowth", response.data);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching children:", error);
+    }
+  },
+  async fetchChildrenBaduta({ commit }) {
+    try {
+      const response = await ChildrenGrowthService.getAll();
+      commit("setChildBaduta", response.data);
+      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error("Error fetching children:", error);
@@ -127,6 +151,7 @@ const actions = {
 const getters = {
   childrensGrowth: (state) => state.childrensGrowth,
   childBadutas: (state) => state.childBaduta,
+  childGrowth: (state) => state.childGrowth,
   childBaduta: (state) => state.child,
   paginationChildrensGrowth: (state) => state.paginationChildrensGrowth,
 };

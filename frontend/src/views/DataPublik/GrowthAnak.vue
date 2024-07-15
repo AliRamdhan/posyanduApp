@@ -1,5 +1,6 @@
 <script setup>
 import ListGrowthAnak from "../../components/admin/datapublik/ListGrowthAnak.vue";
+import StatsPerkembanganAnak from "../../components/datapublik/StatsPerkembanganAnak.vue";
 </script>
 <template>
   <div class="w-full min-h-screen flex flex-col items-center py-8">
@@ -10,6 +11,9 @@ import ListGrowthAnak from "../../components/admin/datapublik/ListGrowthAnak.vue
       </p>
     </div>
     <div class="w-11/12">
+      <StatsPerkembanganAnak />
+    </div>
+    <div class="w-11/12 mt-4">
       <ListGrowthAnak />
     </div>
   </div>

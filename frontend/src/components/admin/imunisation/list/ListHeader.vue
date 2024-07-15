@@ -2,7 +2,7 @@
 import { defineProps, ref } from "vue";
 import { useRouter } from "vue-router";
 import { FwbInput, FwbSelect, FwbCheckbox } from "flowbite-vue";
-import { useStore } from 'vuex';
+import { useStore } from "vuex";
 const currentDate = new Date();
 const currentYear = currentDate.getFullYear();
 const currentMonth = String(currentDate.getMonth() + 1).padStart(2, "0");
@@ -20,10 +20,11 @@ const props = defineProps({
     required: true,
   },
 });
-
+// store.dispatch("exportDataImunisation", selectedMonth.value);
 const exportData = () => {
-  store.dispatch("exportDataImunisation", selectedMonth.value);
+  store.dispatch("exportDataSample");
 };
+
 const addImunisation = () => {
   router.push({ name: "imunisasi-create" });
 };

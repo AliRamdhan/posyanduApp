@@ -65,7 +65,7 @@ const actions = {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `imunisasi_${month}.csv`;
+      a.download = `imunisasi_${month}.xlsx`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -75,6 +75,32 @@ const actions = {
       alert("Error exporting data. Please try again later.");
     }
   },
+  async exportDataSample({ commit }) {
+    try {
+      const data = await ImmunisationService.exportImunisationDataSample();
+      // if (data.size === 0) {
+      //   console.error("No data found for the selected month");
+      //   alert("No data found for the selected month");
+      //   return;
+      // }
+      // Perform file download
+      const blob = new Blob([data], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `LaporanBulananKesehatan.xlsx`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error exporting data:", error);
+      alert("Error exporting data. Please try again later.");
+    }
+  },
+
   async fetchImmunisation({ commit }, id) {
     try {
       const response = await ImmunisationService.getById(id);

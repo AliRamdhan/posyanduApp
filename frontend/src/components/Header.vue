@@ -143,17 +143,17 @@ onMounted(() => {
                   /></span>
                 </template>
                 <fwb-list-group>
-                  <fwb-list-group-item>
+                  <!-- <fwb-list-group-item>
                     <router-link to="/ibu-hamil"> Data Ibu Hamil </router-link>
-                  </fwb-list-group-item>
+                  </fwb-list-group-item> -->
                   <fwb-list-group-item>
                     <router-link to="/perkembangan-ibu">
                       Perkembangan Ibu
                     </router-link>
                   </fwb-list-group-item>
-                  <fwb-list-group-item>
+                  <!-- <fwb-list-group-item>
                     <router-link to="/baduta">Baduta </router-link>
-                  </fwb-list-group-item>
+                  </fwb-list-group-item> -->
                   <fwb-list-group-item>
                     <router-link to="/perkembangan-anak"
                       >Perkembangan Anak</router-link

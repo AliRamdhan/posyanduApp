@@ -24,8 +24,7 @@ onMounted(() => {
 
 <template>
   <section class="container px-4 mx-auto">
-    <ListHeader :numberData="10" />
-    <div class="flex flex-col mt-6">
+    <div class="flex flex-col">
       <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
           <div
@@ -95,25 +94,7 @@ onMounted(() => {
                     scope="col"
                     class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
                   >
-                    Group Fase
-                  </th>
-                  <th
-                    scope="col"
-                    class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                  >
-                    Lingkar Kepala
-                  </th>
-                  <th
-                    scope="col"
-                    class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                  >
-                    Tipe KB
-                  </th>
-                  <th
-                    scope="col"
-                    class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                  >
-                    Lingkar Badan
+                    Jumlah Anak
                   </th>
                   <th
                     scope="col"
@@ -136,12 +117,6 @@ onMounted(() => {
                       <h2 class="font-medium text-gray-800 dark:text-white">
                         {{ mother.mother?.name }}
                       </h2>
-                      <p
-                        class="text-sm font-normal text-gray-600 dark:text-gray-400"
-                      >
-                        <!-- NIK : {{ child.nik }} -->
-                        NIK : {{ mother.mother?.nik }}
-                      </p>
                     </div>
                   </td>
                   <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
@@ -152,24 +127,19 @@ onMounted(() => {
                   <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                     <h2 class="font-medium text-gray-800 dark:text-white">
                       <!-- {{ formatTime(child.dob) }} -->
-                      {{ mother.pregnantStatus }} / {{ mother.wombAge }} Bulan
+                      {{
+                        mother.pregnantStatus
+                          ? `Hamil ${mother.wombAge} Bulan`
+                          : "Tidak Hamil"
+                      }}
                     </h2>
                   </td>
-                  <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                  <td class="px-4 py-4 text-sm font-medium whitespace-nowrap text-center">
                     <div>
                       <h2 class="font-medium text-gray-800 dark:text-white">
-                        Anak ke-{{ mother.numbChild }}
+                        {{ mother.numbChild }}
                       </h2>
                     </div>
-                  </td>
-                  <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
-                    {{ mother.circumStomach }}
-                  </td>
-                  <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
-                    {{ mother.circumHand }}
-                  </td>
-                  <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
-                    {{ mother.kbtype }}
                   </td>
                   <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                     {{ formatTime(mother.checkDate) }}

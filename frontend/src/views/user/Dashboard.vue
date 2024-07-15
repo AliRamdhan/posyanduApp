@@ -13,9 +13,9 @@ const router = useRouter();
 const user = computed(() => store.getters.user);
 const childrenMom = computed(() => store.getters.childrenMom);
 const mother = computed(() => store.getters.mother);
-console.log("user", user);
-console.log("child", childrenMom.value);
-console.log("mother", mother.value);
+// console.log("user", user);
+// console.log("child", childrenMom.value);
+// console.log("mother", mother.value);
 
 onMounted(async () => {
   await fetchChildrenMom(user.value.motherId);
@@ -67,7 +67,16 @@ const fetchProfile = async () => {
           <ListChild :children="childrenMom" />
         </div>
       </div>
-      <p v-else>Loading...</p>
+      <div v-else>
+        <p>
+          Please Signin first...
+          <span class="text-lg font-bold"
+            ><router-link to="/signin" class="text-blue-800"
+              >Signin</router-link
+            ></span
+          >
+        </p>
+      </div>
     </div>
   </div>
 </template>

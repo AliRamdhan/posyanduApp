@@ -1,5 +1,6 @@
 <script setup>
 import ListBaduta from "../../components/admin/datapublik/ListBaduta.vue";
+import Baduta from "../../components/datapublik/StatsBaduta.vue";
 </script>
 <template>
   <div class="w-full min-h-screen flex flex-col items-center py-8">
@@ -10,6 +11,9 @@ import ListBaduta from "../../components/admin/datapublik/ListBaduta.vue";
       </p>
     </div>
     <div class="w-11/12">
+      <Baduta />
+    </div>
+    <div class="w-11/12 mt-4">
       <ListBaduta />
     </div>
   </div>

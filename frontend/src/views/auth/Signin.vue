@@ -2,23 +2,31 @@
 import { ref, computed, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
-import { FwbButton, FwbInput } from "flowbite-vue";
+import { FwbButton, FwbInput, FwbAlert } from "flowbite-vue";
+// import { HiInformationCircle } from "react-icons/hi";
 const email = ref("");
 const password = ref("");
 const error = ref(null);
+const success = ref(null);
 
 const router = useRouter();
 const store = useStore();
 
 const user = computed(() => store.getters["user"]);
 const isAuthenticated = computed(() => store.getters["isAuthenticated"]);
+
 const login = async () => {
   try {
-    await store.dispatch("login", {
+    const response = await store.dispatch("login", {
       email: email.value,
       password: password.value,
     });
-    redirectUser();
+    if (response) {
+      success.value = "Success Login!";
+      setTimeout(() => {
+        redirectUser();
+      }, 500); // 500 milliseconds delay
+    }
   } catch (err) {
     error.value = err.message;
   }
@@ -31,7 +39,7 @@ const redirectUser = () => {
     router.push({ name: "dashboardUser" });
   } else {
     alert(user.value.role);
-    console.log(user)
+    console.log(user);
     router.push("/unauthorize");
   }
 };
@@ -95,7 +103,21 @@ watch(isAuthenticated, (newValue) => {
           Masuk
         </fwb-button>
       </div>
-      <p v-if="error">{{ error }}</p>
+      <div v-if="success" class="w-full">
+        <div class="absolute top-24 right-8">
+          <fwb-alert icon type="success">
+            <span class="font-medium">{{ success }}</span>
+          </fwb-alert>
+        </div>
+      </div>
+
+      <div v-if="error" class="w-full">
+        <div class="absolute top-24 right-8">
+          <fwb-alert icon type="danger">
+            <span className="font-medium">Info alert!</span> {{ error }}
+          </fwb-alert>
+        </div>
+      </div>
     </form>
   </div>
 </template>

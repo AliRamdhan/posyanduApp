@@ -1,4 +1,4 @@
-@import '/node_modules/flowbite-vue/dist/index.css';
+@import "/node_modules/flowbite-vue/dist/index.css";
 
 @tailwind base;
 @tailwind components;
@@ -7,4 +7,24 @@
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+/* width */
+::-webkit-scrollbar .modalScroll{
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track .modalScroll{
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb .modalScroll{
+  background: rgb(49, 49, 49);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover .modalScroll{
+  background: rgb(27, 27, 27);
 }

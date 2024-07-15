@@ -150,6 +150,7 @@ const CreateData = async (req, res) => {
 //     return res.status(400).json({ error: error.message });
 //   }
 // };
+
 const UpdateData = async (req, res) => {
   const { name, nik, gender, dob, amountImunisation, mother } = req.body;
   const updateFields = {};

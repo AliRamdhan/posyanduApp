@@ -39,6 +39,16 @@ class ChildrenGrowthService {
     }
   }
 
+  async getByChildren(id) {
+    try {
+      const response = await axios.get(`${API_URL}/child/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching data with id ${id}:`, error);
+      throw error;
+    }
+  }
+
   async getById(id) {
     try {
       const response = await axios.get(`${API_URL}/${id}`);

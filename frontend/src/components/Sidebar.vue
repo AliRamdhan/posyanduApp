@@ -1,13 +1,14 @@
 <script setup>
 import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 import { FwbDropdown, FwbListGroup, FwbListGroupItem } from "flowbite-vue";
 
 import { ref } from "vue";
 
 const sidebarOpen = ref(false);
 const submenuOpen = ref(false);
-
+const route = useRouter();
 const openSidebar = () => {
   sidebarOpen.value = !sidebarOpen.value;
 };
@@ -18,9 +19,9 @@ const dropdown = () => {
 
 const store = useStore();
 
-
 const handleLogout = () => {
   store.dispatch("logout");
+  alert("Successfully logout");
   route.push({ name: "signin" });
 };
 </script>
@@ -105,8 +106,8 @@ const handleLogout = () => {
           <span class="text-[15px] ml-4 text-gray-200 font-bold"
             >Kelahiran</span
           >
-        </div></router-link
-      >
+        </div>
+      </router-link>
       <div class="my-4 bg-gray-600 h-[1px]"></div>
       <div
         class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
@@ -137,14 +138,21 @@ const handleLogout = () => {
           </h1>
         </router-link>
       </div>
-      <div
-        class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+      <router-link to="/dashboard/admin/report">
+        <div
+          class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+        >
+          <i class="bi bi-bookmark-fill"></i>
+          <span class="text-[15px] ml-4 text-gray-200 font-bold">Report</span>
+        </div>
+      </router-link>
+      <button
+        class="w-full p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+        @click="handleLogout"
       >
-        <button class="w-full" @click="handleLogout">
-          <i class="bi bi-box-arrow-in-right"></i>
-          <span class="text-[15px] ml-4 text-gray-200 font-bold">Logout</span>
-        </button>
-      </div>
+        <i class="bi bi-box-arrow-in-right"></i>
+        <span class="text-[15px] ml-4 text-gray-200 font-bold">Logout</span>
+      </button>
       <div>
         <!-- {{ user.username }} -->
       </div>

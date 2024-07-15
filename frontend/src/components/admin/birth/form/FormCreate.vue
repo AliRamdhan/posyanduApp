@@ -13,11 +13,14 @@ const gender = [
 ];
 
 const birthData = ref({
+  name: "",
+  nik: "",
+  gender: "",
+  amountImunisation: null,
   dob: "",
   circumHead: null,
   heightBody: null,
   weightBody: null,
-  children: "",
   mother: "",
 });
 
@@ -25,6 +28,7 @@ const handleSubmit = async () => {
   try {
     await store.dispatch("createBirth", birthData.value);
     console.log("New birth added");
+    alert("Success created data");
     router.push({ name: "dashboardAdminKelahiran" }); // Redirect to births list after action
   } catch (error) {
     console.error("Error adding birth:", error);
@@ -79,6 +83,27 @@ onMounted(() => {
   <form @submit.prevent="handleSubmit">
     <div class="mt-8 grid lg:grid-cols-2 gap-4">
       <div>
+        <fwb-input v-model="birthData.name" label="Nama Anak" required />
+      </div>
+      <div>
+        <fwb-input v-model="birthData.nik" label="NIK Anak" required />
+      </div>
+      <div>
+        <fwb-select
+          v-model="birthData.gender"
+          :options="gender"
+          label="Jenis Kelamin"
+          required
+        />
+      </div>
+      <div>
+        <fwb-input
+          type="number"
+          v-model.number="birthData.amountImunisation"
+          label="Jumlah Imunisasi"
+        />
+      </div>
+      <div>
         <fwb-input
           type="date"
           v-model="birthData.dob"
@@ -109,16 +134,10 @@ onMounted(() => {
       </div>
       <div>
         <fwb-select
-          v-model="birthData.children"
-          :options="children"
-          label="Pilih Anak"
-        />
-      </div>
-      <div>
-        <fwb-select
           v-model="birthData.mother"
           :options="mothers"
           label="Pilih Ibu"
+          required
         />
       </div>
     </div>
