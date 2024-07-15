@@ -6,7 +6,7 @@ const schema = mongoose.model("imunisations", {
     required: true,
   },
   groupAge: {
-    type: String,
+    type: Number,
     required: true,
   },
   descriptionPrevented: {

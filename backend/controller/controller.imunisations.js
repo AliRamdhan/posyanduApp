@@ -68,11 +68,12 @@ const GetDataById = async (req, res) => {
 };
 
 const CreateData = async (req, res) => {
-  const { name, groupAge } = req.body;
+  const { name, groupAge, descriptionPrevented } = req.body;
   try {
     const data = await new Imunisation({
       name: name,
       groupAge: groupAge,
+      descriptionPrevented: descriptionPrevented,
     }).save();
     return res.status(201).json({ message: "Success create data", data });
   } catch (error) {
@@ -81,16 +82,18 @@ const CreateData = async (req, res) => {
 };
 
 const UpdateData = async (req, res) => {
-  const { name, groupAge } = req.body;
+  const { name, groupAge, descriptionPrevented } = req.body;
   const updateFields = {};
   try {
-    if (Imunisation.eventNames) {
+    if (name) {
       updateFields.name = name;
     }
     if (groupAge) {
       updateFields.groupAge = groupAge;
     }
-
+    if (descriptionPrevented) {
+      updateFields.descriptionPrevented = descriptionPrevented;
+    }
     const imunisations = await Imunisation.findOne({ _id: req.params.id });
     if (!imunisations) {
       return res.status(404).json({ message: "Data not found" });
@@ -143,7 +146,7 @@ const ExportDataToExcel = async (req, res) => {
     const ws = wb.addWorksheet("Childrens Data");
 
     // Define the specific columns you want in the Excel
-    const headingColumnNames = ["ID", "Name", "Group Age"];
+    const headingColumnNames = ["ID", "Name", "Group Age", "Description Disease Prevented"];
 
     // Write Column Titles in Excel file
     let headingColumnIndex = 1;
@@ -157,6 +160,7 @@ const ExportDataToExcel = async (req, res) => {
       ws.cell(rowIndex, 1).string(record._id.toString());
       ws.cell(rowIndex, 2).string(record.name || "");
       ws.cell(rowIndex, 3).string(record.groupAge || "");
+      ws.cell(rowIndex, 3).string(record.descriptionPrevented || "");
 
       rowIndex++;
     });

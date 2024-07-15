@@ -33,5 +33,4 @@ dist-ssr
 *.png
 try/
 .vscode/
-
-
+*.txt
