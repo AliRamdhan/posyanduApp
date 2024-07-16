@@ -13,7 +13,13 @@ const getAllBirth = async (
       .skip(skip)
       .limit(limit)
       .populate("children")
-      .populate("mother");
+      .populate({
+        path: "children",
+        populate: {
+          path: "mother",
+        },
+      })
+      .exec();
     const countDocumentsPromise = await Birth.countDocuments(filter);
     const [data, total] = await Promise.all([findQuery, countDocumentsPromise]);
     return { data, total };

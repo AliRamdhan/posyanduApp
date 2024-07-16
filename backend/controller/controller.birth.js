@@ -183,7 +183,7 @@ const createBirth = async (req, res) => {
 
     children = await childService.createChildren(childData);
     // console.log(children);
-    await Mother.findByIdAndUpdate(mother, { $inc: { amountChild: 1 } });
+    // await Mother.findByIdAndUpdate(mother, { $inc: { amountChild: 1 } });
     // return res.status(200).json({ message: "Success create data", data });
     // Check if the provided children ID exists
     if (children) {
@@ -197,7 +197,6 @@ const createBirth = async (req, res) => {
         heightBody,
         weightBody,
         children: childrenExists,
-        mother,
       };
       const birth = await birthService.createBirth(birthData);
       const data = {

@@ -9,10 +9,10 @@ const schema = mongoose.model("birth", {
     type: mongoose.Schema.Types.ObjectId,
     ref: "children", // Reference to the Choice collection
   },
-  mother: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "mother", // Reference to the Choice collection
-  },
+  // mother: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: "mother", // Reference to the Choice collection
+  // },
   createdAt: { type: Date, default: Date.now() },
   updateAt: { type: Date, default: Date.now() },
 });

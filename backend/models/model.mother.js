@@ -13,7 +13,7 @@ const schema = mongoose.model("mother", {
   rw: { type: Number },
   isPregnant: { type: Boolean, required: true, default: false },
   isBreastfeed: { type: Boolean, required: true, default: false },
-  amountChild: { type: Number },
+  amountChild: { type: Number, required: true, default: 0 },
   createdAt: { type: Date, default: Date.now() },
   updateAt: { type: Date, default: Date.now() },
 });

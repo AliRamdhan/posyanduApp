@@ -112,7 +112,17 @@ const GetDataById = async (req, res) => {
 };
 
 const CreateData = async (req, res) => {
-  const { name, nik, gender, dob, amountImunisation, mother } = req.body;
+  const {
+    name,
+    nik,
+    gender,
+    dob,
+    amountImunisation,
+    mother,
+    isBaduta,
+    isBalita,
+  } = req.body;
+
   try {
     const existingMother = await Mother.findOne({ _id: mother });
     if (!existingMother) {
@@ -125,6 +135,8 @@ const CreateData = async (req, res) => {
       dob: dob,
       amountImunisation: amountImunisation,
       mother: existingMother,
+      isBaduta: isBaduta,
+      isBalita: isBalita,
     }).save();
     await Mother.findByIdAndUpdate(mother, { $inc: { amountChild: 1 } });
     return res.status(200).json({ message: "Success create data", data });
@@ -176,15 +188,27 @@ const CreateData = async (req, res) => {
 // };
 
 const UpdateData = async (req, res) => {
-  const { name, nik, gender, dob, amountImunisation, mother } = req.body;
+  const {
+    name,
+    nik,
+    gender,
+    dob,
+    amountImunisation,
+    mother,
+    isBaduta,
+    isBalita,
+  } = req.body;
   const updateFields = {};
   try {
-    if (name) updateFields.name = name;
-    if (nik) updateFields.nik = nik;
-    if (dob) updateFields.dob = dob;
-    if (gender) updateFields.gender = gender;
-    if (amountImunisation) updateFields.amountImunisation = amountImunisation;
-    if (mother) updateFields.mother = mother;
+    if (name !== undefined) updateFields.name = name;
+    if (nik !== undefined) updateFields.nik = nik;
+    if (dob !== undefined) updateFields.dob = dob;
+    if (gender !== undefined) updateFields.gender = gender;
+    if (amountImunisation !== undefined)
+      updateFields.amountImunisation = amountImunisation;
+    if (mother !== undefined) updateFields.mother = mother;
+    if (isBaduta !== undefined) updateFields.isBaduta = isBaduta;
+    if (isBalita !== undefined) updateFields.isBalita = isBalita;
 
     const existingChildren = await Children.findOne({ _id: req.params.id });
     if (!existingChildren) {

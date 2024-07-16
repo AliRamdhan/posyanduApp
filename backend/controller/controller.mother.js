@@ -128,6 +128,8 @@ const CreateData = async (req, res) => {
     rt,
     rw,
     amountChild,
+    isPregnant,
+    isBreastfeed,
   } = req.body;
   try {
     const data = await new Mother({
@@ -142,6 +144,8 @@ const CreateData = async (req, res) => {
       rt: rt,
       rw: rw,
       amountChild: amountChild,
+      isPregnant: isPregnant,
+      isBreastfeed: isBreastfeed,
     }).save();
     return res.status(201).json({ message: "Success create data", data });
   } catch (error) {
@@ -162,48 +166,57 @@ const UpdateData = async (req, res) => {
     rt,
     rw,
     amountChild,
+    isPregnant,
+    isBreastfeed,
   } = req.body;
+
   const updateFields = {};
+
   try {
-    if (name) {
+    if (name !== undefined) {
       updateFields.name = name;
     }
-    if (nik) {
+    if (nik !== undefined) {
       updateFields.nik = nik;
     }
-    if (kk) {
+    if (kk !== undefined) {
       updateFields.kk = kk;
     }
-    if (husband) {
+    if (husband !== undefined) {
       updateFields.husband = husband;
     }
-    if (husbandnik) {
+    if (husbandnik !== undefined) {
       updateFields.husbandnik = husbandnik;
     }
-    if (dob) {
+    if (dob !== undefined) {
       updateFields.dob = dob;
     }
-    if (bpjs) {
+    if (bpjs !== undefined) {
       updateFields.bpjs = bpjs;
     }
-    if (ks) {
+    if (ks !== undefined) {
       updateFields.ks = ks;
     }
-    if (rt) {
+    if (rt !== undefined) {
       updateFields.rt = rt;
     }
-    if (rw) {
+    if (rw !== undefined) {
       updateFields.rw = rw;
     }
-    if (amountChild) {
+    if (amountChild !== undefined) {
       updateFields.amountChild = amountChild;
+    }
+    if (isPregnant !== undefined) {
+      updateFields.isPregnant = isPregnant;
+    }
+    if (isBreastfeed !== undefined) {
+      updateFields.isBreastfeed = isBreastfeed;
     }
 
     const existingMother = await Mother.findOne({ _id: req.params.id });
     if (!existingMother) {
       return res.status(404).json({ message: "Data not found" });
     }
-
     const data = await Mother.updateOne({ _id: req.params.id }, updateFields);
     return res.status(200).json({ message: "Data was updated", data });
   } catch (error) {
@@ -310,6 +323,7 @@ const ExportDataToExcel = async (req, res) => {
       "Date of Birth",
       "Punya BPJS",
       "Tipe ks",
+      "Status",
       "RT",
       "RW",
       "Jumlah Anak",
@@ -335,9 +349,12 @@ const ExportDataToExcel = async (req, res) => {
       ws.cell(rowIndex, 7).date(new Date(record.dob));
       ws.cell(rowIndex, 8).string(record.bpjs ? "Punya" : "Tidak Punya");
       ws.cell(rowIndex, 9).string(record.ks);
-      ws.cell(rowIndex, 10).string(record.rt.toString());
-      ws.cell(rowIndex, 11).string(record.rw.toString());
-      ws.cell(rowIndex, 12).number(record.amountChild);
+      ws.cell(rowIndex, 10).string(
+        record.isPregnant ? "Hamil" : record.isBreastfeed ? "Menyusui" : ""
+      );
+      ws.cell(rowIndex, 11).string(record.rt.toString());
+      ws.cell(rowIndex, 12).string(record.rw.toString());
+      ws.cell(rowIndex, 13).number(record.amountChild);
       rowIndex++;
     });
 

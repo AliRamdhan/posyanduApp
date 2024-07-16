@@ -10,7 +10,6 @@ const schema = mongoose.model("mother_growth", {
   groupFase: {
     type: String,
     enum: ["Trimester 1", "Trimester 2", "Trimester 3", "None"],
-    required: true,
   },
   circumStomach: { type: Number },
   circumHand: { type: Number },
