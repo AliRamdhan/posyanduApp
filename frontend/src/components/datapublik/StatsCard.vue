@@ -1,7 +1,7 @@
 <script setup>
 import CountUp from "vue-countup-v3";
 
-import { defineProps } from "vue";
+import { defineProps, defineEmits } from "vue";
 
 const props = defineProps({
   statsName: {
@@ -17,7 +17,17 @@ const props = defineProps({
   statsIcon: {
     type: String,
   },
+  isModal: {
+    type: Boolean,
+    default: true,
+  },
 });
+
+const emit = defineEmits(["cardClick"]);
+
+function handleClick() {
+  emit("cardClick", props.statsName);
+}
 </script>
 
 <template>
@@ -39,5 +49,12 @@ const props = defineProps({
     <p class="text-gray-800">
       {{ statsDescription }}
     </p>
+    <button
+      v-if="isModal"
+      class="text-sm text-blue-800 font-semibold mt-8"
+      @click="handleClick"
+    >
+      Click for details
+    </button>
   </div>
 </template>

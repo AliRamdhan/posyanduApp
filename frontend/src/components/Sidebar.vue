@@ -27,7 +27,7 @@ const handleLogout = () => {
 </script>
 
 <template>
-  <div class="bg-blue-600">
+  <div class="w-full">
     <!-- <span
       class="absolute text-white text-4xl top-5 left-4 cursor-pointer"
       @click="openSidebar"

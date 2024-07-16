@@ -111,7 +111,7 @@ const addMotherGrowth = () => {
           />
         </svg>
 
-        <span>Tambah Data Kelahiran</span>
+        <span>Tambah Data</span>
       </button>
     </div>
   </div>

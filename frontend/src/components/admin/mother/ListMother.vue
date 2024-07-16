@@ -96,7 +96,7 @@ onMounted(() => {
 
 <template>
   <section class="w-full flex justify-end px-4 overflow-hidden">
-    <div class="w-5/6">
+    <div class="w-full">
       <ListHeader :numberData="pagination.total" />
       <div class="mt-6 md:flex md:items-center md:justify-between">
         <div class="inline-flex gap-4">

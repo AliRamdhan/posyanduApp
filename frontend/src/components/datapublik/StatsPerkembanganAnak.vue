@@ -1,30 +1,221 @@
 <script setup>
 import StatsCard from "./StatsCard.vue";
+import { FwbButton, FwbModal } from "flowbite-vue";
+import ModalDetailsStatsAnak from "./ModalDetailsStatsAnak.vue";
+import { computed, ref, onMounted } from "vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+import {
+  averageAge,
+  averageHeigtBody,
+  averageWeightBody,
+} from "../../utils/CalcurateAvg";
+
+const store = useStore();
+const router = useRouter();
+
+const children = computed(() => store.getters.children);
+console.log("children", children);
+const childrenGrowth = computed(() => store.getters.childrensGrowth);
+console.log("children growth", childrenGrowth);
+
+const fetchChildrenGrowth = async () => {
+  try {
+    await store.dispatch("fetchChildrenBadutas");
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const fetchChildren = async () => {
+  try {
+    await store.dispatch("fetchChildren");
+  } catch (error) {
+    console.error("Error fetching children in component:", error);
+  }
+};
+
+onMounted(() => {
+  fetchChildren();
+  fetchChildrenGrowth();
+});
+
+const childrenIsBaduta = computed(() =>
+  children.value.filter((child) => child.isBaduta)
+);
+console.log("sa", childrenIsBaduta);
+const childrenIsBalita = computed(() =>
+  children.value.filter((child) => child.isBalita)
+);
+
+const HBIsBalita = computed(() =>
+  childrenGrowth.value.filter(
+    (child) => child.heightBody && child.childrens.isBalita
+  )
+);
+const WBIsBalita = computed(() =>
+  childrenGrowth.value.filter(
+    (child) => child.weightBody && child.childrens.isBalita
+  )
+);
+console.log("dd", WBIsBalita);
+
+const HBIsBaduta = computed(() =>
+  childrenGrowth.value.filter(
+    (child) => child.heightBody && child.childrens.isBaduta
+  )
+);
+const WBIsBaduta = computed(() =>
+  childrenGrowth.value.filter(
+    (child) => child.weightBody && child.childrens.isBaduta
+  )
+);
+console.log("bad", WBIsBaduta);
+
+// const averageAge = (filteredChildren) => {
+//   if (filteredChildren.length === 0) return 0;
+//   const totalAge = filteredChildren.reduce(
+//     (sum, child) => sum + calculateAge(child.dob),
+//     0
+//   );
+//   return (totalAge / filteredChildren.length).toFixed(1);
+// };
+
+// const averageWeightBody = (filteredChildren) => {
+//   if (filteredChildren.length === 0) return 0;
+//   const totalWeight = filteredChildren.reduce(
+//     (sum, child) => sum + child.weightBody,
+//     0
+//   );
+//   return (totalWeight / filteredChildren.length).toFixed(1);
+// };
+
+// const averageHeigtBody = (filteredChildren) => {
+//   if (filteredChildren.length === 0) return 0;
+//   const totalWeight = filteredChildren.reduce(
+//     (sum, child) => sum + child.heightBody,
+//     0
+//   );
+//   return (totalWeight / filteredChildren.length).toFixed(1);
+// };
+// BADUTA WB HB AGE
+const averageAgeBaduta = computed(() => averageAge(childrenIsBaduta.value));
+const averageWBBaduta = computed(() => averageWeightBody(WBIsBaduta.value));
+const averageHBBaduta = computed(() => averageHeigtBody(HBIsBaduta.value));
+
+// BALITA WB HB AGE
+const averageAgeBalita = computed(() => averageAge(childrenIsBalita.value));
+const averageWBBalita = computed(() => averageWeightBody(WBIsBaduta.value));
+const averageHBBalita = computed(() => averageHeigtBody(HBIsBaduta.value));
+
+const isShowModal = ref(false);
+const modalType = ref(null);
+
+function closeModal() {
+  isShowModal.value = false;
+  modalType.value = null;
+}
+
+function showModal(type) {
+  isShowModal.value = true;
+  modalType.value = type;
+}
+//  :statsNumber="
+//           mothers?.filter((mother) => mother.isBreastfeed).length || 0
+//         "
 </script>
 
 <template>
-  <div class="py-8">
-    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+  <div class="py-8 flex flex-col justify-center items-center">
+    <div class="grid gap-10 sm:grid-cols-1 lg:grid-cols-3">
       <StatsCard
-        statsName="PPP"
-        statsNumber="10"
-        statsDescription="lorem"
+        statsName="Balita Dua Tahun (Baduta)"
+        :statsNumber="children?.filter((child) => child.isBaduta).length || 0"
+        statsDescription="Jumlah Anak Baduta di RW 10"
         statsIcon="fa-solid fa-person-pregnant"
+        @click="showModal('baduta')"
+        :isModal="true"
       />
-      <StatsCard />
-      <StatsCard />
-      <StatsCard />
+      <StatsCard
+        statsName="Balita Lima Tahun (Balita)"
+        :statsNumber="children?.filter((child) => child.isBalita).length || 0"
+        statsDescription="Jumlah Anak Balita di RW 10"
+        statsIcon="fa-solid fa-person-breastfeeding"
+        :isModal="true"
+        @click="showModal('balita')"
+      />
+      <StatsCard
+        statsName="Total Anak"
+        :statsNumber="children.length || 0"
+        statsDescription="Total jumlah anak di RW 10"
+        statsIcon="fa-solid fa-child-dress"
+        :isModal="false"
+      />
     </div>
-    <p>
-      ANAK <br />
-      BADUTA LK/PR <br />
-      BALITA LK/PR <br />
-      RATA-RATA USIA ANAK BADUTA - ANAK KE BERAPA <br />
-      RATA-RATA USIA ANAK BALITA - ANAK KE BERAPA <br />
-      PERKEMBANGAN ANAK <br />
-      RATA-RATA TINGGI <br />
-      RATA RATA BB <br />
-      RATA RATA GROUP FASE <br />
-    </p>
+    <fwb-modal v-if="isShowModal" @close="closeModal" size="5xl">
+      <template #header>
+        <div class="flex items-center text-2xl font-semibold">
+          Statistik
+          {{
+            modalType === "baduta"
+              ? "Bayi Usia Dua Tahun"
+              : "Bayi Usia Lima Tahun"
+          }}
+        </div>
+      </template>
+      <template #body>
+        <div v-if="modalType === 'baduta'">
+          <ModalDetailsStatsAnak
+            statsName="Baduta"
+            :statsNumberLK="
+              children?.filter(
+                (child) => child.isBaduta && child.gender === 'Male'
+              ).length || 0
+            "
+            :statsNumberPR="
+              children?.filter(
+                (child) => child.isBaduta && child.gender === 'Female'
+              ).length || 0
+            "
+            :statsNumberUsia="averageAgeBaduta"
+            :statsNumberTB="averageHBBaduta"
+            :statsNumberBB="averageWBBaduta"
+          />
+        </div>
+        <div v-if="modalType === 'balita'">
+          <ModalDetailsStatsAnak
+            statsName="Balita"
+            :statsNumberLK="
+              children?.filter(
+                (child) => child.isBalita && child.gender === 'Male'
+              ).length || 0
+            "
+            :statsNumberPR="
+              children?.filter(
+                (child) => child.isBalita && child.gender === 'Female'
+              ).length || 0
+            "
+            :statsNumberUsia="averageAgeBalita"
+            :statsNumberTB="averageWBBalita"
+            :statsNumberBB="averageHBBalita"
+            :statsNumberUrutan="
+              childrenGrowth?.filter((growth) => growth.groupFase === 'Balita')
+                .length || 0
+            "
+            :statsNumberGroup="
+              childrenGrowth?.filter((growth) => growth.groupFase === 'Balita')
+                .length || 0
+            "
+          />
+        </div>
+      </template>
+      <template #footer>
+        <div class="flex justify-end">
+          <fwb-button @click="closeModal" color="dark" class="px-16">
+            Back
+          </fwb-button>
+        </div>
+      </template>
+    </fwb-modal>
   </div>
 </template>

@@ -15,5 +15,16 @@ import StatsCard from "./StatsCard.vue";
       <StatsCard />
       <StatsCard />
     </div>
+    <p>
+      ANAK <br />
+      BADUTA LK/PR <br />
+      BALITA LK/PR <br />
+      RATA-RATA USIA ANAK BADUTA - ANAK KE BERAPA <br />
+      RATA-RATA USIA ANAK BALITA - ANAK KE BERAPA <br />
+      PERKEMBANGAN ANAK <br />
+      RATA-RATA TINGGI <br />
+      RATA RATA BB <br />
+      RATA RATA GROUP FASE <br />
+    </p>
   </div>
 </template>

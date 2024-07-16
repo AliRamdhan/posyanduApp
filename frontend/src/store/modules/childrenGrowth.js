@@ -3,8 +3,7 @@
 import ChildrenGrowthService from "../../service/childrenGrowth";
 
 const state = {
-  childrensGrowth: [],
-  childBadutas: [],
+  childrensGrowth: [],  
   childBaduta: null,
   childGrowth: [],
   paginationChildrensGrowth: {
@@ -15,14 +14,11 @@ const state = {
 };
 
 const mutations = {
-  setChildrenBaduta(state, childrensGrowth) {
+  setChildrenGrowth(state, childrensGrowth) {
     state.childrensGrowth = childrensGrowth;
   },
   setPaginationChildrensGrowth(state, paginationChildrensGrowth) {
     state.paginationChildrensGrowth = paginationChildrensGrowth;
-  },
-  setChildBaduta(state, childBadutas) {
-    state.childBadutas = childBadutas;
   },
   setChildGrowth(state, childGrowth) {
     state.childGrowth = childGrowth;
@@ -53,7 +49,7 @@ const actions = {
     try {
       const response = await ChildrenGrowthService.getAll(params);
       const { data, pagination } = response;
-      commit("setChildrenBaduta", data);
+      commit("setChildrenGrowth", data);
       commit("setPaginationChildrensGrowth", pagination);
       return response.data;
     } catch (error) {
@@ -64,7 +60,7 @@ const actions = {
   //   try {
   //     const response = await ChildrenGrowthService.getAll();
   //     const { data, pagination } = response;
-  // commit("setChildrenBaduta", data);
+  // commit("setChildrenGrowth", data);
   // commit("setPaginationChildrensGrowth", pagination);
   //     return response.data;
   //   } catch (error) {
@@ -150,7 +146,6 @@ const actions = {
 
 const getters = {
   childrensGrowth: (state) => state.childrensGrowth,
-  childBadutas: (state) => state.childBaduta,
   childGrowth: (state) => state.childGrowth,
   childBaduta: (state) => state.child,
   paginationChildrensGrowth: (state) => state.paginationChildrensGrowth,

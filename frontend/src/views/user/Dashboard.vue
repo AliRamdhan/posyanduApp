@@ -56,7 +56,7 @@ const fetchProfile = async () => {
       <!-- <h1>Dashboard</h1>
       <router-view></router-view> -->
       <div v-if="user" class="w-full">
-        <Header :username="user.username" />
+        <Header :username="user.username ? user.username : null" />
         <Statistic />
         <div class="px-4">
           <div class="my-8">

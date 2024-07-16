@@ -55,8 +55,8 @@ import Forbidden from "../views/Forbidden.vue";
 // Data Publik
 import GrowthIbu from "../views/DataPublik/GrowthIbu.vue";
 import GrowthAnak from "../views/DataPublik/GrowthAnak.vue";
-import Baduta from "../views/DataPublik/Baduta.vue";
-import Pregnant from "../views/DataPublik/Pregnant.vue";
+// import Baduta from "../views/DataPublik/Baduta.vue";
+// import Pregnant from "../views/DataPublik/Pregnant.vue";
 
 const routes = [
   {
@@ -95,16 +95,16 @@ const routes = [
         name: "perkembanganAnaka",
         component: GrowthAnak,
       },
-      {
-        path: "/ibu-hamil",
-        name: "ibuHamil",
-        component: Pregnant,
-      },
-      {
-        path: "/baduta",
-        name: "baduta",
-        component: Baduta,
-      },
+      // {
+      //   path: "/ibu-hamil",
+      //   name: "ibuHamil",
+      //   component: Pregnant,
+      // },
+      // {
+      //   path: "/baduta",
+      //   name: "baduta",
+      //   component: Baduta,
+      // },
     ],
   },
   {

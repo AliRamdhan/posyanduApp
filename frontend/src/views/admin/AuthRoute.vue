@@ -25,11 +25,11 @@ import Sidebar from "../../components/Sidebar.vue";
 </script>
 
 <template>
-  <div class="w-full flex justify-between">
-    <div class="w-80 border border-black">
+  <div class="w-full">
+    <div>
       <Sidebar />
     </div>
-    <div class="w-full">
+    <div class="w-full flex justify-end">
       <router-view></router-view>
     </div>
   </div>
