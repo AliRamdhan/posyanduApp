@@ -5,12 +5,11 @@ const schema = mongoose.model("mother_growth", {
   height: { type: Number, required: true },
   weight: { type: Number, required: true },
   kbtype: { type: String },
-  pregnantStatus: { type: Boolean },
   wombAge: { type: Number },
   numbChild: { type: Number },
   groupFase: {
     type: String,
-    enum: ["0-1", "1-3", "3-6", "6-9", "9-12", "12-18", "18-24"],
+    enum: ["Trimester 1", "Trimester 2", "Trimester 3", "None"],
     required: true,
   },
   circumStomach: { type: Number },

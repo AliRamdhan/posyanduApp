@@ -11,6 +11,8 @@ const schema = mongoose.model("mother", {
   ks: { type: String, enum: ["KS1", "KS2", "KS3"], required: true },
   rt: { type: Number },
   rw: { type: Number },
+  isPregnant: { type: Boolean, required: true, default: false },
+  isBreastfeed: { type: Boolean, required: true, default: false },
   amountChild: { type: Number },
   createdAt: { type: Date, default: Date.now() },
   updateAt: { type: Date, default: Date.now() },
