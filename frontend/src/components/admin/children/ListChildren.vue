@@ -75,7 +75,7 @@ const addChild = () => {
 
 const deleteChild = async (id) => {
   try {
-    await store.dispatch( "deleteChild", id); // Removed namespacing
+    await store.dispatch("deleteChild", id); // Removed namespacing
     console.log(`Deleted mother with id ${id}`);
   } catch (error) {
     console.error(`Error deleting mother with id ${id} in component:`, error);
@@ -99,7 +99,6 @@ const removeChild = async (id) => {
   }
 };
 
-
 const handlePageChange = (page) => {
   currentPage.value = page;
   fetchChildren();
@@ -110,11 +109,13 @@ onMounted(() => {
 });
 </script>
 <template>
-  <section class="w-full flex justify-end px-4 overflow-hidden">
+  <section class="w-96 md:w-full flex justify-end px-4 overflow-hidden">
     <div class="w-full">
       <ListHeader name="Data Anak" :numberData="children.length" />
       <div class="mt-6 md:flex md:items-center md:justify-between">
-        <div class="inline-flex gap-4">
+        <div
+          class="w-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4"
+        >
           <div class="flex gap-2 items-center text-sm">
             <p>Show</p>
             <fwb-select
@@ -174,116 +175,152 @@ onMounted(() => {
               <table
                 class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
               >
-                <thead class="bg-gray-50 dark:bg-gray-800">
-                  <tr>
-                    <th
-                      scope="col"
-                      class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                    >
-                      <button
-                        @click="
-                          sortField = 'name';
-                          sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-                          fetchChildren();
-                        "
+                <div v-if="children.length > 0">
+                  <thead class="bg-gray-50 dark:bg-gray-800">
+                    <tr>
+                      <th
+                        scope="col"
+                        class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
                       >
-                        Name
-                      </button>
-                    </th>
-                    <th
-                      scope="col"
-                      class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                    >
-                      <button
-                        @click="
-                          sortField = 'gender';
-                          sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-                          fetchChildren();
-                        "
-                      >
-                        Gender
-                      </button>
-                    </th>
-                    <th
-                      scope="col"
-                      class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                    >
-                      TTL
-                    </th>
-                    <th
-                      scope="col"
-                      class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                    >
-                      Imunisasi
-                    </th>
-                    <th
-                      scope="col"
-                      class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                    >
-                      Ibu
-                    </th>
-                    <th scope="col" class="relative py-3.5 px-4">
-                      <span class="sr-only">Edit</span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody
-                  class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900"
-                >
-                  <tr v-for="child in children" :key="child._id">
-                    <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
-                      <div>
-                        <h2 class="font-medium text-gray-800 dark:text-white">
-                          {{ child.name }}
-                        </h2>
-                        <p
-                          class="text-sm font-normal text-gray-600 dark:text-gray-400"
+                        <button
+                          @click="
+                            sortField = 'name';
+                            sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+                            fetchChildren();
+                          "
                         >
-                          NIK : {{ child.nik }}
-                        </p>
-                      </div>
-                    </td>
-                    <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
-                      {{ child.gender }}
-                    </td>
-                    <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
-                      <h2 class="font-medium text-gray-800 dark:text-white">
-                        {{ formatTime(child.dob) }}
-                      </h2>
-                    </td>
-                    <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
-                      {{ child.amountImunisation }}x
-                    </td>
-                    <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
-                      <div>
+                          Name
+                        </button>
+                      </th>
+                      <th
+                        scope="col"
+                        class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                      >
+                        <button
+                          @click="
+                            sortField = 'gender';
+                            sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+                            fetchChildren();
+                          "
+                        >
+                          Gender
+                        </button>
+                      </th>
+                      <th
+                        scope="col"
+                        class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                      >
+                        TTL
+                      </th>
+                      <th
+                        scope="col"
+                        class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                      >
+                        Status
+                      </th>
+                      <th
+                        scope="col"
+                        class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                      >
+                        Imunisasi
+                      </th>
+                      <th
+                        scope="col"
+                        class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                      >
+                        Ibu
+                      </th>
+                      <th scope="col" class="relative py-3.5 px-4">
+                        <span class="sr-only">Edit</span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900"
+                  >
+                    <tr v-for="child in children" :key="child._id">
+                      <td
+                        class="px-4 py-4 text-sm font-medium whitespace-nowrap"
+                      >
+                        <div>
+                          <h2 class="font-medium text-gray-800 dark:text-white">
+                            {{ child.name }}
+                          </h2>
+                          <p
+                            class="text-sm font-normal text-gray-600 dark:text-gray-400"
+                          >
+                            NIK : {{ child.nik }}
+                          </p>
+                        </div>
+                      </td>
+                      <td
+                        class="px-4 py-4 text-sm font-medium whitespace-nowrap"
+                      >
+                        {{ child.gender }}
+                      </td>
+                      <td
+                        class="px-4 py-4 text-sm font-medium whitespace-nowrap"
+                      >
                         <h2 class="font-medium text-gray-800 dark:text-white">
-                          {{ child.mother?.name }}
+                          {{ formatTime(child.dob) }}
                         </h2>
-                      </div>
-                    </td>
-                    <td
-                      class="px-12 py-4 text-sm font-medium whitespace-nowrap flex gap-4"
-                    >
-                      <button
-                        @click="editChild(child._id)"
-                        class="inline px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-500"
+                      </td>
+                      <td
+                        class="px-4 py-4 text-sm font-medium whitespace-nowrap"
                       >
-                        Edit
-                      </button>
-                      <button
-                        @click="removeChild(child._id)"
-                        class="inline px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-500"
+                        {{
+                          child.isBaduta
+                            ? "Baduta"
+                            : child.isBalita
+                            ? "Balita"
+                            : ""
+                        }}
+                      </td>
+                      <td
+                        class="px-4 py-4 text-sm font-medium whitespace-nowrap"
                       >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
+                        {{ child.amountImunisation }}x
+                      </td>
+                      <td
+                        class="px-4 py-4 text-sm font-medium whitespace-nowrap"
+                      >
+                        <div>
+                          <h2 class="font-medium text-gray-800 dark:text-white">
+                            {{ child.mother?.name }}
+                          </h2>
+                        </div>
+                      </td>
+                      <td
+                        class="px-12 py-4 text-sm font-medium whitespace-nowrap flex gap-4"
+                      >
+                        <button
+                          @click="editChild(child._id)"
+                          class="inline px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-500"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          @click="removeChild(child._id)"
+                          class="inline px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-500"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </div>
+                <div v-else>
+                  <div class="px-4 py-8 flex justify-center items-center">
+                    <p>Belum ada data anak...</p>
+                  </div>
+                </div>
               </table>
-              <ListPagination
-                :pagination="pagination"
-                @page-changed="handlePageChange"
-              />
+              <div v-if="children.length > 0">
+                <ListPagination
+                  :pagination="pagination"
+                  @page-changed="handlePageChange"
+                />
+              </div>
             </div>
           </div>
         </div>

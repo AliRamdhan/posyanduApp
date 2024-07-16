@@ -1,14 +1,12 @@
 <script setup>
-import { computed, onMounted } from "vue";
+import { ref } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import { FwbDropdown, FwbListGroup, FwbListGroupItem } from "flowbite-vue";
-
-import { ref } from "vue";
 
 const sidebarOpen = ref(false);
 const submenuOpen = ref(false);
 const route = useRouter();
+
 const openSidebar = () => {
   sidebarOpen.value = !sidebarOpen.value;
 };
@@ -21,47 +19,37 @@ const store = useStore();
 
 const handleLogout = () => {
   store.dispatch("logout");
-  alert("Successfully logout");
+  alert("Successfully logged out");
   route.push({ name: "signin" });
 };
 </script>
 
 <template>
   <div class="w-full">
-    <!-- <span
-      class="absolute text-white text-4xl top-5 left-4 cursor-pointer"
-      @click="openSidebar"
-    >
-      <i class="bi bi-filter-left px-2 bg-gray-900 rounded-md"></i>
-    </span> -->
+    <button @click="openSidebar" class="p-4 lg:hidden">
+      <font-awesome-icon icon="fa-solid fa-bars" />
+    </button>
+
     <div
       :class="[
-        'sidebar fixed top-0 bottom-0 lg:left-0 p-2 w-[250px] overflow-y-auto text-center bg-gray-900',
+        'sidebar fixed top-0 bottom-0 lg:left-0 p-2 w-[250px] overflow-y-auto text-center bg-gray-900 lg:block z-50',
+        { hidden: !sidebarOpen && 'lg:block' },
       ]"
     >
       <div class="text-gray-100 text-xl">
         <div class="p-2.5 mt-1 flex items-center">
-          <i class="bi bi-app-indicator px-2 py-1 rounded-md bg-blue-600"></i>
+          <button
+            @click="openSidebar"
+            class="text-white px-2 py-1 rounded-md lg:hidden"
+          >
+            <font-awesome-icon icon="fa-solid fa-xmark" />
+          </button>
           <h1 class="font-bold text-gray-200 text-3xl ml-3">
             PosCare Admin Panel
           </h1>
-          <i
-            class="bi bi-x cursor-pointer ml-28 lg:hidden"
-            @click="openSidebar"
-          ></i>
         </div>
         <div class="my-2 bg-gray-600 h-[1px]"></div>
       </div>
-      <!-- <div
-        class="p-2.5 flex items-center rounded-md px-4 duration-300 cursor-pointer bg-gray-700 text-white"
-      >
-        <i class="bi bi-search text-sm"></i>
-        <input
-          type="text"
-          placeholder="Search"
-          class="text-[15px] ml-4 w-full bg-transparent focus:outline-none"
-        />
-      </div> -->
       <router-link to="/dashboard/admin">
         <div
           class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
@@ -94,10 +82,10 @@ const handleLogout = () => {
         >
           <i class="bi bi-bookmark-fill"></i>
           <span class="text-[15px] ml-4 text-gray-200 font-bold"
-            >Imunisation</span
+            >Imunisasi</span
           >
-        </div></router-link
-      >
+        </div>
+      </router-link>
       <router-link to="/dashboard/admin/kelahiran">
         <div
           class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
@@ -164,4 +152,7 @@ const handleLogout = () => {
 .rotate-180 {
   transform: rotate(180deg);
 }
+/* .hidden {
+  display: none;
+} */
 </style>

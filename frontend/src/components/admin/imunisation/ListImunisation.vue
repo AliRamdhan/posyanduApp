@@ -13,7 +13,7 @@ const router = useRouter();
 
 const pagination = computed(() => store.getters.paginationImmunisation);
 const immunisations = computed(() => store.getters.immunisations);
-console.log(immunisations)
+console.log(immunisations);
 
 const searchName = ref("");
 const searchGroupAge = ref("");
@@ -82,14 +82,16 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="w-full flex justify-end px-4 overflow-hidden">
+  <section class="w-96 lg:w-full flex justify-end px-4 overflow-hidden">
     <div class="w-full">
       <ListHeader
         nameData="Data Imunisasi"
         :numberData="immunisations.length"
       />
       <div class="mt-6 md:flex md:items-center md:justify-between">
-        <div class="inline-flex gap-4">
+        <div
+          class="w-full grid grid-cols-1 lg:grid-cols-4 gap-4"
+        >
           <div class="flex gap-2 items-center text-sm">
             <p>Show</p>
             <fwb-select

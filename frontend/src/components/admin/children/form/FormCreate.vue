@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { FwbInput, FwbButton, FwbSelect } from "flowbite-vue";
@@ -12,6 +12,11 @@ const gender = [
   { value: "Female", name: "Perempuan" },
 ];
 
+const isStatus = [
+  { value: "baduta", name: "Bayi Usia Dua Tahun" },
+  { value: "balita", name: "Bayi Usia Lima Tahun" },
+];
+
 const childData = ref({
   name: "",
   nik: "",
@@ -19,6 +24,23 @@ const childData = ref({
   dob: "",
   amountImunisation: 0,
   mother: "",
+  isBalita: null,
+  isBaduta: null,
+});
+
+const selectedStatus = ref(null); // new ref to track the selected status
+
+watch(selectedStatus, (newValue) => {
+  if (newValue === "baduta") {
+    childData.value.isBaduta = true;
+    childData.value.isBalita = false;
+  } else if (newValue === "balita") {
+    childData.value.isBalita = true;
+    childData.value.isBaduta = false;
+  } else {
+    childData.value.isBaduta = null;
+    childData.value.isBalita = false;
+  }
 });
 
 const handleSubmit = async () => {
@@ -58,7 +80,14 @@ const mothers = computed(() =>
         <fwb-input v-model="childData.name" label="Nama" required />
       </div>
       <div>
-        <fwb-input v-model="childData.nik" label="NIK" required />
+        <fwb-select
+          v-model="selectedStatus"
+          :options="isStatus"
+          label="Select Status"
+        />
+      </div>
+      <div>
+        <fwb-input v-model="childData.nik" label="NIK" required type="number" />
       </div>
       <div>
         <fwb-select

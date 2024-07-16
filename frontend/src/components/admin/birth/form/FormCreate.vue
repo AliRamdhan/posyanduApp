@@ -16,7 +16,6 @@ const birthData = ref({
   name: "",
   nik: "",
   gender: "",
-  amountImunisation: null,
   dob: "",
   circumHead: null,
   heightBody: null,
@@ -86,7 +85,12 @@ onMounted(() => {
         <fwb-input v-model="birthData.name" label="Nama Anak" required />
       </div>
       <div>
-        <fwb-input v-model="birthData.nik" label="NIK Anak" required />
+        <fwb-input
+          v-model="birthData.nik"
+          label="NIK Anak"
+          required
+          type="number"
+        />
       </div>
       <div>
         <fwb-select
@@ -94,13 +98,6 @@ onMounted(() => {
           :options="gender"
           label="Jenis Kelamin"
           required
-        />
-      </div>
-      <div>
-        <fwb-input
-          type="number"
-          v-model.number="birthData.amountImunisation"
-          label="Jumlah Imunisasi"
         />
       </div>
       <div>

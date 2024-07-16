@@ -12,7 +12,8 @@ const route = useRoute();
 
 const existData = ref({
   name: "",
-  groupAge: "",
+  groupAge: 0,
+  descriptionPrevented: "",
 });
 
 // Fetch child data on component mount
@@ -26,6 +27,7 @@ const fetchImunisation = async (id) => {
     existData.value = {
       name: data.name,
       groupAge: data.groupAge,
+      descriptionPrevented: data.descriptionPrevented,
     };
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -39,10 +41,11 @@ const handleSubmit = async () => {
       immunisationData: {
         name: existData.value.name,
         groupAge: existData.value.groupAge,
+        descriptionPrevented: existData.value.descriptionPrevented,
       },
     });
     alert(`Data with ID ${route.params.id} updated`);
-    router.push({ name: "imunisasi" }); // Redirect to children list after action
+    router.push({ name: "dashboardAdminImunisasi" }); // Redirect to children list after action
   } catch (error) {
     console.error("Error updating child:", error);
   }
@@ -58,7 +61,15 @@ const handleSubmit = async () => {
       <div>
         <fwb-input
           v-model="existData.groupAge"
+          type="number"
           label="Kelompok Usia Imunisasi"
+          required
+        />
+      </div>
+      <div>
+        <fwb-input
+          v-model="existData.descriptionPrevented"
+          label="Description Prevented"
           required
         />
       </div>

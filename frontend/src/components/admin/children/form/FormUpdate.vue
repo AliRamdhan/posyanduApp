@@ -1,8 +1,9 @@
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { FwbInput, FwbButton, FwbSelect } from "flowbite-vue";
+
 const store = useStore();
 const router = useRouter();
 const route = useRoute();
@@ -12,6 +13,13 @@ const gender = [
   { value: "Female", name: "Perempuan" },
 ];
 
+const isStatus = [
+  { value: "baduta", name: "Bayi Usia Dua Tahun" },
+  { value: "balita", name: "Bayi Usia Lima Tahun" },
+];
+
+const selectedStatus = ref(null);
+
 const childData = ref({
   name: "",
   nik: "",
@@ -19,11 +27,26 @@ const childData = ref({
   dob: "",
   amountImunisation: 0,
   mother: "",
+  isBalita: null,
+  isBaduta: null,
 });
 
 onMounted(async () => {
   await fetchMothers();
   await fetchChild(route.params.id);
+});
+
+watch(selectedStatus, (newValue) => {
+  if (newValue === "baduta") {
+    childData.value.isBaduta = true;
+    childData.value.isBalita = false;
+  } else if (newValue === "balita") {
+    childData.value.isBalita = true;
+    childData.value.isBaduta = false;
+  } else {
+    childData.value.isBaduta = null;
+    childData.value.isBalita = false;
+  }
 });
 
 const fetchMothers = async () => {
@@ -52,10 +75,17 @@ const fetchChild = async (id) => {
       name: data.name,
       nik: data.nik,
       gender: data.gender,
-      dob:  data.dob ? new Date(data.dob).toISOString().split("T")[0] : "",
+      dob: data.dob ? new Date(data.dob).toISOString().split("T")[0] : "",
       amountImunisation: data.amountImunisation,
       mother: data.mother,
+      isBaduta: data.isBaduta,
+      isBalita: data.isBalita,
     };
+    if (data.isBaduta) {
+      selectedStatus.value = "baduta";
+    } else if (data.isBalita) {
+      selectedStatus.value = "balita";
+    }
   } catch (error) {
     console.error("Error fetching child:", error);
   }
@@ -72,6 +102,8 @@ const handleSubmit = async () => {
         dob: childData.value.dob,
         amountImunisation: childData.value.amountImunisation,
         mother: childData.value.mother,
+        isBaduta: childData.value.isBaduta,
+        isBalita: childData.value.isBalita,
       },
     });
     alert(`Child with ID ${route.params.id} updated`);
@@ -87,6 +119,13 @@ const handleSubmit = async () => {
     <div class="mt-8 grid lg:grid-cols-2 gap-4">
       <div>
         <fwb-input v-model="childData.name" label="Nama" required />
+      </div>
+      <div>
+        <fwb-select
+          v-model="selectedStatus"
+          :options="isStatus"
+          label="Select Status"
+        />
       </div>
       <div>
         <fwb-input v-model="childData.nik" label="NIK" required />
@@ -115,7 +154,7 @@ const handleSubmit = async () => {
         />
       </div>
       <div>
-        <p>{{childData.mother}}</p>
+        <!-- <p>{{childData.mother}}</p> -->
         <fwb-select
           v-model="childData.mother"
           :options="mothers"

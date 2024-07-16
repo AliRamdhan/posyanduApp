@@ -32,6 +32,8 @@ import {
   faAt,
   faUser,
   faChildDress,
+  faBars,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
 /* add icons to the library */
@@ -52,7 +54,9 @@ library.add(
   faStethoscope,
   faAt,
   faUser,
-  faChildDress
+  faChildDress,
+  faBars,
+  faXmark
 );
 
 DataTable.use(DataTablesLib);

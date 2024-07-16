@@ -10,11 +10,10 @@ const router = useRouter();
 const childrenGrowthData = ref({
   checkDate: "",
   groupFase: "",
+  childrens: "",
   heightBody: null,
   weightBody: null,
-  isBaduta: true,
-  childrens: null,
-  imunisations: null,
+  imunisations: "",
 });
 
 const handleSubmit = async () => {
@@ -71,9 +70,8 @@ const children = computed(() =>
 );
 
 const groupFase = [
-  { value: "Trimester 1", name: "Trimester 1" },
-  { value: "Trimester 2", name: "Trimester 2" },
-  { value: "Trimester 3", name: "Trimester 3" },
+  { value: "Baduta", name: "Baduta" },
+  { value: "Balita", name: "Balita" },
 ];
 
 onMounted(() => {

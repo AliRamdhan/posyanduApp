@@ -10,7 +10,8 @@ const router = useRouter();
 
 const data = ref({
   name: "",
-  groupAge: "",
+  groupAge: 0,
+  descriptionPrevented: "",
 });
 
 const handleSubmit = async () => {
@@ -32,7 +33,7 @@ const handleSubmit = async () => {
           v-model="data.name"
           id="name"
           label="Nama Imunisasi"
-          placeholder="enter nama imunisasi"
+          placeholder="Input Name Imunisasi"
           required
         />
       </div>
@@ -40,8 +41,18 @@ const handleSubmit = async () => {
         <fwb-input
           v-model="data.groupAge"
           id="groupAge"
+          type="number"
           label="Kelompok Usia Imunisasi"
-          placeholder="enter kelompok usia imunisasi"
+          placeholder="Input Kelompok Usia Manusia"
+          required
+        />
+      </div>
+      <div>
+        <fwb-input
+          v-model="data.descriptionPrevented"
+          id="descriptionPrevented"
+          label="Description Prevented"
+          placeholder="Input Description"
           required
         />
       </div>
@@ -56,9 +67,3 @@ const handleSubmit = async () => {
     </div>
   </form>
 </template>
-
-<script>
-export default {};
-</script>
-
-<style></style>

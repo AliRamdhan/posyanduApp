@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { FwbInput, FwbButton, FwbSelect } from "flowbite-vue";
@@ -10,6 +10,10 @@ const selected = ref("");
 const bpjs = [
   { value: true, name: "Punya BPJS" },
   { value: false, name: "Tidak Punya BPJS" },
+];
+const isStatus = [
+  { value: "pregnant", name: "Hamil" },
+  { value: "breastfeed", name: "Menyusui" },
 ];
 const kss = [
   { value: "KS1", name: "KS 1" },
@@ -24,22 +28,35 @@ const data = ref({
   husbandnik: "",
   dob: "",
   bpjs: null,
+  isPregnant: null,
+  isBreastfeed: null,
   ks: "",
   RT: null,
   RW: null,
   amountChild: 0,
 });
 
-const handleSubmit = async () => {
-  // Ensure kk, nik, and husbandnik are strings
-  // data.value.kk = String(data.value.kk);
-  // data.value.nik = String(data.value.nik);
-  // data.value.husbandnik = String(data.value.husbandnik);
+const selectedStatus = ref(null); // new ref to track the selected status
 
+watch(selectedStatus, (newValue) => {
+  if (newValue === "pregnant") {
+    data.value.isPregnant = true;
+    data.value.isBreastfeed = false;
+  } else if (newValue === "breastfeed") {
+    data.value.isBreastfeed = true;
+    data.value.isPregnant = false;
+  } else {
+    data.value.isPregnant = null;
+    data.value.isBreastfeed = false;
+  }
+});
+
+const handleSubmit = async () => {
   try {
     await store.dispatch("createMother", data.value);
     alert("New data added");
-    router.push({ name: "dashboardAdminIbu" }); // Redirect to mothers list after action
+    console.log(data.value);
+    // router.push({ name: "dashboardAdminIbu" }); // Redirect to mothers list after action
   } catch (error) {
     console.error("Error adding mother:", error);
   }
@@ -51,6 +68,13 @@ const handleSubmit = async () => {
     <div class="mt-8 grid lg:grid-cols-2 gap-4">
       <div>
         <fwb-input v-model="data.name" label="Nama" required />
+      </div>
+      <div>
+        <fwb-select
+          v-model="selectedStatus"
+          :options="isStatus"
+          label="Select Status"
+        />
       </div>
       <div>
         <fwb-input v-model="data.nik" label="NIK" type="number" required />

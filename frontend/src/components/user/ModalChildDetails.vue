@@ -15,7 +15,7 @@ const store = useStore();
 
 const child = computed(() => store.getters.child);
 const childGrowth = computed(() => store.getters.childGrowth);
-// console.log("c", child);
+console.log("c", child);
 // console.log(childGrowth);
 const fetchChild = async (id) => {
   try {
