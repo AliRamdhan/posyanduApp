@@ -17,7 +17,7 @@ import Signup from "../views/auth/Signup.vue";
 import Profile from "../views/user/Profile.vue";
 
 // User
-import DashboardUser  from "../views/user/Dashboard.vue";
+import DashboardUser from "../views/user/Dashboard.vue";
 import DashboardUserTemplate from "../views/Dashboard.vue";
 
 // Admin
@@ -45,13 +45,16 @@ import ImunisationUpdate from "../views/admin/imunisation/ImunisationUpdate.vue"
 import GrowthIbuAdmin from "../views/admin/growth/mother/GrowthMother.vue";
 import GrowthAnakAdmin from "../views/admin/growth/children/GrowthAnak.vue";
 // // Anak
-import GrowthAnakCreate from "../views/admin/growth/children/GrowthAnakCreate.vue"
-import GrowthAnakUpdate from "../views/admin/growth/children/GrowthAnakUpdate.vue"
+import GrowthAnakCreate from "../views/admin/growth/children/GrowthAnakCreate.vue";
+import GrowthAnakUpdate from "../views/admin/growth/children/GrowthAnakUpdate.vue";
 // // Ibu
-import GrowthIbuCreate from "../views/admin/growth/mother/GrowthMotherCreate.vue"
-import GrowthIbuUpdate from "../views/admin/growth/mother/GrowthMotherUpdate.vue"
+import GrowthIbuCreate from "../views/admin/growth/mother/GrowthMotherCreate.vue";
+import GrowthIbuUpdate from "../views/admin/growth/mother/GrowthMotherUpdate.vue";
 import Forbidden from "../views/Forbidden.vue";
-
+// // USER
+import User from "../views/admin/user/User.vue";
+import UserCreate from "../views/admin/user/UserCreate.vue";
+import UserUpdate from "../views/admin/user/UserUpdate.vue";
 // Data Publik
 import GrowthIbu from "../views/DataPublik/GrowthIbu.vue";
 import GrowthAnak from "../views/DataPublik/GrowthAnak.vue";
@@ -231,6 +234,12 @@ const routes = [
         component: GrowthIbuAdmin,
         meta: { requiresAuth: true },
       },
+      {
+        path: "user",
+        name: "dashboardAdminUser",
+        component: User,
+        meta: { requiresAuth: true },
+      },
       //IBU
       {
         path: "ibu-create",
@@ -295,8 +304,8 @@ const routes = [
         component: GrowthAnakUpdate,
         meta: { requiresAuth: true },
       },
-       // Perkembangan Ibu
-       {
+      // Perkembangan Ibu
+      {
         path: "perkembangan-ibu-create",
         name: "perkembangan-ibu-create",
         component: GrowthIbuCreate,
@@ -306,6 +315,19 @@ const routes = [
         path: "perkembangan-ibu-update/:id",
         name: "perkembangan-ibu-update",
         component: GrowthIbuUpdate,
+        meta: { requiresAuth: true },
+      },
+      //user
+      {
+        path: "user-create",
+        name: "user-create",
+        component: UserCreate,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "user-update/:id",
+        name: "user-update",
+        component: UserUpdate,
         meta: { requiresAuth: true },
       },
     ],

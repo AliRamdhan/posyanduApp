@@ -226,7 +226,7 @@ onMounted(() => {
                       >
                         <div>
                           <h2 class="font-medium text-gray-800 dark:text-white">
-                            none
+                            {{ birth.children?.name }}
                           </h2>
                         </div>
                       </td>

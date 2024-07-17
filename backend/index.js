@@ -15,6 +15,7 @@ const routesBirth = require("./routes/router.birth");
 const routesMotherGrowth = require("./routes/router.mothergrowth");
 const routesChildrenGrowth = require("./routes/router.childrengrowth");
 const routesAuth = require("./routes/router.auth");
+const routesUser = require("./routes/router.user");
 
 //middleware cors and parse to json
 app.use(cors());
@@ -25,6 +26,7 @@ app.use(express.json());
 app.get("/api/v1", (req, res) => {
   res.send("Welcome API Posyandu Application");
 });
+app.use("/api/v1/user", routesUser);
 app.use("/api/v1/children", routesChild);
 app.use("/api/v1/mother", routesMother);
 app.use("/api/v1/imunisation", routesImunisation);

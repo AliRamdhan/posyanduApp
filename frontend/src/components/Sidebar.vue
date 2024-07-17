@@ -134,6 +134,14 @@ const handleLogout = () => {
           <span class="text-[15px] ml-4 text-gray-200 font-bold">Report</span>
         </div>
       </router-link>
+      <router-link to="/dashboard/admin/user">
+        <div
+          class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+        >
+          <i class="bi bi-bookmark-fill"></i>
+          <span class="text-[15px] ml-4 text-gray-200 font-bold">User</span>
+        </div>
+      </router-link>
       <button
         class="w-full p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
         @click="handleLogout"

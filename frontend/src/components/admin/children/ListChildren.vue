@@ -114,7 +114,7 @@ onMounted(() => {
       <ListHeader name="Data Anak" :numberData="children.length" />
       <div class="mt-6 md:flex md:items-center md:justify-between">
         <div
-          class="w-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4"
+          class="w-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4"
         >
           <div class="flex gap-2 items-center text-sm">
             <p>Show</p>
@@ -164,7 +164,7 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <div class="flex flex-col mt-6 border border-black">
+      <div class="flex flex-col mt-6">
         <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div
             class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8"
