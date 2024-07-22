@@ -6,6 +6,12 @@ import formatTime from "../../../utils/FormatTime";
 import { computed, onMounted, ref } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import {
+  calculateAge,
+  averageAge,
+  averageHeigtBody,
+  averageWeightBody,
+} from "../../../utils/CalcurateAvg";
 const store = useStore();
 const router = useRouter();
 
@@ -97,10 +103,10 @@ onMounted(() => {
 <template>
   <section class="w-96 md:w-full flex justify-end px-4 overflow-hidden">
     <div class="w-full">
-      <ListHeader :numberData="pagination.total" />
+      <ListHeader name="Ibu" :numberData="pagination.total" />
       <div class="mt-6 md:flex md:items-center md:justify-between">
         <div
-          class="w-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4"
+          class="w-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4"
         >
           <div class="flex gap-2 items-center text-sm">
             <p>Show</p>
@@ -115,14 +121,14 @@ onMounted(() => {
           <fwb-input
             v-model="searchName"
             @input="fetchMothers"
-            placeholder="Search by name"
+            placeholder="Search by Nama"
           >
             <template #prefix>
               <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
             </template>
           </fwb-input>
 
-          <fwb-input
+          <!-- <fwb-input
             v-model="searchHusband"
             @input="fetchMothers"
             placeholder="Search by husband"
@@ -130,14 +136,9 @@ onMounted(() => {
             <template #prefix>
               <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
             </template>
-          </fwb-input>
+          </fwb-input> -->
 
-          <fwb-input
-            v-model="searchTime"
-            @input="fetchMothers"
-            type="date"
-            placeholder="Search by time"
-          >
+          <fwb-input v-model="searchTime" @input="fetchMothers" type="date">
             <template #prefix>
               <font-awesome-icon icon="fa-solid fa-calendar" />
             </template>
@@ -151,7 +152,7 @@ onMounted(() => {
           <option value="KS3">KS3</option>
         </select> -->
           <div class="flex gap-2 items-center">
-            <p>KS</p>
+            <p>Kesejahteraan Sosial</p>
             <fwb-select
               v-model="selectedKS"
               @change="fetchMothers"
@@ -251,7 +252,7 @@ onMounted(() => {
                             fetchMothers();
                           "
                         >
-                          TTL
+                          Tempat, Tanggal, Lahir -
                         </button>
                       </th>
                       <th
@@ -323,13 +324,7 @@ onMounted(() => {
                         <div
                           class="inline px-3 py-1 text-sm font-normal rounded-full gap-x-2 bg-emerald-100/60 dark:bg-gray-800"
                         >
-                          {{
-                            mother.isPregnant
-                              ? "Hamil"
-                              : mother.isBreastfeed
-                              ? "Menyusui"
-                              : ""
-                          }}
+                          {{ mother.isPregnant ? "Hamil" : "Tidak Hamil" }}
                         </div>
                       </td>
                       <td
@@ -344,7 +339,9 @@ onMounted(() => {
                       <td
                         class="px-12 py-4 text-sm whitespace-nowrap dark:text-gray-300"
                       >
-                        {{ mother.dob ? formatTime(mother.dob) : null }}
+                        {{ mother.dob ? formatTime(mother.dob) : null }} - ({{
+                          calculateAge(mother.dob).years
+                        }}) tahun ({{ calculateAge(mother.dob).months }}) bulan
                       </td>
                       <td
                         class="px-4 py-4 text-sm font-medium whitespace-nowrap"

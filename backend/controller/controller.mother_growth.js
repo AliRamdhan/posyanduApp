@@ -13,6 +13,7 @@ const Mother = require("../models/model.mother");
 const getAllGrowth = async (req, res) => {
   try {
     const {
+      motherName,
       checkDate,
       height,
       weight,
@@ -50,11 +51,17 @@ const getAllGrowth = async (req, res) => {
     const skip = (page - 1) * limit;
     const limitNumber = parseInt(limit);
 
+    // Create a match object for children's name filtering
+    const motherMatch = motherName
+      ? { name: { $regex: new RegExp("^" + motherName, "i") } }
+      : {};
+
     const { data, total } = await service.getAll(
       filter,
       sortOptions,
       skip,
-      limitNumber
+      limitNumber,
+      motherMatch // Pass the match object to the service
     );
 
     // Respond with the data and pagination info

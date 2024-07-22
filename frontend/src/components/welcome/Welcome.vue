@@ -7,9 +7,9 @@
         <div class="max-w-xl mb-6">
           <div>
             <p
-              class="inline-block px-3 py-px mb-4 text-xs font-semibold tracking-wider text-teal-900 uppercase rounded-full bg-teal-accent-400"
+              class="inline-block px-3 py-px mb-4 text-xs font-semibold tracking-wider text-teal-900 uppercase rounded-full bg-gray-300"
             >
-              Brand new
+              POSYANDU RW 10
             </p>
           </div>
           <h2
@@ -28,14 +28,13 @@
             yang membutuhkannya.
           </p>
         </div>
-        <a
-          href="/"
-          aria-label=""
-          class="inline-flex items-center font-semibold transition-colors duration-200 text-deep-purple-accent-400 hover:text-deep-purple-800"
+        <router-link
+          to="/signin"
+          class="group inline-flex items-center font-semibold transition-colors duration-200 text-deep-purple-accent-400 hover:text-deep-purple-800 p-3"
         >
-          Learn more
+          Yuk Periksa Perkembangan!
           <svg
-            class="inline-block w-3 ml-2"
+            class="inline-block w-3 ml-2 group-hover:translate-x-10 transition-all duration-300"
             fill="currentColor"
             viewBox="0 0 12 12"
           >
@@ -43,7 +42,7 @@
               d="M9.707,5.293l-5-5A1,1,0,0,0,3.293,1.707L7.586,6,3.293,10.293a1,1,0,1,0,1.414,1.414l5-5A1,1,0,0,0,9.707,5.293Z"
             ></path>
           </svg>
-        </a>
+        </router-link>
       </div>
       <div class="relative">
         <svg

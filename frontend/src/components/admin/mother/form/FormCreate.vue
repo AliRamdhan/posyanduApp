@@ -3,6 +3,11 @@ import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { FwbInput, FwbButton, FwbSelect } from "flowbite-vue";
+import {
+  validateNomorKKNIK,
+  handleNumericInput,
+} from "../../../../utils/Validate";
+
 const store = useStore();
 const router = useRouter();
 
@@ -12,13 +17,13 @@ const bpjs = [
   { value: false, name: "Tidak Punya BPJS" },
 ];
 const isStatus = [
-  { value: "pregnant", name: "Hamil" },
-  { value: "breastfeed", name: "Menyusui" },
+  { value: true, name: "Hamil" },
+  { value: false, name: "Tidak Hamil" },
 ];
 const kss = [
-  { value: "KS1", name: "KS 1" },
-  { value: "KS2", name: "KS 2" },
-  { value: "KS3", name: "KS 3" },
+  { value: "KS1", name: "Kesejahteraan Sosial 1" },
+  { value: "KS2", name: "Kesejahteraan Sosial 2" },
+  { value: "KS3", name: "Kesejahteraan Sosial 3" },
 ];
 const data = ref({
   name: "",
@@ -29,7 +34,6 @@ const data = ref({
   dob: "",
   bpjs: null,
   isPregnant: null,
-  isBreastfeed: null,
   ks: "",
   RT: null,
   RW: null,
@@ -38,25 +42,37 @@ const data = ref({
 
 const selectedStatus = ref(null); // new ref to track the selected status
 
-watch(selectedStatus, (newValue) => {
-  if (newValue === "pregnant") {
-    data.value.isPregnant = true;
-    data.value.isBreastfeed = false;
-  } else if (newValue === "breastfeed") {
-    data.value.isBreastfeed = true;
-    data.value.isPregnant = false;
-  } else {
-    data.value.isPregnant = null;
-    data.value.isBreastfeed = false;
-  }
-});
+// watch(selectedStatus, (newValue) => {
+//   if (newValue === "pregnant") {
+//     data.value.isPregnant = true;
+//     data.value.isBreastfeed = false;
+//   } else if (newValue === "breastfeed") {
+//     data.value.isBreastfeed = true;
+//     data.value.isPregnant = false;
+//   } else {
+//     data.value.isPregnant = null;
+//     data.value.isBreastfeed = false;
+//   }
+// });
 
 const handleSubmit = async () => {
   try {
-    await store.dispatch("createMother", data.value);
-    alert("New data added");
-    console.log(data.value);
-    // router.push({ name: "dashboardAdminIbu" }); // Redirect to mothers list after action
+    const isNikValid = validateNomorKKNIK(data.value.nik);
+    const isKkValid = validateNomorKKNIK(data.value.kk);
+    const isNikSuamiValid = validateNomorKKNIK(data.value.husbandnik);
+
+    if (isNikValid && isKkValid && isNikSuamiValid) {
+      const dataS = await store.dispatch("createMother", data.value);
+      console.log(dataS);
+      alert("New data added");
+      router.push({ name: "dashboardAdminIbu" });
+    } else {
+      let errorMessage = "";
+      if (!isNikValid) errorMessage += "Nomor NIK tidak valid.\n";
+      if (!isKkValid) errorMessage += "Nomor KK tidak valid.\n";
+      if (!isNikSuamiValid) errorMessage += "Nomor NIK Suami tidak valid.\n";
+      alert(errorMessage);
+    }
   } catch (error) {
     console.error("Error adding mother:", error);
   }
@@ -71,16 +87,26 @@ const handleSubmit = async () => {
       </div>
       <div>
         <fwb-select
-          v-model="selectedStatus"
+          v-model="data.isPregnant"
           :options="isStatus"
           label="Select Status"
         />
       </div>
       <div>
-        <fwb-input v-model="data.nik" label="NIK" type="number" required />
+        <fwb-input
+          v-model="data.nik"
+          label="NIK"
+          required
+          @input="(event) => handleNumericInput(event, 'nik')"
+        />
       </div>
       <div>
-        <fwb-input v-model="data.kk" label="KK" type="number" required />
+        <fwb-input
+          v-model="data.kk"
+          label="KK"
+          required
+          @input="(event) => handleNumericInput(event, 'kk')"
+        />
       </div>
       <div>
         <fwb-input v-model="data.husband" label="Nama Suami" required />
@@ -89,8 +115,8 @@ const handleSubmit = async () => {
         <fwb-input
           v-model="data.husbandnik"
           label="NIK Suami"
-          type="number"
           required
+          @input="(event) => handleNumericInput(event, 'husbandnik')"
         />
       </div>
       <div>
@@ -103,10 +129,14 @@ const handleSubmit = async () => {
       </div>
       <div>
         <!-- <fwb-input v-model="data.bpjs" label="BPJS" /> -->
-        <fwb-select v-model="data.bpjs" :options="bpjs" label="Select BPJS" />
+        <fwb-select v-model="data.bpjs" :options="bpjs" label="BPJS" />
       </div>
       <div>
-        <fwb-select v-model="data.ks" :options="kss" label="Select KS" />
+        <fwb-select
+          v-model="data.ks"
+          :options="kss"
+          label="Kesejahteraan Sosial"
+        />
       </div>
       <div>
         <fwb-input v-model="data.rt" type="number" label="RT" />
@@ -114,14 +144,14 @@ const handleSubmit = async () => {
       <div>
         <fwb-input v-model="data.rw" type="number" label="RW" />
       </div>
-      <div>
+      <!-- <div>
         <fwb-input
           v-model="data.amountChild"
           type="number"
           label="Jumlah Anak"
           required
         />
-      </div>
+      </div> -->
     </div>
     <div class="space-x-4 mt-8">
       <fwb-button type="submit" color="default">Save</fwb-button>

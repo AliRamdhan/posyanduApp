@@ -1,17 +1,22 @@
-function calculateAge(dob) {
-    const birthDate = new Date(dob);
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDifference = today.getMonth() - birthDate.getMonth();
-    if (
-      monthDifference < 0 ||
-      (monthDifference === 0 && today.getDate() < birthDate.getDate())
-    ) {
-      age--;
-    }
-    return age;
+export const calculateAge = (dob) => {
+  const birthDate = new Date(dob);
+  const today = new Date();
+
+  let years = today.getFullYear() - birthDate.getFullYear();
+  let months = today.getMonth() - birthDate.getMonth();
+  if (months < 0 || (months === 0 && today.getDate() < birthDate.getDate())) {
+    years--;
+    months += 12;
   }
-  
+
+  if (today.getDate() < birthDate.getDate()) {
+    months--;
+  }
+
+  return { years, months };
+};
+
+
 export const averageAge = (filteredChildren) => {
   if (filteredChildren.length === 0) return 0;
   const totalAge = filteredChildren.reduce(

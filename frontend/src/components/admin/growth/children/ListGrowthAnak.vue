@@ -6,7 +6,12 @@ import { computed, onMounted, ref } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import formatTime from "../../../../utils/FormatTime";
-
+import {
+  calculateAge,
+  averageAge,
+  averageHeigtBody,
+  averageWeightBody,
+} from "../../../../utils/CalcurateAvg";
 const store = useStore();
 const router = useRouter();
 
@@ -15,6 +20,7 @@ console.log(childrens);
 const pagination = computed(() => store.getters.paginationChildrensGrowth);
 const searchCheck = ref("");
 const searchGroupFase = ref("");
+const searchChildrensName = ref("");
 const searchWeight = ref("");
 const searchHeight = ref("");
 const sortField = ref("");
@@ -29,6 +35,7 @@ const fetchChildrens = async () => {
       groupFase: searchGroupFase.value,
       heightBody: searchHeight.value,
       weightBody: searchWeight.value,
+      childrensName: searchChildrensName.value,
       sortField: sortField.value,
       sortOrder: sortOrder.value,
       page: currentPage.value,
@@ -91,7 +98,7 @@ onMounted(() => {
 <template>
   <section class="w-96 md:w-full flex justify-end px-4 overflow-hidden">
     <div class="w-full">
-      <ListHeader nameData="Data Anak" :numberData="childrens.length" />
+      <ListHeader nameData="Perkembangan Anak" :numberData="childrens.length" />
       <div class="mt-6 md:flex md:items-center md:justify-between">
         <div class="w-full grid grid-cols-1 lg:grid-cols-4 gap-4">
           <div class="flex gap-2 items-center text-sm">
@@ -113,8 +120,12 @@ onMounted(() => {
               placeholder="Search by check date"
             />
           </div>
-
           <fwb-input
+            v-model="searchChildrensName"
+            @input="fetchChildrens"
+            placeholder="Search by Nama"
+          />
+          <!-- <fwb-input
             v-model="searchWeight"
             @input="fetchChildrens"
             placeholder="Search by weigth"
@@ -123,7 +134,7 @@ onMounted(() => {
             v-model="searchHeight"
             @input="fetchChildrens"
             placeholder="Search by heigth"
-          />
+          /> -->
         </div>
       </div>
       <div class="flex flex-col mt-6">
@@ -256,9 +267,19 @@ onMounted(() => {
                         class="px-4 py-4 text-sm font-medium whitespace-nowrap"
                       >
                         <h2 class="font-medium text-gray-800 dark:text-white">
-                          {{
+                          <!-- {{
                             child.childrens?.dob
                               ? formatTime(child.childrens.dob)
+                              : null
+                          }} -->
+
+                          {{
+                            child.childrens?.dob
+                              ? `${formatTime(child.childrens.dob)} - (${
+                                  calculateAge(child.childrens.dob).years
+                                }) tahun (${
+                                  calculateAge(child.childrens.dob).months
+                                }) bulan`
                               : null
                           }}
                         </h2>
@@ -268,7 +289,11 @@ onMounted(() => {
                         class="px-4 py-4 text-sm font-medium whitespace-nowrap"
                       >
                         <!-- {{ child.childrens?.amountImunisation }} x / -->
-                        {{ child.imunisations?.name }} - Imunisasi ke {{ child.childrens?.amountImunisation }}x
+                        {{
+                          child.imunisations?.name
+                            ? child.imunisations?.name
+                            : "Tidak Imunisasi"
+                        }}
                       </td>
 
                       <td

@@ -3,7 +3,11 @@ import { ref, computed, onMounted, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { FwbInput, FwbButton, FwbSelect } from "flowbite-vue";
-
+import {
+  isBalita,
+  handleNumericInput,
+  validateNomorKKNIK,
+} from "../../../../utils/Validate";
 const store = useStore();
 const router = useRouter();
 const route = useRoute();
@@ -13,12 +17,12 @@ const gender = [
   { value: "Female", name: "Perempuan" },
 ];
 
-const isStatus = [
-  { value: "baduta", name: "Bayi Usia Dua Tahun" },
-  { value: "balita", name: "Bayi Usia Lima Tahun" },
-];
+// const isStatus = [
+//   { value: "baduta", name: "Bayi Usia Dua Tahun" },
+//   { value: "balita", name: "Bayi Usia Lima Tahun" },
+// ];
 
-const selectedStatus = ref(null);
+// const selectedStatus = ref(null);
 
 const childData = ref({
   name: "",
@@ -27,8 +31,6 @@ const childData = ref({
   dob: "",
   amountImunisation: 0,
   mother: "",
-  isBalita: null,
-  isBaduta: null,
 });
 
 onMounted(async () => {
@@ -36,18 +38,18 @@ onMounted(async () => {
   await fetchChild(route.params.id);
 });
 
-watch(selectedStatus, (newValue) => {
-  if (newValue === "baduta") {
-    childData.value.isBaduta = true;
-    childData.value.isBalita = false;
-  } else if (newValue === "balita") {
-    childData.value.isBalita = true;
-    childData.value.isBaduta = false;
-  } else {
-    childData.value.isBaduta = null;
-    childData.value.isBalita = false;
-  }
-});
+// watch(selectedStatus, (newValue) => {
+//   if (newValue === "baduta") {
+//     childData.value.isBaduta = true;
+//     childData.value.isBalita = false;
+//   } else if (newValue === "balita") {
+//     childData.value.isBalita = true;
+//     childData.value.isBaduta = false;
+//   } else {
+//     childData.value.isBaduta = null;
+//     childData.value.isBalita = false;
+//   }
+// });
 
 const fetchMothers = async () => {
   try {
@@ -93,19 +95,26 @@ const fetchChild = async (id) => {
 
 const handleSubmit = async () => {
   try {
-    await store.dispatch("updateChild", {
-      id: route.params.id,
-      childData: {
-        name: childData.value.name,
-        nik: childData.value.nik,
-        gender: childData.value.gender,
-        dob: childData.value.dob,
-        amountImunisation: childData.value.amountImunisation,
-        mother: childData.value.mother,
-        isBaduta: childData.value.isBaduta,
-        isBalita: childData.value.isBalita,
-      },
-    });
+    const isNikValid = validateNomorKKNIK(childData.value.nik);
+    if (isNikValid) {
+      await store.dispatch("updateChild", {
+        id: route.params.id,
+        childData: {
+          name: childData.value.name,
+          nik: childData.value.nik,
+          gender: childData.value.gender,
+          dob: childData.value.dob,
+          amountImunisation: childData.value.amountImunisation,
+          mother: childData.value.mother,
+          isBaduta: childData.value.isBaduta,
+          isBalita: childData.value.isBalita,
+        },
+      });
+    } else {
+      let errorMessage = "";
+      if (!isNikValid) errorMessage += "Nomor NIK tidak valid.\n";
+      alert(errorMessage);
+    }
     alert(`Child with ID ${route.params.id} updated`);
     router.push({ name: "dashboardAdminAnak" }); // Redirect to children list after action
   } catch (error) {
@@ -120,15 +129,20 @@ const handleSubmit = async () => {
       <div>
         <fwb-input v-model="childData.name" label="Nama" required />
       </div>
-      <div>
+      <!-- <div>
         <fwb-select
           v-model="selectedStatus"
           :options="isStatus"
           label="Select Status"
         />
-      </div>
+      </div> -->
       <div>
-        <fwb-input v-model="childData.nik" label="NIK" required />
+        <fwb-input
+          v-model="childData.nik"
+          label="NIK"
+          @input="(event) => handleNumericInput(event, 'nik')"
+          required
+        />
       </div>
       <div>
         <fwb-select
@@ -142,14 +156,6 @@ const handleSubmit = async () => {
           type="date"
           v-model="childData.dob"
           label="Tanggal Lahir"
-          required
-        />
-      </div>
-      <div>
-        <fwb-input
-          v-model.number="childData.amountImunisation"
-          type="number"
-          label="Jumlah Imunisasi"
           required
         />
       </div>

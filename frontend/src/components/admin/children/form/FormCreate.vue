@@ -3,7 +3,11 @@ import { ref, computed, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { FwbInput, FwbButton, FwbSelect } from "flowbite-vue";
-
+import {
+  isBalita,
+  handleNumericInput,
+  validateNomorKKNIK,
+} from "../../../../utils/Validate";
 const store = useStore();
 const router = useRouter();
 
@@ -24,30 +28,42 @@ const childData = ref({
   dob: "",
   amountImunisation: 0,
   mother: "",
-  isBalita: null,
-  isBaduta: null,
 });
 
-const selectedStatus = ref(null); // new ref to track the selected status
+// const selectedStatus = ref(null); // new ref to track the selected status
 
-watch(selectedStatus, (newValue) => {
-  if (newValue === "baduta") {
-    childData.value.isBaduta = true;
-    childData.value.isBalita = false;
-  } else if (newValue === "balita") {
-    childData.value.isBalita = true;
-    childData.value.isBaduta = false;
-  } else {
-    childData.value.isBaduta = null;
-    childData.value.isBalita = false;
-  }
-});
+// watch(selectedStatus, (newValue) => {
+//   if (newValue === "baduta") {
+//     childData.value.isBaduta = true;
+//     childData.value.isBalita = false;
+//   } else if (newValue === "balita") {
+//     childData.value.isBalita = true;
+//     childData.value.isBaduta = false;
+//   } else {
+//     childData.value.isBaduta = null;
+//     childData.value.isBalita = false;
+//   }
+// });
 
 const handleSubmit = async () => {
   try {
-    await store.dispatch("addChild", childData.value);
-    console.log("New child added");
-    router.push({ name: "dashboardAdminAnak" }); // Redirect to dashboardAdminAnak list after action
+    // const isBalita = isBalita(childData.value.dob);
+    // if (isBalita) {
+    //   // childData.value.isBalita = true;
+    //   childData.value.isBaduta = true;
+    // }
+    const isNikValid = validateNomorKKNIK(childData.value.nik);
+    if (isNikValid) {
+      const data = await store.dispatch("addChild", childData.value);
+      console.log("New child added");
+      alert("Data berhasil ditambahkan");
+      console.log(data);
+      // router.push({ name: "dashboardAdminAnak" }); // Redirect to dashboardAdminAnak list after action
+    } else {
+      let errorMessage = "";
+      if (!isNikValid) errorMessage += "Nomor NIK tidak valid.\n";
+      alert(errorMessage);
+    }
   } catch (error) {
     console.error("Error adding child:", error);
   }
@@ -79,15 +95,20 @@ const mothers = computed(() =>
       <div>
         <fwb-input v-model="childData.name" label="Nama" required />
       </div>
-      <div>
+      <!-- <div>
         <fwb-select
           v-model="selectedStatus"
           :options="isStatus"
           label="Select Status"
         />
-      </div>
+      </div> -->
       <div>
-        <fwb-input v-model="childData.nik" label="NIK" required type="number" />
+        <fwb-input
+          v-model="childData.nik"
+          label="NIK"
+          required
+          @input="(event) => handleNumericInput(event, 'nik')"
+        />
       </div>
       <div>
         <fwb-select
@@ -101,14 +122,6 @@ const mothers = computed(() =>
           type="date"
           v-model="childData.dob"
           label="Tanggal Lahir"
-          required
-        />
-      </div>
-      <div>
-        <fwb-input
-          v-model.number="childData.amountImunisation"
-          type="number"
-          label="Jumlah Imunisasi"
           required
         />
       </div>

@@ -1,6 +1,5 @@
-// store/index.js
-
 import ChildrenService from "../../service/children";
+import { calculateAge } from "../../utils/CalcurateAvg";
 
 const state = {
   children: [],
@@ -15,8 +14,39 @@ const state = {
   },
 };
 
+const setStatus = async (child) => {
+  const age = calculateAge(child.dob);
+  let isUpdated = false;
+
+  if (age.years > 2 || (age.years === 2 && age.months >= 1)) {
+    if (!child.isBalita || child.isBaduta) {
+      child.isBalita = true;
+      child.isBaduta = false;
+      isUpdated = true;
+    }
+  } else {
+    if (child.isBalita || !child.isBaduta) {
+      child.isBalita = false;
+      child.isBaduta = true;
+      isUpdated = true;
+    }
+  }
+
+  if (isUpdated) {
+    try {
+      await ChildrenService.updateData(child._id, child);
+    } catch (error) {
+      console.error(
+        `Error updating status for child with id ${child._id}:`,
+        error
+      );
+    }
+  }
+};
+
 const mutations = {
   setChildren(state, children) {
+    children.forEach((child) => setStatus(child));
     state.children = children;
   },
   setChildrenMom(state, childrenMom) {
@@ -32,12 +62,15 @@ const mutations = {
     state.paginationChild = paginationChild;
   },
   setChild(state, child) {
+    setStatus(child);
     state.child = child;
   },
   addChild(state, child) {
+    setStatus(child);
     state.children.push(child);
   },
   updateChild(state, updatedChild) {
+    setStatus(updatedChild);
     const index = state.children.findIndex(
       (child) => child._id === updatedChild._id
     );
@@ -68,7 +101,7 @@ const actions = {
       commit("setChildrenMom", response.data);
       return response.data;
     } catch (error) {
-      console.error(`Error fetching child with id ${id}:`, error);
+      console.error(`Error fetching child with id ${motherId}:`, error);
     }
   },
   async fetchChildrenBaduta({ commit }) {
@@ -77,7 +110,7 @@ const actions = {
       commit("setChildrenBaduta", response.data);
       return response.data;
     } catch (error) {
-      console.error(`Error fetching child:`, error);
+      console.error("Error fetching child:", error);
     }
   },
   async fetchChildrenBalita({ commit }) {
@@ -86,14 +119,13 @@ const actions = {
       commit("setChildrenBalita", response.data);
       return response.data;
     } catch (error) {
-      console.error(`Error fetching child:`, error);
+      console.error("Error fetching child:", error);
     }
   },
   async fetchChild({ commit }, id) {
     try {
       const response = await ChildrenService.getById(id);
       commit("setChild", response.data);
-      // console.log(response.data);
       return response.data;
     } catch (error) {
       console.error(`Error fetching child with id ${id}:`, error);
@@ -125,7 +157,6 @@ const actions = {
       console.error(`Error deleting data with id ${id}:`, error);
     }
   },
-  // Ensure addChild action is defined
   async addChild({ commit }, childData) {
     try {
       const response = await ChildrenService.createData(childData);
@@ -143,12 +174,11 @@ const actions = {
         alert("No data found for the selected month");
         return;
       }
-      // Perform file download
       const blob = new Blob([data], { type: "text/csv" });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `mothers_${month}.csv`;
+      a.download = `children_${month}.csv`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);

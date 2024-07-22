@@ -16,6 +16,7 @@ const routesMotherGrowth = require("./routes/router.mothergrowth");
 const routesChildrenGrowth = require("./routes/router.childrengrowth");
 const routesAuth = require("./routes/router.auth");
 const routesUser = require("./routes/router.user");
+const routesArticle = require("./routes/router.article");
 
 //middleware cors and parse to json
 app.use(cors());
@@ -34,6 +35,7 @@ app.use("/api/v1/auth", routesAuth);
 app.use("/api/v1/birth", routesBirth);
 app.use("/api/v1/growth-mother", routesMotherGrowth);
 app.use("/api/v1/growth-children", routesChildrenGrowth);
+app.use("/api/v1/article", routesArticle);
 
 app.listen(process.env.PORT, process.env.HOST, () => {
   console.log(

@@ -12,6 +12,7 @@ const router = useRouter();
 const mothers = computed(() => store.getters.motherGrowths);
 const pagination = computed(() => store.getters.paginationMotherGrowth);
 const searchCheck = ref("");
+const searchName = ref("");
 const searchWeight = ref("");
 const searchHeight = ref("");
 const searchKBType = ref("");
@@ -40,6 +41,7 @@ const limit = ref(10);
 const fetchMothers = async () => {
   try {
     const params = {
+      motherName: searchName.value,
       checkDate: searchCheck.value,
       height: searchHeight.value,
       weight: searchWeight.value,
@@ -133,52 +135,22 @@ onMounted(() => {
               placeholder="Search by check date"
             />
           </div>
-
           <fwb-input
-            v-model="searchWeight"
+            v-model="searchName"
             @input="fetchMothers"
-            placeholder="Search by weigth"
+            placeholder="Search by Nama"
           />
-          <fwb-input
-            v-model="searchHeight"
-            @input="fetchMothers"
-            placeholder="Search by height"
-          />
-          <fwb-input
+          <!-- <fwb-input
             v-model="searchKBType"
             @input="fetchMothers"
             placeholder="Search by kb type"
           />
-          <!-- <fwb-input
-          v-model="searchPregnantStatus"
-          @input="fetchMothers"
-          placeholder="Search by weigth"
-        /> -->
-          <fwb-checkbox
-            v-model="searchPregnantStatus"
-            @change="fetchMothers"
-            label="Status Kehamilan"
-          />
-          <fwb-input
-            v-model="searchWombAge"
-            @input="fetchMothers"
-            placeholder="Search by womb age"
-          />
-          <fwb-input
-            v-model="searchNumbChild"
-            @input="fetchMothers"
-            placeholder="Search by numbs child"
-          />
-          <fwb-input
-            v-model="circumStomach"
-            @input="fetchMothers"
-            placeholder="Search by circum stomach"
-          />
+
           <fwb-input
             v-model="circumHand"
             @input="fetchMothers"
-            placeholder="Search by circum hand"
-          />
+            placeholder="Search by Lingkar Tangan"
+          /> -->
         </div>
       </div>
       <div class="flex flex-col mt-6">
@@ -309,7 +281,7 @@ onMounted(() => {
                         class="px-4 py-4 text-sm font-medium whitespace-nowrap"
                       >
                         <!-- {{ child.gender }} -->
-                        {{ mother.height }} / {{ mother.weight }}
+                        {{ mother.height }} cm / {{ mother.weight }} kg
                       </td>
 
                       <td
@@ -333,17 +305,17 @@ onMounted(() => {
                       <td
                         class="px-4 py-4 text-sm font-medium whitespace-nowrap"
                       >
-                        {{ mother.circumStomach }}
+                        {{ mother.circumStomach }} cm
                       </td>
                       <td
                         class="px-4 py-4 text-sm font-medium whitespace-nowrap"
                       >
-                        {{ mother.circumHand }}
+                        {{ mother.circumHand }} cm
                       </td>
                       <td
                         class="px-4 py-4 text-sm font-medium whitespace-nowrap"
                       >
-                        {{ mother.kbtype }}
+                        KB {{ mother.kbtype }}
                       </td>
                       <td
                         class="px-4 py-4 text-sm font-medium whitespace-nowrap"

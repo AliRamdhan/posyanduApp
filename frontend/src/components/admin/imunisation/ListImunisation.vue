@@ -85,7 +85,7 @@ onMounted(() => {
   <section class="w-96 lg:w-full flex justify-end px-4 overflow-hidden">
     <div class="w-full">
       <ListHeader
-        nameData="Data Imunisasi"
+        nameData="Imunisasi"
         :numberData="immunisations.length"
       />
       <div class="mt-6 md:flex md:items-center md:justify-between">
@@ -105,7 +105,7 @@ onMounted(() => {
           <fwb-input
             v-model="searchName"
             @input="fetchImmunisations"
-            placeholder="Search by name"
+            placeholder="Search by Nama"
           >
             <template #prefix>
               <font-awesome-icon icon="fa-solid fa-magnifying-glass" />

@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { FwbInput, FwbButton, FwbSelect } from "flowbite-vue";
@@ -14,14 +14,26 @@ const motherGrowthData = ref({
   kbtype: "",
   wombAge: null,
   numbChild: null,
-  groupFase: "",
+  groupFase: "None",
   circumStomach: null,
   circumHand: null,
   mother: "",
 });
 
 const handleSubmit = async () => {
+  if (!motherGrowthData.value.mother) {
+    console.error("Mother must be selected");
+    return;
+  }
   try {
+    const child = store.getters.childrenMom.find(
+      (child) => child._id === childrenGrowthData.value.childrens
+    );
+
+    if (child) {
+      motherGrowthData.value.numbChild = child.isBaduta ? "Baduta" : "Balita";
+    }
+
     const data = await store.dispatch(
       "createMotherGrowth",
       motherGrowthData.value
@@ -46,6 +58,19 @@ const fetchMothers = async () => {
   }
 };
 
+const fetchChildrenMom = async (motherId) => {
+  try {
+    await store.dispatch("fetchChildrenMom", motherId);
+    const childrenCount = store.getters.childrenMom.length + 1;
+    motherGrowthData.value.numbChild = childrenCount;
+  } catch (error) {
+    console.error(
+      `Error fetching children for mother with id ${motherId}:`,
+      error
+    );
+  }
+};
+
 const mothers = computed(() =>
   store.getters.mothers.map((mother) => ({
     value: mother._id,
@@ -59,13 +84,39 @@ const groupFase = [
   { value: "Trimester 3", name: "Trimester 3" },
   { value: "None", name: "None" },
 ];
+
 const kbTypes = [
-  { value: "KB Suntik", name: "KB Suntik" },
-  { value: "KB Implan", name: "KB Implan" },
-  { value: "KB Pil", name: "KB Pil" },
-  { value: "KB IUD", name: "KB IUD" },
-  { value: "KB Alami", name: "KB Alami" },
+  { value: "Tidak Pakai", name: "Tidak Pakai" },
+  { value: "Suntik", name: "KB Suntik" },
+  { value: "Implan", name: "KB Implan" },
+  { value: "Pil", name: "KB Pil" },
+  { value: "IUD", name: "KB IUD" },
+  { value: "Alami", name: "KB Alami" },
 ];
+
+watch(
+  () => motherGrowthData.value.mother,
+  (newMotherId) => {
+    if (newMotherId) {
+      fetchChildrenMom(newMotherId);
+    }
+  }
+);
+
+watch(
+  () => motherGrowthData.value.wombAge,
+  (newWombAge) => {
+    if (newWombAge === null || newWombAge === undefined) {
+      motherGrowthData.value.groupFase = "None";
+    } else if (newWombAge >= 0 && newWombAge < 14) {
+      motherGrowthData.value.groupFase = "Trimester 1";
+    } else if (newWombAge >= 14 && newWombAge < 27) {
+      motherGrowthData.value.groupFase = "Trimester 2";
+    } else {
+      motherGrowthData.value.groupFase = "Trimester 3";
+    }
+  }
+);
 
 onMounted(() => {
   fetchMothers();
@@ -95,7 +146,7 @@ onMounted(() => {
         <fwb-input
           type="number"
           v-model.number="motherGrowthData.height"
-          label="Tinggi Badan"
+          label="Tinggi Badan (Cm)"
           required
         />
       </div>
@@ -103,7 +154,7 @@ onMounted(() => {
         <fwb-input
           type="number"
           v-model.number="motherGrowthData.weight"
-          label="Berat Badan"
+          label="Berat Badan (Kg)"
           required
         />
       </div>
@@ -120,13 +171,14 @@ onMounted(() => {
           type="number"
           v-model.number="motherGrowthData.numbChild"
           label="Anak ke- berapa"
+          :disabled="true"
         />
       </div>
       <div>
         <fwb-input
           type="number"
           v-model.number="motherGrowthData.wombAge"
-          label="Usia Kandungan"
+          label="Usia Kandungan (minggu)"
         />
       </div>
       <div>
@@ -134,6 +186,7 @@ onMounted(() => {
           v-model="motherGrowthData.groupFase"
           :options="groupFase"
           label="Fase Kehamilan"
+          :disabled="true"
           required
         />
       </div>
@@ -141,14 +194,14 @@ onMounted(() => {
         <fwb-input
           type="number"
           v-model.number="motherGrowthData.circumStomach"
-          label="Circumference of Stomach"
+          label="Lingkar Kepala (cm)"
         />
       </div>
       <div>
         <fwb-input
           type="number"
           v-model.number="motherGrowthData.circumHand"
-          label="Circumference of Hand"
+          label="Lingkar Tangan (cm)"
         />
       </div>
     </div>

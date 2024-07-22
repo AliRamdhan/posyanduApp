@@ -6,11 +6,18 @@ import { computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import formatTime from "../../../utils/FormatTime";
-
+import {
+  calculateAge,
+  averageAge,
+  averageHeigtBody,
+  averageWeightBody,
+} from "../../../utils/CalcurateAvg";
 const store = useStore();
 const router = useRouter();
 const pagination = computed(() => store.getters.paginationChild);
 const children = computed(() => store.getters.children);
+const age = computed(() => store.getters.children);
+// console.log("dqw", age);
 console.log(children);
 
 const searchName = ref("");
@@ -111,7 +118,7 @@ onMounted(() => {
 <template>
   <section class="w-96 md:w-full flex justify-end px-4 overflow-hidden">
     <div class="w-full">
-      <ListHeader name="Data Anak" :numberData="children.length" />
+      <ListHeader name="Anak" :numberData="children.length" />
       <div class="mt-6 md:flex md:items-center md:justify-between">
         <div
           class="w-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4"
@@ -129,7 +136,7 @@ onMounted(() => {
           <fwb-input
             v-model="searchName"
             @input="fetchChildren"
-            placeholder="Search by name"
+            placeholder="Search by Nama"
           >
             <template #prefix>
               <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
@@ -138,7 +145,7 @@ onMounted(() => {
           <fwb-input
             v-model="searchNIK"
             @input="fetchChildren"
-            placeholder="Search by NIK"
+            placeholder="Search by Nomor NIK"
           >
             <template #prefix>
               <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
@@ -210,7 +217,7 @@ onMounted(() => {
                         scope="col"
                         class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
                       >
-                        TTL
+                        Tempat, Tanggal, Lahir
                       </th>
                       <th
                         scope="col"
@@ -262,7 +269,18 @@ onMounted(() => {
                         class="px-4 py-4 text-sm font-medium whitespace-nowrap"
                       >
                         <h2 class="font-medium text-gray-800 dark:text-white">
-                          {{ formatTime(child.dob) }}
+                          <!-- {{ child.dob ? formatTime(child.dob) : null }} - ({{
+                            calculateAge(child.dob).years
+                          }}) tahun ({{ calculateAge(child.dob).months }}) bulan -->
+                          {{
+                            child.dob
+                              ? `${formatTime(child.dob)} - (${
+                                  calculateAge(child.dob).years
+                                }) tahun (${
+                                  calculateAge(child.dob).months
+                                }) bulan`
+                              : null
+                          }}
                         </h2>
                       </td>
                       <td

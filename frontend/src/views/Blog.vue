@@ -1,5 +1,26 @@
 <script setup>
 import BlogCard from "../components/card/BlogCard.vue";
+import { FwbInput, FwbSelect } from "flowbite-vue";
+import { computed, ref, onMounted } from "vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+import formatTime from "../utils/FormatTime";
+
+const store = useStore();
+const router = useRouter();
+
+const articles = computed(() => store.getters.articles);
+console.log("Dwqdqw", articles);
+const fetchArticles = async () => {
+  try {
+    await store.dispatch("fetchArticles");
+  } catch (error) {
+    console.error("Error fetching articles:", error);
+  }
+};
+onMounted(() => {
+  fetchArticles();
+});
 </script>
 
 <template>
@@ -18,11 +39,16 @@ import BlogCard from "../components/card/BlogCard.vue";
         </p>
       </div>
 
-      <div class="grid grid-cols-1 gap-8 mt-8 md:mt-16 md:grid-cols-2">
-        <BlogCard />
-        <BlogCard />
-        <BlogCard />
-        <BlogCard />
+      <div v-for="(article, index) in articles" :key="index">
+        <div class="grid grid-cols-1 gap-10 mt-8 md:mt-16 md:grid-cols-2">
+          <BlogCard
+            :title="article?.title"
+            :slug="article?.slug"
+            :image="article?.images"
+            :shortDescription="article?.shortDescription"
+            :createdAt="article?.createdAt"
+          />      
+        </div>
       </div>
     </div>
   </section>

@@ -4,16 +4,16 @@
   <section class="bg-white dark:bg-gray-900">
     <div class="container px-6 py-12 mx-auto">
       <div>
-        <p class="font-medium text-blue-500 dark:text-blue-400">Contact us</p>
+        <p class="font-medium text-blue-500 dark:text-blue-400">Silahkan</p>
 
         <h1
           class="mt-2 text-2xl font-semibold text-gray-800 md:text-3xl dark:text-white"
         >
-          Get in touch
+          Hubungi Kami
         </h1>
 
         <p class="mt-3 text-gray-500 dark:text-gray-400">
-          Our friendly team is always here to chat.
+          Tim kami yang ramah selalu siap untuk berbicara.
         </p>
       </div>
 
@@ -42,10 +42,10 @@
             Email
           </h2>
           <p class="mt-2 text-gray-500 dark:text-gray-400">
-            Our friendly team is here to help.
+            Tim kami yang ramah siap membantu.
           </p>
           <p class="mt-2 text-blue-500 dark:text-blue-400">
-            hello@merakiui.com
+            posyandu@gmail.com
           </p>
         </div>
 
@@ -75,14 +75,16 @@
           </span>
 
           <h2 class="mt-4 text-lg font-medium text-gray-800 dark:text-white">
-            Office
+            Kantor
           </h2>
           <p class="mt-2 text-gray-500 dark:text-gray-400">
-            Come say hello at our office HQ.
+            Datang dan sapa kami di posyandu.
           </p>
-          <p class="mt-2 text-blue-500 dark:text-blue-400">
-            100 Smith Street Collingwood VIC 3066 AU
-          </p>
+          <a href="https://maps.app.goo.gl/eiZErZFJSaPBQMNfA">
+            <p class="mt-2 text-blue-500 dark:text-blue-400">
+              Loa, Paseh, Kabupaten Bandung, Jawa Barat 40383
+            </p>
+          </a>
         </div>
 
         <div>
@@ -106,10 +108,10 @@
           </span>
 
           <h2 class="mt-4 text-lg font-medium text-gray-800 dark:text-white">
-            Phone
+            Telepon
           </h2>
           <p class="mt-2 text-gray-500 dark:text-gray-400">
-            Mon-Fri from 8am to 5pm.
+            Senin-Jumat dari jam 8 pagi sampai 5 sore.
           </p>
           <p class="mt-2 text-blue-500 dark:text-blue-400">+1 (555) 000-0000</p>
         </div>

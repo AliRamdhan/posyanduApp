@@ -11,10 +11,10 @@ const Imunisations = require("../models/model.immunisation");
 //     res.status(500).json({ message: error.message });
 //   }
 // };
-
 const getAllGrowth = async (req, res) => {
   try {
     const {
+      childrensName,
       checkDate,
       groupFase,
       heightBody,
@@ -42,11 +42,17 @@ const getAllGrowth = async (req, res) => {
     const skip = (page - 1) * limit;
     const limitNumber = parseInt(limit);
 
+    // Create a match object for children's name filtering
+    const childrensMatch = childrensName
+      ? { name: { $regex: new RegExp("^" + childrensName, "i") } }
+      : {};
+
     const { data, total } = await service.getAll(
       filter,
       sortOptions,
       skip,
-      limitNumber
+      limitNumber,
+      childrensMatch // Pass the match object to the service
     );
 
     // Respond with the data and pagination info
@@ -97,15 +103,20 @@ const getGrowthById = async (req, res) => {
 
 // Handler to create a new children growth record
 const createGrowth = async (req, res) => {
-  const {
+  let {
     checkDate,
     groupFase,
     childrens,
     heightBody,
     weightBody,
     imunisations,
-    isBaduta,
   } = req.body;
+
+  // If imunisations is an empty string, set it to null
+  if (imunisations === "") {
+    imunisations = null;
+  }
+
   const growthData = {
     checkDate,
     groupFase,
@@ -113,7 +124,6 @@ const createGrowth = async (req, res) => {
     heightBody,
     weightBody,
     imunisations,
-    isBaduta,
   };
 
   try {
@@ -125,7 +135,7 @@ const createGrowth = async (req, res) => {
       }
     }
 
-    // Check if the provided imunisations ID exists
+    // Check if the provided imunisations ID exists if it is not null
     if (imunisations) {
       const imunisationsExists = await Imunisations.findById(imunisations);
       if (!imunisationsExists) {
@@ -136,6 +146,12 @@ const createGrowth = async (req, res) => {
     }
 
     const data = await service.createData(growthData);
+    // console.log(data);
+    if (data.imunisations != null) {
+      await Children.findByIdAndUpdate(data.childrens, {
+        $inc: { amountImunisation: 1 },
+      });
+    }
     res.status(201).json({ message: "Created data successfully", data });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -174,6 +190,19 @@ const updateGrowth = async (req, res) => {
         return res.status(404).json({ message: "Imunisations not found" });
       }
       updateFields.imunisations = imunisations;
+    }
+
+    // If imunisations is an empty string, set it to null and decrement amountImunisation
+    if (imunisations === "") {
+      updateFields.imunisations = null;
+
+      // Find the existing record to get the current children reference
+      const existingGrowth = await service.findById(req.params.id);
+      if (existingGrowth && existingGrowth.imunisations) {
+        await Children.findByIdAndUpdate(existingGrowth.childrens, {
+          $inc: { amountImunisation: -1 },
+        });
+      }
     }
 
     const data = await service.updateData(req.params.id, updateFields);

@@ -3,6 +3,10 @@ import { ref, onMounted, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { FwbButton, FwbInput, FwbSelect } from "flowbite-vue";
+import {
+  validateNomorKKNIK,
+  handleNumericInput,
+} from "../../../../utils/Validate";
 
 const store = useStore();
 const router = useRouter();
@@ -90,26 +94,38 @@ watch(selectedStatus, (newValue) => {
 
 const handleSubmit = async () => {
   try {
-    const data = await store.dispatch("updateMother", {
-      id: route.params.id,
-      motherData: {
-        name: existData.value.name,
-        nik: existData.value.nik,
-        kk: existData.value.kk,
-        husband: existData.value.husband,
-        husbandnik: existData.value.husbandnik,
-        dob: existData.value.dob,
-        bpjs: existData.value.bpjs,
-        isPregnant: existData.value.isPregnant,
-        isBreastfeed: existData.value.isBreastfeed,
-        ks: existData.value.ks,
-        rt: existData.value.rt,
-        rw: existData.value.rw,
-        amountChild: existData.value.amountChild,
-      },
-    });
-    alert(`Data with ID ${route.params.id} updated`, data);
-    router.push({ name: "dashboardAdminIbu" }); // Redirect to mothers list after action
+    const isNikValid = validateNomorKKNIK(existData.value.nik);
+    const isKkValid = validateNomorKKNIK(existData.value.kk);
+    const isNikSuamiValid = validateNomorKKNIK(existData.value.husbandnik);
+
+    if (isNikValid && isKkValid && isNikSuamiValid) {
+      const data = await store.dispatch("updateMother", {
+        id: route.params.id,
+        motherData: {
+          name: existData.value.name,
+          nik: existData.value.nik,
+          kk: existData.value.kk,
+          husband: existData.value.husband,
+          husbandnik: existData.value.husbandnik,
+          dob: existData.value.dob,
+          bpjs: existData.value.bpjs,
+          isPregnant: existData.value.isPregnant,
+          isBreastfeed: existData.value.isBreastfeed,
+          ks: existData.value.ks,
+          rt: existData.value.rt,
+          rw: existData.value.rw,
+          amountChild: existData.value.amountChild,
+        },
+      });
+      alert(`Data with ID ${route.params.id} updated`, data);
+      router.push({ name: "dashboardAdminIbu" }); // Redirect to mothers list after action
+    } else {
+      let errorMessage = "";
+      if (!isNikValid) errorMessage += "Nomor NIK tidak valid.\n";
+      if (!isKkValid) errorMessage += "Nomor KK tidak valid.\n";
+      if (!isNikSuamiValid) errorMessage += "Nomor NIK Suami tidak valid.\n";
+      alert(errorMessage);
+    }
   } catch (error) {
     console.error("Error updating mother:", error);
   }
@@ -130,16 +146,31 @@ const handleSubmit = async () => {
         />
       </div>
       <div>
-        <fwb-input v-model="existData.nik" label="NIK" required />
+        <fwb-input
+          v-model="existData.nik"
+          label="NIK"
+          @input="(event) => handleNumericInput(event, 'nik')"
+          required
+        />
       </div>
       <div>
-        <fwb-input v-model="existData.kk" label="KK" required />
+        <fwb-input
+          v-model="existData.kk"
+          label="KK"
+          @input="(event) => handleNumericInput(event, 'kk')"
+          required
+        />
       </div>
       <div>
         <fwb-input v-model="existData.husband" label="Nama Suami" required />
       </div>
       <div>
-        <fwb-input v-model="existData.husbandnik" label="NIK Suami" required />
+        <fwb-input
+          v-model="existData.husbandnik"
+          @input="(event) => handleNumericInput(event, 'husbandnik')"
+          label="NIK Suami"
+          required
+        />
       </div>
       <div>
         <fwb-input

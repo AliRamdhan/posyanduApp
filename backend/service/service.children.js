@@ -18,6 +18,19 @@ const getAllBalita = async () => {
   }
 };
 
+const updateData = async (id, data) => {
+  try {
+    const child = await Children.findById(id);
+    if (!child) {
+      throw new Error("Children record not found");
+    }
+    await Children.updateOne({ _id: id }, data);
+    return await Children.findById(id); // Returning the updated document
+  } catch (error) {
+    throw error;
+  }
+};
+
 // Function to create a new children record
 const createChildren = async (data) => {
   try {
@@ -45,6 +58,7 @@ const deleteChildren = async (id) => {
 
 module.exports = {
   createChildren,
+  updateData,
   deleteChildren,
   getAllBaduta,
   getAllBalita,

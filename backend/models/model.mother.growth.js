@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 
 const schema = mongoose.model("mother_growth", {
   checkDate: { type: Date, required: true },
-  height: { type: Number, required: true },
-  weight: { type: Number, required: true },
+  height: { type: Number },
+  weight: { type: Number },
   kbtype: { type: String },
   wombAge: { type: Number },
   numbChild: { type: Number },

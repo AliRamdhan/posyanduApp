@@ -1,87 +1,93 @@
 <script setup>
-import CountUp from "vue-countup-v3";
+import StatsCard from "./Statistik.vue";
+import { FwbButton, FwbModal } from "flowbite-vue";
+import ModalDetailsStatsAnak from "../../components/datapublik/ModalDetailsStatsAnak.vue";
+import { computed, ref, onMounted } from "vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+import {
+  averageAge,
+  averageHeigtBody,
+  averageWeightBody,
+} from "../../utils/CalcurateAvg";
+
+const store = useStore();
+const router = useRouter();
+
+const children = computed(() => store.getters.children);
+const childrenGrowth = computed(() => store.getters.childrensGrowth);
+const mothersGrowth = computed(() => store.getters.motherGrowths);
+const mothers = computed(() => store.getters.mothers);
+
+const fetchMothersGrowth = async () => {
+  try {
+    await store.dispatch("fetchMotherGrowths");
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const fetchMothers = async () => {
+  try {
+    await store.dispatch("fetchMothers");
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const fetchChildren = async () => {
+  try {
+    await store.dispatch("fetchChildren");
+  } catch (error) {
+    console.error("Error fetching children in component:", error);
+  }
+};
+
+onMounted(() => {
+  fetchMothers();
+  fetchMothersGrowth();
+  fetchChildren();
+});
 </script>
+
 <template>
   <section
-    class="px-4 py-8 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-14"
+    class="w-full py-8 flex flex-col justify-center items-center"
   >
-    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-      <div class="text-center">
-        <div
-          class="flex items-center justify-center w-10 h-10 mx-auto mb-3 rounded-full bg-indigo-50 sm:w-12 sm:h-12"
-        >
-          <font-awesome-icon
-            icon="fa-solid fa-person-pregnant"
-            class="w-8 h-8 text-deep-purple-accent-400 sm:w-10 sm:h-10"
-          />
-        </div>
-        <h6 class="text-4xl font-bold text-black">
-          <count-up :end-val="2000"></count-up>
-        </h6>
-        <p class="mb-2 font-bold text-md text-black">Ibu Hamil</p>
-        <p class="text-gray-800">
-          It’s something that’s many of the wisest people in history have kept
-          in mind.
-        </p>
-      </div>
-      <div class="text-center">
-        <div
-          class="flex items-center justify-center w-10 h-10 mx-auto mb-3 rounded-full bg-indigo-50 sm:w-12 sm:h-12"
-        >
-          <font-awesome-icon
-            icon="fa-solid fa-child"
-            class="w-8 h-8 text-deep-purple-accent-400 sm:w-10 sm:h-10"
-          />
-        </div>
-        <h6 class="text-4xl font-bold text-black">
-          <count-up :end-val="2000"></count-up>
-        </h6>
-        <p class="mb-2 font-bold text-md text-black">Baduta</p>
-        <p class="text-gray-800">
-          For many men, the acquisition of wealth does not end their troubles,
-          it only changes them.
-        </p>
-      </div>
-      <div class="text-center">
-        <div
-          class="flex items-center justify-center w-10 h-10 mx-auto mb-3 rounded-full bg-indigo-50 sm:w-12 sm:h-12"
-        >
-          <font-awesome-icon
-            icon="fa-solid fa-child"
-            class="w-8 h-8 text-deep-purple-accent-400 sm:w-10 sm:h-10"
-          />
-        </div>
-        <h6 class="text-4xl font-bold text-black">
-          <count-up :end-val="2000"></count-up>
-        </h6>
-        <p class="mb-2 font-bold text-md text-black">Balita</p>
-        <p class="text-gray-800">
-          It's a helluva start, being able to recognize what makes you happy
-          today, in this moment.
-        </p>
-      </div>
-      <div class="text-center">
-        <div
-          class="flex items-center justify-center w-10 h-10 mx-auto mb-3 rounded-full bg-indigo-50 sm:w-12 sm:h-12"
-        >
-          <font-awesome-icon
-            icon="fa-solid fa-person-breastfeeding"
-            class="w-8 h-8 text-deep-purple-accent-400 sm:w-10 sm:h-10"
-          />
-        </div>
-        <h6 class="text-4xl font-bold text-black">
-          <count-up :end-val="2000"></count-up>
-        </h6>
-        <p class="mb-2 font-bold text-md text-black">Ibu Menyusui</p>
-        <p class="text-gray-800">
-          Happiness is when what you think, what you say, and what you do are in
-          harmony.
-        </p>
-      </div>
+    <div class="grid gap-10 sm:grid-cols-1 lg:grid-cols-4">
+      <StatsCard
+        statsName="Balita Dua Tahun (Baduta)"
+        :statsNumber="children?.filter((child) => child.isBaduta).length || 0"
+        statsDescription="Jumlah Anak Baduta di RW 10"
+        statsIcon="fa-solid fa-person-pregnant"
+        @click="showModal('baduta')"
+        :isModal="false"
+      />
+      <StatsCard
+        statsName="Ibu Hamil"
+        :statsNumber="
+          mothers?.filter((mother) => mother.isPregnant).length || 0
+        "
+        statsDescription="Jumlah Ibu Hamil di RW 10"
+        statsIcon="fa-solid fa-person-pregnant"
+        @click="showModal('ibuHamil')"
+        :isModal="false"
+      />
+      <StatsCard
+        statsName="Balita Lima Tahun (Balita)"
+        :statsNumber="children?.filter((child) => child.isBalita).length || 0"
+        statsDescription="Jumlah Anak Balita di RW 10"
+        statsIcon="fa-solid fa-person-breastfeeding"
+        :isModal="false"
+        @click="showModal('balita')"
+      />
+      <StatsCard
+        statsName="Total Ibu"
+        :statsNumber="mothers?.length || 0"
+        statsDescription="Total jumlah Ibu di RW 10"
+        statsIcon="fa-solid fa-child-dress"
+        :isModal="false"
+      />
     </div>
   </section>
 </template>
-
-
-
-<style></style>

@@ -76,6 +76,7 @@ const actions = {
   async fetchBirth({ commit }, id) {
     try {
       const response = await BirthService.getById(id);
+      // console.log(response.data);
       commit("setBirth", response.data);
       return response.data;
     } catch (error) {

@@ -14,7 +14,8 @@ import StatsPerkembanganAnak from "../../components/datapublik/StatsPerkembangan
       <StatsPerkembanganAnak />
     </div>
     <div class="w-11/12 mt-4">
-      <ListGrowthAnak />
+      CART ANAK
+      <!-- <ListGrowthAnak /> -->
     </div>
   </div>
 </template>

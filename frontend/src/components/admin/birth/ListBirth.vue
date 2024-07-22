@@ -45,7 +45,8 @@ const fetchBirths = async () => {
       page: currentPage.value,
       limit: limit.value,
     };
-    await store.dispatch("fetchBirths", params);
+    const data = await store.dispatch("fetchBirths", params);
+    console.log("dwqdq", data);
   } catch (error) {
     console.error("Error fetching data:", error);
   }
@@ -89,9 +90,11 @@ onMounted(() => {
 <template>
   <section class="w-96 md:w-full flex justify-end px-4 overflow-hidden">
     <div class="w-full">
-      <ListHeader nameData="Data Kelahiran" :numberData="births.length" />
+      <ListHeader nameData="Kelahiran" :numberData="births.length" />
       <div class="mt-6 md:flex md:items-center md:justify-between">
-        <div class="w-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div
+          class="w-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4"
+        >
           <div class="flex gap-2 items-center text-sm">
             <p>Show</p>
             <fwb-select

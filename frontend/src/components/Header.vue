@@ -161,13 +161,13 @@ onMounted(() => {
                   </fwb-list-group-item>
                 </fwb-list-group>
               </fwb-dropdown>
-              <!-- <router-link to="activity">
+              <router-link to="artikel">
                 <p
                   class="px-3 py-2 mx-3 mt-2 text-gray-700 transition-colors duration-300 transform rounded-md lg:mt-0 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   Artikel
                 </p>
-              </router-link> -->
+              </router-link>
               <router-link to="contact">
                 <p
                   class="px-3 py-2 mx-3 mt-2 text-gray-700 transition-colors duration-300 transform rounded-md lg:mt-0 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -178,16 +178,12 @@ onMounted(() => {
             </div>
 
             <div class="flex items-center mt-4 lg:mt-0">
-              
-
               <div v-if="isAuthenticated" class="flex items-center">
                 <fwb-dropdown :text="user.username" align-to-end>
                   <fwb-list-group>
                     <fwb-list-group-item>
                       {{ user.username }}
                     </fwb-list-group-item>
-                    <fwb-list-group-item> Settings </fwb-list-group-item>
-                    <fwb-list-group-item> Messages </fwb-list-group-item>
                     <fwb-list-group-item>
                       <button @click="handleLogout">Logout</button>
                     </fwb-list-group-item>

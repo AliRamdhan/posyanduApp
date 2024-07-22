@@ -3,55 +3,6 @@ const childService = require("../service/service.children");
 const Children = require("../models/model.children");
 const Mother = require("../models/model.mother");
 
-// const GetAllData = async (req, res) => {
-//   try {
-//     const {
-//       name,
-//       husband,
-//       dob,
-//       ks,
-//       bpjs,
-//       sortField,
-//       sortOrder = "asc",
-//       page = 1,
-//       limit = 10,
-//     } = req.query;
-
-//     const filter = {};
-//     if (name) {
-//       // Case insensitive search with partial matching
-//       filter.name = { $regex: new RegExp("^" + name, "i") };
-//     }
-//     if (husband) filter.husband = { $regex: new RegExp("^" + husband, "i") };
-//     if (dob) filter.dob = new Date(dob);
-//     if (ks) filter.ks = ks;
-//     if (bpjs !== undefined) filter.bpjs = bpjs === "true";
-
-//     const sortOptions = {};
-//     if (sortField) sortOptions[sortField] = sortOrder === "desc" ? -1 : 1;
-
-//     const countDocumentsPromise = Mother.countDocuments(filter);
-//     const findQuery = Mother.find(filter)
-//       .sort(sortOptions)
-//       .skip((page - 1) * limit)
-//       .limit(parseInt(limit));
-
-//     const [data, total] = await Promise.all([findQuery, countDocumentsPromise]);
-
-//     return res.status(200).json({
-//       message: "List All Data",
-//       data,
-//       pagination: {
-//         page: parseInt(page),
-//         limit: parseInt(limit),
-//         total,
-//       },
-//     });
-//   } catch (error) {
-//     return res.status(400).json({ error: error.message });
-//   }
-// };
-
 const getAllBirth = async (req, res) => {
   try {
     const {
@@ -112,43 +63,6 @@ const getBirthById = async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 };
-
-// Handler to create a new birth record
-// const createBirth = async (req, res) => {
-//   const { dob, circumHead, heightBody, weightBody, children, mother } =
-//     req.body;
-//   const birthData = {
-//     dob,
-//     circumHead,
-//     heightBody,
-//     weightBody,
-//     children,
-//     mother,
-//   };
-//   try {
-//     // Check if the provided children ID exists
-//     if (children) {
-//       const childrenExists = await Children.findById(children);
-//       if (!childrenExists) {
-//         return res.status(404).json({ message: "Children record not found" });
-//       }
-//     }
-
-//     // Check if the provided mother ID exists
-//     if (mother) {
-//       const motherExists = await Mother.findById(mother);
-//       if (!motherExists) {
-//         return res.status(404).json({ message: "Mother record not found" });
-//       }
-//     }
-
-//     const data = await birthService.createBirth(birthData);
-//     await Mother.findByIdAndUpdate(mother, { $inc: { amountChild: 1 } });
-//     res.status(201).json({ message: "Created data successfully", data });
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// };
 
 const createBirth = async (req, res) => {
   const {
@@ -224,49 +138,209 @@ const createBirth = async (req, res) => {
 };
 
 // Handler to update a birth record by ID
+// const updateBirth = async (req, res) => {
+//   const {
+//     name,
+//     nik,
+//     gender,
+//     amountImunisation,
+//     dob,
+//     circumHead,
+//     heightBody,
+//     weightBody,
+//     mother,
+//     children,
+//   } = req.body;
+
+//   const updateChildFields = {};
+//   const updateBirthFields = {};
+
+//   try {
+//     // Validate and update mother
+//     if (mother) {
+//       const existingMother = await Mother.findById(mother);
+//       if (!existingMother) {
+//         return res.status(404).json({ message: "Mother not found" });
+//       }
+//     }
+
+//     // Update child fields
+//     if (name) updateChildFields.name = name;
+//     if (nik) updateChildFields.nik = nik;
+//     if (gender) updateChildFields.gender = gender;
+//     if (amountImunisation)
+//       updateChildFields.amountImunisation = amountImunisation;
+//     if (mother) updateChildFields.mother = mother;
+
+//     // Update birth fields
+//     if (dob) updateBirthFields.dob = dob;
+//     if (circumHead) updateBirthFields.circumHead = circumHead;
+//     if (heightBody) updateBirthFields.heightBody = heightBody;
+//     if (weightBody) updateBirthFields.weightBody = weightBody;
+//     if (children) updateBirthFields.children = children;
+//     console.log("didwa",children)
+//     // Find the child by ID and update it
+//     // const childId = req.params.childId;
+//     const updatedChild = await childService.updateData(
+//       children,
+//       updateChildFields
+//     );
+//     if (!updatedChild) {
+//       return res.status(404).json({ message: "Child not found" });
+//     }
+
+//     // Update the birth record
+//     const birthId = req.params.id;
+//     const updatedBirth = await birthService.updateBirth(
+//       birthId,
+//       updateBirthFields
+//     );
+//     if (!updatedBirth) {
+//       return res.status(404).json({ message: "Birth record not found" });
+//     }
+
+//     res.status(200).json({
+//       message: "Data was updated successfully",
+//       data: { updatedChild, updatedBirth },
+//     });
+//   } catch (error) {
+//     // Rollback mechanism if child was updated but birth update failed
+//     // if (updateChildFields) {
+//     //   try {
+//     //     await childService.updateChildren(childId, {
+//     //       $unset: updateChildFields,
+//     //     });
+//     //     if (mother) {
+//     //       await Mother.findByIdAndUpdate(mother, { $inc: { amountChild: -1 } });
+//     //     }
+//     //   } catch (rollbackError) {
+//     //     return res
+//     //       .status(500)
+//     //       .json({ message: `Rollback failed: ${rollbackError.message}` });
+//     //   }
+//     // }
+//     res.status(500).json({ message: error.message });
+//   }
+// };
 const updateBirth = async (req, res) => {
-  const { dob, circumHead, heightBody, weightBody, children, mother } =
-    req.body;
-  const updateFields = {};
+  const {
+    name,
+    nik,
+    gender,
+    amountImunisation,
+    dob,
+    circumHead,
+    heightBody,
+    weightBody,
+    mother,
+    children,
+  } = req.body;
+
+  const updateChildFields = {};
+  const updateBirthFields = {};
 
   try {
-    if (dob) updateFields.dob = dob;
-    if (circumHead) updateFields.circumHead = circumHead;
-    if (heightBody) updateFields.heightBody = heightBody;
-    if (weightBody) updateFields.weightBody = weightBody;
-
-    if (children) {
-      const existingChildren = await Children.findById(children);
-      if (!existingChildren) {
-        return res.status(404).json({ message: "Children not found" });
-      }
-      updateFields.children = children;
+    // Fetch the current birth record
+    const birth = await birthService.getBirthById(req.params.id);
+    if (!birth) {
+      return res.status(404).json({ message: "Birth record not found" });
     }
 
+    // Fetch the current child record
+    const currentChild = birth.children;
+    if (!currentChild) {
+      return res.status(404).json({ message: "Child not found" });
+    }
+
+    // Fetch the current mother record
+    const currentMother = currentChild.mother;
+
+    // Validate and update mother
     if (mother) {
-      const existingMother = await Mother.findById(mother);
-      if (!existingMother) {
-        return res.status(404).json({ message: "Mother not found" });
+      const newMotherExists = await Mother.findById(mother);
+      if (!newMotherExists) {
+        return res.status(404).json({ message: "New mother not found" });
       }
-      updateFields.mother = mother;
     }
 
-    const data = await birthService.updateBirth(req.params.id, updateFields);
-    res.status(200).json({ message: "Data was updated", data });
+    // Update child fields
+    if (name) updateChildFields.name = name;
+    if (nik) updateChildFields.nik = nik;
+    if (gender) updateChildFields.gender = gender;
+    if (amountImunisation)
+      updateChildFields.amountImunisation = amountImunisation;
+    if (mother) updateChildFields.mother = mother;
+
+    // Update birth fields
+    if (dob) updateBirthFields.dob = dob;
+    if (circumHead) updateBirthFields.circumHead = circumHead;
+    if (heightBody) updateBirthFields.heightBody = heightBody;
+    if (weightBody) updateBirthFields.weightBody = weightBody;
+    if (children) updateBirthFields.children = children;
+
+    // Update the child record
+    const updatedChild = await childService.updateData(
+      currentChild._id,
+      updateChildFields
+    );
+    if (!updatedChild) {
+      return res.status(404).json({ message: "Child not found" });
+    }
+
+    // Update the birth record
+    const updatedBirth = await birthService.updateBirth(
+      req.params.id,
+      updateBirthFields
+    );
+    if (!updatedBirth) {
+      return res.status(404).json({ message: "Birth record not found" });
+    }
+
+    // Handle mother updates
+    if (mother && mother.toString() !== currentMother.toString()) {
+      await Mother.findByIdAndUpdate(currentMother, {
+        $inc: { amountChild: -1 },
+      });
+      await Mother.findByIdAndUpdate(mother, { $inc: { amountChild: 1 } });
+    }
+
+    res.status(200).json({
+      message: "Data was updated successfully",
+      data: { updatedChild, updatedBirth },
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
 // Handler to delete a birth record by ID
+// const deleteBirth = async (req, res) => {
+//   try {
+//     const birth = await birthService.deleteBirth(req.params.id);
+//     return res.status(200).json({ message: "Data was deleted" });
+//   } catch (error) {
+//     res.status(404).json({ message: error.message });
+//   }
+// };
 const deleteBirth = async (req, res) => {
   try {
-    const birth = await birthService.deleteBirth(req.params.id);
-    return res.status(200).json({ message: "Data was deleted" });
+    const birth = await birthService.getBirthById(req.params.id);
+    if (!birth) {
+      return res.status(404).json({ message: "Birth record not found" });
+    }
+
+    const motherId = birth.children?.mother;
+    if (motherId) {
+      await Mother.findByIdAndUpdate(motherId, { $inc: { amountChild: -1 } });
+    }
+
+    await birthService.deleteBirth(req.params.id);
+    res.status(200).json({ message: "Birth record deleted successfully" });
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
+
 const exportDataExcel = async (req, res) => {
   try {
     const { month } = req.query;

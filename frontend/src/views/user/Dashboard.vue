@@ -13,10 +13,10 @@ const router = useRouter();
 const user = computed(() => store.getters.user);
 const childrenMom = computed(() => store.getters.childrenMom);
 const mother = computed(() => store.getters.mother);
+
 // console.log("user", user);
 // console.log("child", childrenMom.value);
 // console.log("mother", mother.value);
-
 onMounted(async () => {
   await fetchChildrenMom(user.value.motherId);
   await fetchMom(user.value.motherId);

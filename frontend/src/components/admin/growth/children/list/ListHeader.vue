@@ -33,7 +33,7 @@ const addBirth = () => {
     <div>
       <div class="flex items-center gap-x-3">
         <h2 class="text-lg font-medium text-gray-800 dark:text-white">
-          {{ nameData }}
+          Data {{ nameData }}
         </h2>
 
         <span
@@ -43,7 +43,7 @@ const addBirth = () => {
       </div>
 
       <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">
-        These companies have purchased in the last 12 months.
+        Statistik Data {{ nameData }} di Posyandu RW 10
       </p>
     </div>
 

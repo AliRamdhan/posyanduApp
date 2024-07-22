@@ -14,7 +14,8 @@ import StatsPerkembanganIbu from "../../components/datapublik/StatsPerkembanganI
       <StatsPerkembanganIbu />
     </div>
     <div class="w-11/12 mt-4">
-      <ListGrowthIbu />
+      CART IBU
+      <!-- <ListGrowthIbu /> -->
     </div>
   </div>
 </template>

@@ -9,16 +9,51 @@ const Growth = require("../models/model.mother.growth");
 //     throw error;
 //   }
 // };
-const getAll = async (filter = {}, sortOptions = {}, skip = 0, limit = 10) => {
+// const getAll = async (filter = {}, sortOptions = {}, skip = 0, limit = 10) => {
+//   try {
+//     const findQuery = await Growth.find(filter)
+//       .sort(sortOptions)
+//       .skip(skip)
+//       .limit(limit)
+//       .populate("mother")
+//     const countDocumentsPromise = await Growth.countDocuments(filter);
+//     const [data, total] = await Promise.all([findQuery, countDocumentsPromise]);
+//     return { data, total };
+//   } catch (error) {
+//     throw error;
+//   }
+// };
+const getAll = async (
+  filter = {},
+  sortOptions = {},
+  skip = 0,
+  limit = 10,
+  populateMatch = {}
+) => {
   try {
     const findQuery = await Growth.find(filter)
       .sort(sortOptions)
       .skip(skip)
       .limit(limit)
-      .populate("mother")
-    const countDocumentsPromise = await Growth.countDocuments(filter);
-    const [data, total] = await Promise.all([findQuery, countDocumentsPromise]);
-    return { data, total };
+      .populate({
+        path: "mother",
+        match: populateMatch, // Use match option for filtering based on populated field's properties
+      });
+
+    // Filter out documents where childrens do not match
+    const filteredData = findQuery.filter((doc) => doc.mother);
+
+    // const countDocumentsPromise = await Growth.countDocuments(filter);
+    // Count only documents where childrens match
+    const countDocumentsPromise = await Growth.countDocuments({
+      ...filter,
+      mother: { $in: filteredData.map((doc) => doc.mother._id) },
+    });
+    const [data, total] = await Promise.all([
+      filteredData,
+      countDocumentsPromise,
+    ]);
+    return { data: filteredData, total };
   } catch (error) {
     throw error;
   }
@@ -26,7 +61,7 @@ const getAll = async (filter = {}, sortOptions = {}, skip = 0, limit = 10) => {
 
 const getPregnant = async () => {
   try {
-    const data = await Growth.find({pregnantStatus: true}).populate("mother");
+    const data = await Growth.find({ pregnantStatus: true }).populate("mother");
     return data;
   } catch (error) {
     throw error;
@@ -91,5 +126,5 @@ module.exports = {
   getById,
   updateData,
   deleteData,
-  getPregnant
+  getPregnant,
 };

@@ -12,8 +12,8 @@ const router = useRouter();
 
 const mothersGrowth = computed(() => store.getters.motherGrowths);
 const mothers = computed(() => store.getters.mothers);
-console.log("mother g", mothersGrowth);
-console.log("mother", mothers);
+// console.log("mother g", mothersGrowth);
+// console.log("mother", mothers);
 
 const fetchMothersGrowth = async () => {
   try {
@@ -87,7 +87,7 @@ function showModal(type) {
 
 <template>
   <div class="py-8 flex flex-col justify-center items-center">
-    <div class="grid gap-10 sm:grid-cols-1 lg:grid-cols-3">
+    <div class="grid gap-10 sm:grid-cols-1 lg:grid-cols-2">
       <StatsCard
         statsName="Ibu Hamil"
         :statsNumber="
@@ -98,7 +98,7 @@ function showModal(type) {
         @click="showModal('ibuHamil')"
         :isModal="true"
       />
-      <StatsCard
+      <!-- <StatsCard
         statsName="Ibu Menyusui"
         :statsNumber="
           mothers?.filter((mother) => mother.isBreastfeed).length || 0
@@ -107,7 +107,7 @@ function showModal(type) {
         statsIcon="fa-solid fa-person-breastfeeding"
         :isModal="true"
         @click="showModal('ibuMenyusui')"
-      />
+      /> -->
       <StatsCard
         statsName="Total Ibu"
         :statsNumber="mothers?.length || 0"
@@ -148,7 +148,7 @@ function showModal(type) {
             "
           />
         </div>
-        <div v-if="modalType === 'ibuMenyusui'">
+        <!-- <div v-if="modalType === 'ibuMenyusui'">
           <ModalDetailsStatsMenyusui
             statsName="Ibu Menyusui"
             :statsNumberUsia="averageAgeBreastfeeding"
@@ -156,7 +156,7 @@ function showModal(type) {
               mothers?.filter((mother) => mother.isBreastfeed).length || 0
             "
           />
-        </div>
+        </div> -->
       </template>
       <template #footer>
         <div class="flex justify-end">

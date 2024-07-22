@@ -237,10 +237,21 @@ const UpdateData = async (req, res) => {
 
 const DeleteData = async (req, res) => {
   try {
-    const data = await Children.deleteOne({ _id: req.params.id });
-    if (!data) {
+    const existingChildren = await Children.findOne({ _id: req.params.id });
+    if (!existingChildren) {
       return res.status(404).json({ message: "Data not found" });
     }
+    const mother = existingChildren.mother;
+    if (mother) {
+      await Mother.findByIdAndUpdate(mother, {
+        $inc: { amountChild: -1 },
+      });
+    }
+    // const data = await Children.updateOne({ _id: req.params.id }, existingChildren);
+    const data = await Children.deleteOne(existingChildren._id);
+    // if (!data) {
+    //   return res.status(404).json({ message: "Data not found" });
+    // }
     return res.status(200).json({ message: "Data was deleted" });
   } catch (error) {
     return res.status(400).json({ error: error.message });

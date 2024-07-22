@@ -52,7 +52,7 @@ const handleLogout = () => {
       </div>
       <router-link to="/dashboard/admin">
         <div
-          class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+          class="p-2.5 mt-4 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
         >
           <i class="bi bi-house-door-fill"></i>
           <span class="text-[15px] ml-4 text-gray-200 font-bold">Home</span>
@@ -60,7 +60,7 @@ const handleLogout = () => {
       </router-link>
       <router-link to="/dashboard/admin/ibu">
         <div
-          class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+          class="p-2.5 mt-4 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
         >
           <i class="bi bi-bookmark-fill"></i>
           <span class="text-[15px] ml-4 text-gray-200 font-bold">Data Ibu</span>
@@ -68,7 +68,7 @@ const handleLogout = () => {
       </router-link>
       <router-link to="/dashboard/admin/anak">
         <div
-          class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+          class="p-2.5 mt-4 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
         >
           <i class="bi bi-bookmark-fill"></i>
           <span class="text-[15px] ml-4 text-gray-200 font-bold"
@@ -78,7 +78,7 @@ const handleLogout = () => {
       </router-link>
       <router-link to="/dashboard/admin/imunisasi">
         <div
-          class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+          class="p-2.5 mt-4 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
         >
           <i class="bi bi-bookmark-fill"></i>
           <span class="text-[15px] ml-4 text-gray-200 font-bold"
@@ -88,7 +88,7 @@ const handleLogout = () => {
       </router-link>
       <router-link to="/dashboard/admin/kelahiran">
         <div
-          class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+          class="p-2.5 mt-4 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
         >
           <i class="bi bi-bookmark-fill"></i>
           <span class="text-[15px] ml-4 text-gray-200 font-bold"
@@ -98,7 +98,7 @@ const handleLogout = () => {
       </router-link>
       <div class="my-4 bg-gray-600 h-[1px]"></div>
       <div
-        class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+        class="p-2.5 mt-4 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
         @click="dropdown"
       >
         <i class="bi bi-chat-left-text-fill"></i>
@@ -126,24 +126,32 @@ const handleLogout = () => {
           </h1>
         </router-link>
       </div>
-      <router-link to="/dashboard/admin/report">
+      <router-link to="/dashboard/admin/artikel">
         <div
-          class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+          class="p-2.5 mt-4 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+        >
+          <i class="bi bi-bookmark-fill"></i>
+          <span class="text-[15px] ml-4 text-gray-200 font-bold">Artikel</span>
+        </div>
+      </router-link>
+      <!-- <router-link to="/dashboard/admin/report">
+        <div
+          class="p-2.5 mt-4 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
         >
           <i class="bi bi-bookmark-fill"></i>
           <span class="text-[15px] ml-4 text-gray-200 font-bold">Report</span>
         </div>
-      </router-link>
+      </router-link> -->
       <router-link to="/dashboard/admin/user">
         <div
-          class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+          class="p-2.5 mt-4 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
         >
           <i class="bi bi-bookmark-fill"></i>
           <span class="text-[15px] ml-4 text-gray-200 font-bold">User</span>
         </div>
       </router-link>
       <button
-        class="w-full p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+        class="w-full p-2.5 mt-4 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
         @click="handleLogout"
       >
         <i class="bi bi-box-arrow-in-right"></i>

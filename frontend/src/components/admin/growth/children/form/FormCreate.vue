@@ -23,9 +23,18 @@ const handleSubmit = async () => {
   }
 
   try {
+    const child = store.getters.childBaduta.find(
+      (child) => child._id === childrenGrowthData.value.childrens
+    );
+
+    if (child) {
+      childrenGrowthData.value.groupFase = child.isBaduta ? "Baduta" : "Balita";
+    }
+
     await store.dispatch("createChildBaduta", childrenGrowthData.value);
     console.log("Children growth record created");
-    router.push({ name: "dashboardAdminPerkembanganAnak" }); // Uncomment to enable redirect after creation
+    alert("Children growth record created");
+    // router.push({ name: "dashboardAdminPerkembanganAnak" }); // Uncomment to enable redirect after creation
   } catch (error) {
     console.error("Error creating children growth:", error);
   }
@@ -92,27 +101,6 @@ onMounted(() => {
         />
       </div>
       <div>
-        <fwb-input
-          type="number"
-          v-model.number="childrenGrowthData.heightBody"
-          label="Tinggi Badan"
-        />
-      </div>
-      <div>
-        <fwb-input
-          type="number"
-          v-model.number="childrenGrowthData.weightBody"
-          label="Berat Badan"
-        />
-      </div>
-      <div>
-        <fwb-select
-          v-model="childrenGrowthData.groupFase"
-          :options="groupFase"
-          label="Pilih Fase"
-        />
-      </div>
-      <div>
         <fwb-select
           v-model="childrenGrowthData.childrens"
           :options="children"
@@ -120,6 +108,27 @@ onMounted(() => {
           required
         />
       </div>
+      <div>
+        <fwb-input
+          type="number"
+          v-model.number="childrenGrowthData.heightBody"
+          label="Tinggi Badan (cm)"
+        />
+      </div>
+      <div>
+        <fwb-input
+          type="number"
+          v-model.number="childrenGrowthData.weightBody"
+          label="Berat Badan (kg)"
+        />
+      </div>
+      <!-- <div>
+        <fwb-select
+          v-model="childrenGrowthData.groupFase"
+          :options="groupFase"
+          label="Pilih Fase"
+        />
+      </div> -->
       <div>
         <fwb-select
           v-model="childrenGrowthData.imunisations"

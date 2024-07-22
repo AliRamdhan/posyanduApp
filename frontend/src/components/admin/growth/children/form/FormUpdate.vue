@@ -96,15 +96,6 @@ const children = computed(() =>
     name: child.name,
   }))
 );
-
-const groupFase = [
-  { value: "0-1", name: "0-1" },
-  { value: "1-3", name: "1-3" },
-  { value: "3-6", name: "3-6" },
-  { value: "9-12", name: "9-12" },
-  { value: "12-18", name: "12-18" },
-  { value: "18-24", name: "18-24" },
-];
 </script>
 
 <template>
@@ -119,6 +110,13 @@ const groupFase = [
         />
       </div>
       <div>
+        <fwb-select
+          v-model="childrenGrowthData.childrens"
+          :options="children"
+          label="Pilih Anak"
+        />
+      </div>
+      <div>
         <fwb-input
           type="number"
           v-model.number="childrenGrowthData.heightBody"
@@ -130,20 +128,6 @@ const groupFase = [
           type="number"
           v-model.number="childrenGrowthData.weightBody"
           label="Berat Badan"
-        />
-      </div>
-      <div>
-        <fwb-select
-          v-model="childrenGrowthData.groupFase"
-          :options="groupFase"
-          label="Pilih Fase"
-        />
-      </div>
-      <div>
-        <fwb-select
-          v-model="childrenGrowthData.childrens"
-          :options="children"
-          label="Pilih Anak"
         />
       </div>
       <div>

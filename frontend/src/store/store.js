@@ -8,6 +8,7 @@ import imunisation from "./modules/imunisation";
 import motherGrowth from "./modules/motherGrowth";
 import childrenGrowth from "./modules/childrenGrowth";
 import user from "./modules/user";
+import article from "./modules/article";
 const store = createStore({
   modules: {
     auth,
@@ -18,6 +19,7 @@ const store = createStore({
     motherGrowth,
     childrenGrowth,
     user,
+    article,
   },
   plugins: [createPersistedState()],
 });

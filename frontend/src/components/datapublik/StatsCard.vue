@@ -32,7 +32,7 @@ function handleClick() {
 
 <template>
   <div
-    class="text-center border shadow-xl w-72 h-72 flex flex-col justify-center items-center rounded-full p-4"
+    class="text-center border shadow-xl w-64 h-64 flex flex-col justify-center items-center rounded-full p-6"
   >
     <div
       class="flex items-center justify-center w-10 h-10 mx-auto mb-3 rounded-full bg-indigo-50 sm:w-12 sm:h-12"

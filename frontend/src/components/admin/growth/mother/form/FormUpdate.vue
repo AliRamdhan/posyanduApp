@@ -51,7 +51,6 @@ const fetchMothers = async () => {
 const fetchMotherGrowth = async (id) => {
   try {
     const data = await store.dispatch("fetchMotherGrowth", id);
-    console.log(data);
     motherGrowthData.value = {
       checkDate: data.checkDate
         ? new Date(data.checkDate).toISOString().split("T")[0]
@@ -93,6 +92,15 @@ const pregnantStatus = [
   { value: "false", name: "Tidak Hamil" },
 ];
 
+const kbTypes = [
+  { value: "Tidak Pakai", name: "Tidak Pakai" },
+  { value: "Suntik", name: "KB Suntik" },
+  { value: "Implan", name: "KB Implan" },
+  { value: "Pil", name: "KB Pil" },
+  { value: "IUD", name: "KB IUD" },
+  { value: "Alami", name: "KB Alami" },
+];
+
 onMounted(async () => {
   await fetchMothers();
   await fetchMotherGrowth(route.params.id);
@@ -103,32 +111,19 @@ onMounted(async () => {
     <div class="mt-8 grid lg:grid-cols-2 gap-4">
       <div>
         <div class="flex items-center gap-4 py-2">
-          <!-- <fwb-input
-            type="checkbox"
-            v-model="motherGrowthData.pregnantStatus"
-            @change="() => console.log(motherGrowthData.pregnantStatus)"
-            class="w-4"
-          /> -->
           <fwb-select
             v-model="motherGrowthData.pregnantStatus"
             :options="pregnantStatus"
             label="Hamil/Tidak"
             required
           />
-          
-          <!-- <fwb-input
-            type="checkbox"
-            v-model="motherGrowthData.pregnantStatus"
-            class="w-4"
-          />
-          <span class="text-sm">Jika hamil, ceklis</span> -->
         </div>
       </div>
       <div>
         <fwb-input
           type="date"
           v-model="motherGrowthData.checkDate"
-          label="Check Date"
+          label="Tanggal Periksa"
           required
         />
       </div>
@@ -136,7 +131,7 @@ onMounted(async () => {
         <fwb-input
           type="number"
           v-model.number="motherGrowthData.height"
-          label="Height"
+          label="Tinggi Badan (cm)"
           required
         />
       </div>
@@ -144,36 +139,37 @@ onMounted(async () => {
         <fwb-input
           type="number"
           v-model.number="motherGrowthData.weight"
-          label="Weight"
+          label="Berat Badan (kg)"
           required
         />
       </div>
       <div>
-        <fwb-input
-          type="text"
+        <fwb-select
           v-model="motherGrowthData.kbtype"
-          label="KB Type"
+          :options="kbTypes"
+          label="Tipe KB"
+          required
         />
       </div>
       <div>
         <fwb-input
           type="number"
           v-model.number="motherGrowthData.wombAge"
-          label="Womb Age"
+          label="Usia Kandungan (bulan)"
         />
       </div>
       <div>
         <fwb-input
           type="number"
           v-model.number="motherGrowthData.numbChild"
-          label="Number of Children"
+          label="Anak ke-berapa"
         />
       </div>
       <div>
         <fwb-select
           v-model="motherGrowthData.groupFase"
           :options="groupFase"
-          label="Group Fase"
+          label="Fase Kehamilan"
           required
         />
       </div>
@@ -181,21 +177,21 @@ onMounted(async () => {
         <fwb-input
           type="number"
           v-model.number="motherGrowthData.circumStomach"
-          label="Circumference of Stomach"
+          label="Lingkaran Perut"
         />
       </div>
       <div>
         <fwb-input
           type="number"
           v-model.number="motherGrowthData.circumHand"
-          label="Circumference of Hand"
+          label="Lingkaran Tangan"
         />
       </div>
       <div>
         <fwb-select
           v-model="motherGrowthData.mother"
           :options="mothers"
-          label="Mother"
+          label="Ibu"
           required
         />
       </div>

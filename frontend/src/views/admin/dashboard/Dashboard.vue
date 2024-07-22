@@ -27,7 +27,7 @@ onMounted(() => {
 <template>
   <!-- <div class="w-full flex justify-between"> -->
   <!-- <Sidebar /> -->
-  <div class="max-w-screen-lg">
+  <div class="w-4/5">
     <Header :username="user.username" />
     <div class="mx-auto w-full px-4 sm:px-6 lg:px-8">
       <!-- <h1>Dashboard</h1>

@@ -12,6 +12,10 @@ const store = useStore();
 
 const router = useRouter();
 const props = defineProps({
+  name: {
+    type: String,
+    required: true,
+  },
   numberData: {
     type: Number,
     required: true,
@@ -42,7 +46,7 @@ const exportData = () => {
       </div>
 
       <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">
-        These companies have purchased in the last 12 months.
+        Statistik Data {{ name }} di Posyandu RW 10
       </p>
     </div>
 

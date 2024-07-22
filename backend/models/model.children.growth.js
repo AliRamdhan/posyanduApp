@@ -16,6 +16,7 @@ const schema = mongoose.model("children_growth", {
   imunisations: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "imunisations", // Reference to the Choice collection
+    default: null,
   },
 });
 

@@ -8,9 +8,9 @@ const name = ref("");
 <template>
   <section class="w-4/5">
     <div class="p-8 rounded border border-gray-200">
-      <h1 class="font-medium text-3xl">Perbarui Data Imunisasi</h1>
+      <h1 class="font-medium text-3xl">Perbarui Data Anak</h1>
       <p class="text-gray-600 mt-6">
-        Mohon perbarui informasi imunisasi yang sudah ada untuk memastikan
+        Mohon perbarui informasi anak yang sudah ada untuk memastikan
         catatan kesehatan yang selalu up-to-date.
       </p>
       <FormUpdate />
