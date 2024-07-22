@@ -29,8 +29,8 @@ const existData = ref({
 });
 
 const isStatus = [
-  { value: "pregnant", name: "Hamil" },
-  { value: "breastfeed", name: "Menyusui" },
+  { value: true, name: "Hamil" },
+  { value: false, name: "Tidak Hamil" },
 ];
 
 const selectedStatus = ref(null);
