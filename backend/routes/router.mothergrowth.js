@@ -4,6 +4,8 @@ const controller = require("../controller/controller.mother_growth");
 // Route to get all growth records
 router.get("/", controller.getAllGrowth);
 router.get("/pregnant", controller.getAllPregnant);
+
+router.get("/all/:motherId", controller.getGrowthByMother);
 // Route to get a growth record by ID
 router.get("/:id", controller.getGrowthById);
 

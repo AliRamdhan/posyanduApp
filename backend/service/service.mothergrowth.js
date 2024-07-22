@@ -1,28 +1,5 @@
 const Growth = require("../models/model.mother.growth");
-
-// Function to get all birth records
-// const getAll = async () => {
-//   try {
-//     const data = await Growth.find().populate("mother");
-//     return data;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
-// const getAll = async (filter = {}, sortOptions = {}, skip = 0, limit = 10) => {
-//   try {
-//     const findQuery = await Growth.find(filter)
-//       .sort(sortOptions)
-//       .skip(skip)
-//       .limit(limit)
-//       .populate("mother")
-//     const countDocumentsPromise = await Growth.countDocuments(filter);
-//     const [data, total] = await Promise.all([findQuery, countDocumentsPromise]);
-//     return { data, total };
-//   } catch (error) {
-//     throw error;
-//   }
-// };
+const Mother = require("../models/model.mother");
 const getAll = async (
   filter = {},
   sortOptions = {},
@@ -62,6 +39,22 @@ const getAll = async (
 const getPregnant = async () => {
   try {
     const data = await Growth.find({ pregnantStatus: true }).populate("mother");
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getMother = async (motherId) => {
+  try {
+    const existingMother = await Mother.findOne({ _id: motherId });
+    // console.log(existingMother);
+    if (!existingMother) {
+      return null;
+    }
+    const data = await Growth.find({
+      mother: existingMother,
+    }).populate("mother");
     return data;
   } catch (error) {
     throw error;
@@ -124,6 +117,7 @@ module.exports = {
   getAll,
   createData,
   getById,
+  getMother,
   updateData,
   deleteData,
   getPregnant,

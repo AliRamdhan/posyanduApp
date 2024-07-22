@@ -98,6 +98,18 @@ const getGrowthById = async (req, res) => {
   }
 };
 
+const getGrowthByMother = async (req, res) => {
+  try {
+    const data = await service.getMother(req.params.motherId);
+    if (!data) {
+      return res.status(404).json({ message: "Data not found" });
+    }
+    res.status(200).json({ message: "List All Data", data });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // Handler to create a new growth record
 const createGrowth = async (req, res) => {
   const {
@@ -199,6 +211,7 @@ const deleteGrowth = async (req, res) => {
 module.exports = {
   getAllGrowth,
   getGrowthById,
+  getGrowthByMother,
   createGrowth,
   updateGrowth,
   deleteGrowth,
