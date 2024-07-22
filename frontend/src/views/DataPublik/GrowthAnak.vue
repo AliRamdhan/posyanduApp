@@ -1,5 +1,5 @@
 <script setup>
-import ListGrowthAnak from "../../components/admin/datapublik/ListGrowthAnak.vue";
+import ChartAnak from "../../components/admin/chart/Chart4.vue";
 import StatsPerkembanganAnak from "../../components/datapublik/StatsPerkembanganAnak.vue";
 </script>
 <template>
@@ -14,8 +14,7 @@ import StatsPerkembanganAnak from "../../components/datapublik/StatsPerkembangan
       <StatsPerkembanganAnak />
     </div>
     <div class="w-11/12 mt-4">
-      CART ANAK
-      <!-- <ListGrowthAnak /> -->
+      <ChartAnak />
     </div>
   </div>
 </template>

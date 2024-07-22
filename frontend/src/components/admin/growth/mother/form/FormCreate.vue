@@ -26,13 +26,13 @@ const handleSubmit = async () => {
     return;
   }
   try {
-    const child = store.getters.childrenMom.find(
-      (child) => child._id === childrenGrowthData.value.childrens
-    );
+    // const child = store.getters.childrenMom.find(
+    //   (child) => child._id === childrenGrowthData.value.childrens
+    // );
 
-    if (child) {
-      motherGrowthData.value.numbChild = child.isBaduta ? "Baduta" : "Balita";
-    }
+    // if (child) {
+    //   motherGrowthData.value.numbChild = child.isBaduta ? "Baduta" : "Balita";
+    // }
 
     const data = await store.dispatch(
       "createMotherGrowth",
@@ -40,7 +40,7 @@ const handleSubmit = async () => {
     );
     console.log("Mother growth record created");
     console.log(data);
-    // router.push({ name: "dashboardAdminPerkembanganIbu" });
+    router.push({ name: "dashboardAdminPerkembanganIbu" });
   } catch (error) {
     console.error("Error creating mother growth:", error);
   }
@@ -108,11 +108,11 @@ watch(
   (newWombAge) => {
     if (newWombAge === null || newWombAge === undefined) {
       motherGrowthData.value.groupFase = "None";
-    } else if (newWombAge >= 0 && newWombAge < 14) {
+    } else if (newWombAge >= 1 && newWombAge < 14) {
       motherGrowthData.value.groupFase = "Trimester 1";
     } else if (newWombAge >= 14 && newWombAge < 27) {
       motherGrowthData.value.groupFase = "Trimester 2";
-    } else {
+    } else if (newWombAge >= 28 && newWombAge < 50) {
       motherGrowthData.value.groupFase = "Trimester 3";
     }
   }

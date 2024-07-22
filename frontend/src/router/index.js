@@ -8,6 +8,7 @@ import Contact from "../views/Contact.vue";
 import Articles from "../views/Articles.vue";
 import ArticleDetails from "../views/ArticleDetails.vue";
 import Service from "../views/Service.vue";
+import Chart from "../views/Chart.vue";
 import Statistic from "../views/Statistic.vue";
 
 // Auth
@@ -130,15 +131,15 @@ const routes = [
     component: Forbidden,
   },
   {
-    path: "/service",
-    name: "service",
-    component: Service,
+    path: "/chart",
+    name: "chart",
+    component: Chart,
   },
-  {
-    path: "/statistic",
-    name: "statistic",
-    component: Statistic,
-  },
+  // {
+  //   path: "/statistic",
+  //   name: "statistic",
+  //   component: Statistic,
+  // },
   // AUTHENTICATION
   {
     path: "/profile",

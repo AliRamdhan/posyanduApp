@@ -8,6 +8,8 @@ import ProfileBox from "../../components/user/ProfileBox.vue";
 import Statistic from "../../components/user/StatistikUser.vue";
 import ListChild from "../../components/user/ListChild.vue";
 
+import ChartUser from "../../components/admin/chart/Chart6.vue";
+
 const store = useStore();
 const router = useRouter();
 const user = computed(() => store.getters.user);
@@ -62,6 +64,9 @@ const fetchProfile = async () => {
           <div class="my-8">
             <h2 class="text-2xl font-bold text-gray-700">Profile Data</h2>
             <ProfileBox :mother="mother" />
+            <div class="w-full">
+              <ChartUser :mother-id="user.motherId" />
+            </div>
           </div>
           <h2 class="text-2xl font-bold text-gray-700">Table Data Anak</h2>
           <ListChild :children="childrenMom" />

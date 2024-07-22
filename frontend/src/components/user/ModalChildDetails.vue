@@ -3,7 +3,7 @@ import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import formatTime from "../../utils/FormatTime";
 import { FwbCheckbox } from "flowbite-vue";
-
+import ChartAnak from "../admin/chart/Chart5.vue";
 const props = defineProps({
   childId: {
     type: String,
@@ -48,7 +48,7 @@ onMounted(async () => {
           <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
             <dt class="font-medium text-gray-900">TTL</dt>
             <dd class="text-gray-700 sm:col-span-2">
-              {{ formatTime(child.dob) }}
+              {{ child.dob ? formatTime(child.dob) : null }}
             </dd>
           </div>
 
@@ -69,7 +69,7 @@ onMounted(async () => {
           >
             <dt class="font-medium text-gray-100 text-xl">Perkembangan Anak</dt>
           </div>
-          <div v-if="childGrowth && childGrowth.length">
+          <div class="w-full" v-if="childGrowth && childGrowth.length">
             <div
               v-for="growth in childGrowth"
               :key="growth._id"
@@ -79,7 +79,7 @@ onMounted(async () => {
                 <dt class="font-medium text-gray-900">
                   <p>Perkembangan {{ child.name }}</p>
                   <p>
-                    {{ formatTime(growth.checkDate) }}
+                    {{ growth.checkDate ? formatTime(growth.checkDate) : null }}
                   </p>
                 </dt>
                 <dd class="text-gray-700 sm:col-span-2">
@@ -92,6 +92,11 @@ onMounted(async () => {
                     </li>
                   </ul>
                 </dd>
+              </div>
+            </div>
+            <div class="w-full">
+              <div>
+                <ChartAnak :child-id="childId" />
               </div>
             </div>
           </div>

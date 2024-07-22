@@ -1,5 +1,5 @@
 <script setup>
-import ListGrowthIbu from "../../components/admin/datapublik/ListGrowthIbu.vue";
+import ChartIbu from "../../components/admin/chart/Chart3.vue";
 import StatsPerkembanganIbu from "../../components/datapublik/StatsPerkembanganIbu.vue";
 </script>
 <template>
@@ -14,8 +14,7 @@ import StatsPerkembanganIbu from "../../components/datapublik/StatsPerkembanganI
       <StatsPerkembanganIbu />
     </div>
     <div class="w-11/12 mt-4">
-      CART IBU
-      <!-- <ListGrowthIbu /> -->
+      <ChartIbu />
     </div>
   </div>
 </template>

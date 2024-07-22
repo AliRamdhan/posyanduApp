@@ -98,16 +98,6 @@ function showModal(type) {
         @click="showModal('ibuHamil')"
         :isModal="true"
       />
-      <!-- <StatsCard
-        statsName="Ibu Menyusui"
-        :statsNumber="
-          mothers?.filter((mother) => mother.isBreastfeed).length || 0
-        "
-        statsDescription="Jumlah Ibu Menyusui di RW 10"
-        statsIcon="fa-solid fa-person-breastfeeding"
-        :isModal="true"
-        @click="showModal('ibuMenyusui')"
-      /> -->
       <StatsCard
         statsName="Total Ibu"
         :statsNumber="mothers?.length || 0"
@@ -148,15 +138,6 @@ function showModal(type) {
             "
           />
         </div>
-        <!-- <div v-if="modalType === 'ibuMenyusui'">
-          <ModalDetailsStatsMenyusui
-            statsName="Ibu Menyusui"
-            :statsNumberUsia="averageAgeBreastfeeding"
-            :statsNumberTotal="
-              mothers?.filter((mother) => mother.isBreastfeed).length || 0
-            "
-          />
-        </div> -->
       </template>
       <template #footer>
         <div class="flex justify-end">

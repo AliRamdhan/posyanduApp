@@ -57,7 +57,7 @@ onMounted(() => {
 
             <dt class="font-medium text-gray-900">Date of Birth</dt>
             <dd class="text-gray-700 sm:col-span-2">
-              {{ formatTime(child.dob) }}
+              {{ child.dob ? formatTime(child.dob) : null }}
             </dd>
 
             <dt class="font-medium text-gray-900">Immunizations</dt>

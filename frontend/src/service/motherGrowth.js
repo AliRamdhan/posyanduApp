@@ -3,15 +3,6 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 const API_URL = `${BASE_URL}/growth-mother`;
 
 class ImunisationService {
-  // async getAll() {
-  //   try {
-  //     const response = await axios.get(`${API_URL}`);
-  //     return response.data;
-  //   } catch (error) {
-  //     console.error("Error fetching all data:", error);
-  //     throw error;
-  //   }
-  // }
   async getAll(params) {
     try {
       const response = await axios.get(`${API_URL}`, { params });
@@ -38,7 +29,16 @@ class ImunisationService {
       throw error;
     }
   }
-
+  async getByMom(motherId) {
+    try {
+      const response = await axios.get(`${API_URL}/all/${motherId}`);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching all data:", error);
+      throw error;
+    }
+  }
   async getById(id) {
     try {
       const response = await axios.get(`${API_URL}/${id}`);
