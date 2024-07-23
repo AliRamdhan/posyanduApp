@@ -1,59 +1,7 @@
 const Mother = require("../models/model.mother");
 const { Parser } = require("json2csv");
 const xl = require("excel4node");
-// const GetAllData = async (req, res) => {
-//   try {
-//     const data = await Mother.find();
-//     return res.status(200).json({
-//       message: "List All Data",
-//       data,
-//     });
-//   } catch (error) {
-//     return res.status(400).json({ error: error.message });
-//   }
-// };
-// const GetAllData = async (req, res) => {
-//   try {
-//     const {
-//       name,
-//       husband,
-//       dob,
-//       ks,
-//       bpjs,
-//       sortField,
-//       sortOrder = "asc",
-//       page = 1,
-//       limit = 10,
-//     } = req.query;
 
-//     const filter = {};
-//     if (name) filter.name = name;
-//     if (husband) filter.husband = husband;
-//     if (dob) filter.dob = new Date(dob);
-//     if (ks) filter.ks = ks;
-//     if (bpjs !== undefined) filter.bpjs = bpjs === "true";
-
-//     const sortOptions = {};
-//     if (sortField) sortOptions[sortField] = sortOrder === "desc" ? -1 : 1;
-
-//     const data = await Mother.find(filter)
-//       .sort(sortOptions)
-//       .skip((page - 1) * limit)
-//       .limit(parseInt(limit));
-
-//     return res.status(200).json({
-//       message: "List All Data",
-//       data,
-//       pagination: {
-//         page,
-//         limit,
-//         total: await Mother.countDocuments(filter),
-//       },
-//     });
-//   } catch (error) {
-//     return res.status(400).json({ error: error.message });
-//   }
-// };
 const GetAllData = async (req, res) => {
   try {
     const {
@@ -132,6 +80,18 @@ const CreateData = async (req, res) => {
     isBreastfeed,
   } = req.body;
   try {
+    const existKK = await Mother.findOne({ kk: kk });
+    if (existKK) {
+      throw new Error("KK telah digunakan");
+    }
+    const existNik = await Mother.findOne({ nik: nik });
+    if (existNik) {
+      throw new Error("NIK telah digunakan");
+    }
+    const existNikHusb = await Mother.findOne({ husbandnik: husbandnik });
+    if (existNikHusb) {
+      throw new Error("NIK Suami telah digunakan");
+    }
     const data = await new Mother({
       name: name,
       nik: nik,

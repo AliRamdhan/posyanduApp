@@ -29,22 +29,7 @@ const childData = ref({
   amountImunisation: 0,
   mother: "",
 });
-
-// const selectedStatus = ref(null); // new ref to track the selected status
-
-// watch(selectedStatus, (newValue) => {
-//   if (newValue === "baduta") {
-//     childData.value.isBaduta = true;
-//     childData.value.isBalita = false;
-//   } else if (newValue === "balita") {
-//     childData.value.isBalita = true;
-//     childData.value.isBaduta = false;
-//   } else {
-//     childData.value.isBaduta = null;
-//     childData.value.isBalita = false;
-//   }
-// });
-
+const error = ref(null);
 const handleSubmit = async () => {
   try {
     // const isBalita = isBalita(childData.value.dob);
@@ -58,14 +43,23 @@ const handleSubmit = async () => {
       console.log("New child added");
       alert("Data berhasil ditambahkan");
       console.log(data);
-      // router.push({ name: "dashboardAdminAnak" }); // Redirect to dashboardAdminAnak list after action
+      router.push({ name: "dashboardAdminAnak" }); // Redirect to dashboardAdminAnak list after action
     } else {
       let errorMessage = "";
       if (!isNikValid) errorMessage += "Nomor NIK tidak valid.\n";
       alert(errorMessage);
     }
   } catch (error) {
-    console.error("Error adding child:", error);
+    if (err && err.error) {
+      if (err.error.includes("NIK telah digunakan")) {
+        alert("Data already exists. Please check the inputs.");
+      } else {
+        alert("An error occurred: " + err.response.data.error);
+      }
+    } else {
+      alert("An unexpected error occurred.");
+    }
+    error.value = err;
   }
 };
 
@@ -131,6 +125,13 @@ const mothers = computed(() =>
           :options="mothers"
           label="Select Ibu Anak"
         />
+      </div>
+      <div v-if="error" class="w-full">
+        <div class="absolute top-24 right-8">
+          <fwb-alert icon type="danger">
+            <span className="font-medium">Info alert!</span> {{ error }}
+          </fwb-alert>
+        </div>
       </div>
     </div>
     <div class="space-x-4 mt-8">

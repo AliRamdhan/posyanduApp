@@ -39,21 +39,9 @@ const data = ref({
   RW: null,
   amountChild: 0,
 });
+const error = ref(null);
 
 const selectedStatus = ref(null); // new ref to track the selected status
-
-// watch(selectedStatus, (newValue) => {
-//   if (newValue === "pregnant") {
-//     data.value.isPregnant = true;
-//     data.value.isBreastfeed = false;
-//   } else if (newValue === "breastfeed") {
-//     data.value.isBreastfeed = true;
-//     data.value.isPregnant = false;
-//   } else {
-//     data.value.isPregnant = null;
-//     data.value.isBreastfeed = false;
-//   }
-// });
 
 const handleSubmit = async () => {
   try {
@@ -73,8 +61,22 @@ const handleSubmit = async () => {
       if (!isNikSuamiValid) errorMessage += "Nomor NIK Suami tidak valid.\n";
       alert(errorMessage);
     }
-  } catch (error) {
-    console.error("Error adding mother:", error);
+  } catch (err) {
+    console.error("Error adding mother:", err);
+    if (err && err.error) {
+      if (
+        err.error.includes("KK telah digunakan") ||
+        err.error.includes("NIK telah digunakan") ||
+        err.error.includes("NIK Suami telah digunakan")
+      ) {
+        alert("Data already exists. Please check the inputs.");
+      } else {
+        alert("An error occurred: " + err.response.data.error);
+      }
+    } else {
+      alert("An unexpected error occurred.");
+    }
+    error.value = err;
   }
 };
 </script>
@@ -144,14 +146,13 @@ const handleSubmit = async () => {
       <div>
         <fwb-input v-model="data.rw" type="number" label="RW" />
       </div>
-      <!-- <div>
-        <fwb-input
-          v-model="data.amountChild"
-          type="number"
-          label="Jumlah Anak"
-          required
-        />
-      </div> -->
+      <div v-if="error" class="w-full">
+        <div class="absolute top-24 right-8">
+          <fwb-alert icon type="danger">
+            <span className="font-medium">Info alert!</span> {{ error }}
+          </fwb-alert>
+        </div>
+      </div>
     </div>
     <div class="space-x-4 mt-8">
       <fwb-button type="submit" color="default">Save</fwb-button>

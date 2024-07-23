@@ -34,7 +34,7 @@ const handleSubmit = async () => {
     await store.dispatch("createChildBaduta", childrenGrowthData.value);
     console.log("Children growth record created");
     alert("Children growth record created");
-    // router.push({ name: "dashboardAdminPerkembanganAnak" }); // Uncomment to enable redirect after creation
+    router.push({ name: "dashboardAdminPerkembanganAnak" }); // Uncomment to enable redirect after creation
   } catch (error) {
     console.error("Error creating children growth:", error);
   }

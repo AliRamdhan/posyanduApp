@@ -16,7 +16,7 @@ const childrenGrowthData = ref({
   weightBody: null,
   isBaduta: true,
   childrens: null,
-  imunisations: "",
+  imunisations: null,
 });
 
 const fetchChildrenGrowth = async () => {
@@ -47,7 +47,7 @@ const handleSubmit = async () => {
       childData: childrenGrowthData.value,
     });
     // console.log("Children growth record updated");
-    alert("Successs update data")
+    alert("Successs update data");
     router.push({ name: "dashboardAdminPerkembanganAnak" }); // Redirect to list after update
   } catch (error) {
     console.error("Error updating children growth:", error);
@@ -90,6 +90,13 @@ const imunisations = computed(() =>
     name: immunisation.name,
   }))
 );
+// const immunisations = computed(() => [
+//   { value: null, name: "Tidak Imunisasi" }, // Adding the "No Immunization" option
+//   ...store.getters.immunisations.map((immunisation) => ({
+//     value: immunisation._id,
+//     name: immunisation.name,
+//   })),
+// ]);
 
 const children = computed(() =>
   store.getters.children.map((child) => ({
@@ -134,7 +141,7 @@ const children = computed(() =>
       <div>
         <fwb-select
           v-model="childrenGrowthData.imunisations"
-          :options="imunisations"
+          :options="immunisations"
           label="Pilih Imunisasi"
         />
       </div>
