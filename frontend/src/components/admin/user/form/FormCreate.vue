@@ -3,6 +3,10 @@ import { ref, computed, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { FwbInput, FwbButton, FwbSelect } from "flowbite-vue";
+import {
+  validateNomorHp,
+  handleNumericInput,
+} from "../../../../utils/Validate";
 const store = useStore();
 const router = useRouter();
 
@@ -15,7 +19,14 @@ const userData = ref({
 
 const handleSubmit = async () => {
   try {
-    await store.dispatch("register", userData.value);
+    const isNumberValid = validateNomorHp(userData.value.numberHp);
+    if (isNumberValid) {
+      await store.dispatch("register", userData.value);
+    } else {
+      let errorMessage = "";
+      if (!isNumberValid) errorMessage += "Nomor HP tidak valid.\n";
+      alert(errorMessage);
+    }
     alert("succesfully");
     router.push({ name: "dashboardAdminUser" }); // Redirect to dashboardAdminAnak list after action
   } catch (error) {
@@ -62,7 +73,7 @@ const mothers = computed(() =>
           v-model="userData.numberHp"
           label="Nomor Handphone"
           required
-          type="number"
+          @input="(event) => handleNumericInput(event, 'numberHp')"
         />
       </div>
       <div>

@@ -3,7 +3,10 @@ import { ref, computed, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { FwbInput, FwbButton, FwbSelect } from "flowbite-vue";
-
+import {
+  validateNomorHp,
+  handleNumericInput,
+} from "../../../../utils/Validate";
 const store = useStore();
 const router = useRouter();
 const route = useRoute();
@@ -58,17 +61,24 @@ const fetchUser = async (id) => {
 
 const handleSubmit = async () => {
   try {
-    await store.dispatch("updateUser", {
-      id: route.params.id,
-      userData: {
-        username: userData.value.username,
-        email: userData.value.email,
-        numberHp: userData.value.numberHp,
-        password: userData.value.password,
-        mother: userData.value.mother,
-        role: userData.value.role,
-      },
-    });
+    const isNumberValid = validateNomorHp(userData.value.numberHp);
+    if (isNumberValid) {
+      await store.dispatch("updateUser", {
+        id: route.params.id,
+        userData: {
+          username: userData.value.username,
+          email: userData.value.email,
+          numberHp: userData.value.numberHp,
+          password: userData.value.password,
+          mother: userData.value.mother,
+          role: userData.value.role,
+        },
+      });
+    } else {
+      let errorMessage = "";
+      if (!isNumberValid) errorMessage += "Nomor HP tidak valid.\n";
+      alert(errorMessage);
+    }
     alert(`User with ID ${route.params.id} updated`);
     router.push({ name: "dashboardAdminUser" }); // Redirect to user list after action
   } catch (error) {
@@ -100,7 +110,7 @@ const handleSubmit = async () => {
           v-model="userData.numberHp"
           label="Nomor Handphone"
           required
-          type="number"
+          @input="(event) => handleNumericInput(event, 'numberHp')"
         />
       </div>
       <div>

@@ -25,8 +25,8 @@ class UserService {
 
   async updateData(id, data) {
     try {
-      const data = await axios.put(`${API_URL}/${id}`, data);
-      return data;
+      const response = await axios.put(`${API_URL}/${id}`, data);
+      return response;
     } catch (error) {
       console.error(`Error updating data with id ${id}:`, error);
       throw error;

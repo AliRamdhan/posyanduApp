@@ -9,6 +9,17 @@ export const validateNomorKKNIK = (number) => {
   }
 };
 
+export const validateNomorHp = (number) => {
+  const regex = /^\d{12,}$/;
+  if (regex.test(number)) {
+    console.log("Nomor HP valid.");
+    return true;
+  } else {
+    console.log("Nomor HP tidak valid.");
+    return false;
+  }
+};
+
 export const handleNumericInput = (event, field) => {
   event.target.value = event.target.value.replace(/\D/g, "");
   // data.value[field] = event.target.value;
