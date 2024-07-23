@@ -61,7 +61,7 @@ const imunisations = computed(() =>
 
 const fetchChildren = async () => {
   try {
-    await store.dispatch("fetchChildrenBaduta");
+    await store.dispatch("fetchChildren");
   } catch (error) {
     console.error("Error fetching children in component:", error);
     console.error(
@@ -72,7 +72,7 @@ const fetchChildren = async () => {
 };
 // console.log(store.getters.childBaduta);
 const children = computed(() =>
-  store.getters.childBaduta.map((child) => ({
+  store.getters.children.map((child) => ({
     value: child._id,
     name: child.name,
   }))
