@@ -53,7 +53,7 @@ const handleSubmit = async () => {
       const dataS = await store.dispatch("createMother", data.value);
       console.log(dataS);
       alert("New data added");
-      router.push({ name: "dashboardAdminIbu" });
+      // router.push({ name: "dashboardAdminIbu" });
     } else {
       let errorMessage = "";
       if (!isNikValid) errorMessage += "Nomor NIK tidak valid.\n";
@@ -62,21 +62,10 @@ const handleSubmit = async () => {
       alert(errorMessage);
     }
   } catch (err) {
-    console.error("Error adding mother:", err);
-    if (err && err.error) {
-      if (
-        err.error.includes("KK telah digunakan") ||
-        err.error.includes("NIK telah digunakan") ||
-        err.error.includes("NIK Suami telah digunakan")
-      ) {
-        alert("Data already exists. Please check the inputs.");
-      } else {
-        alert("An error occurred: " + err.response.data.error);
-      }
-    } else {
-      alert("An unexpected error occurred.");
-    }
+    console.log("Error adding mother:", err);
+    alert(err);
     error.value = err;
+    alert(error);
   }
 };
 </script>

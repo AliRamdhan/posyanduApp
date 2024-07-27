@@ -16,7 +16,7 @@ class MotherService {
       }
     } catch (error) {
       console.error("Error fetching all data:", error);
-      throw error;
+      throw new Error(error.response.data.error);
     }
   }
 
@@ -46,14 +46,9 @@ class MotherService {
   }
 
   async createData(data) {
-    try {
-      const response = await axios.post(`${API_URL}/create`, data);
-      console.log(response.data);
-      return response.data;
-    } catch (error) {
-      console.error("Error creating data:", error);
-      throw error;
-    }
+    const response = await axios.post(`${API_URL}/create`, data);
+    console.log(response.data);
+    return response.data;
   }
 
   async updateData(id, data) {
