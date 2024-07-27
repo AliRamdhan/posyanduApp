@@ -128,7 +128,7 @@ const CreateData = async (req, res) => {
     if (!existingMother) {
       return res.status(404).json({ message: "Data tidak dapat ditemukan" });
     }
-    const existNik = await Mother.findOne({ nik: nik });
+    const existNik = await Children.findOne({ nik: nik });
     if (existNik) {
       throw new Error("NIK telah digunakan");
     }

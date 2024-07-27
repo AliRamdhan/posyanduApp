@@ -43,7 +43,7 @@ const handleSubmit = async () => {
       console.log("New child added");
       alert("Data berhasil ditambahkan");
       console.log(data);
-      router.push({ name: "dashboardAdminAnak" }); // Redirect to dashboardAdminAnak list after action
+      // router.push({ name: "dashboardAdminAnak" });
     } else {
       let errorMessage = "";
       if (!isNikValid) errorMessage += "Nomor NIK tidak valid.\n";
