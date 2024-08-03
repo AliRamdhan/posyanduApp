@@ -6,7 +6,7 @@ const name = ref("");
 </script>
 
 <template>
-  <section class="w-4/5">
+  <section class="w-full">
     <div class="p-8 rounded border border-gray-200">
       <h1 class="font-medium text-3xl">Tambah Data User Baru</h1>
       <p class="text-gray-600 mt-6">

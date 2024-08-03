@@ -3,7 +3,7 @@ import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { FwbInput, FwbButton, FwbSelect } from "flowbite-vue";
-
+import { handleNumericInput } from "../../../../utils/Validate";
 const store = useStore();
 const router = useRouter();
 
@@ -89,7 +89,7 @@ onMounted(() => {
           v-model="birthData.nik"
           label="NIK Anak"
           required
-          type="number"
+          @input="(event) => handleNumericInput(event, 'nik')"
         />
       </div>
       <div>

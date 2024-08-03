@@ -4,6 +4,7 @@ import { ref, computed, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { FwbInput, FwbButton, FwbSelect } from "flowbite-vue";
+import { handleNumericInput } from "../../../../utils/Validate";
 
 const store = useStore();
 const router = useRouter();
@@ -27,9 +28,7 @@ const gender = [
 
 const fetchBirthData = async () => {
   try {
-    // console.log(route.params.id);
     const data = await store.dispatch("fetchBirth", route.params.id);
-    console.log(data);
     birthData.value = {
       name: data.children?.name,
       nik: data.children?.nik,
@@ -59,13 +58,11 @@ const handleUpdate = async () => {
         heightBody: birthData.value.heightBody,
         weightBody: birthData.value.weightBody,
         mother: birthData.value.mother,
-        children: birthData.value.children  ,
+        children: birthData.value.children,
       },
     });
-    console.log("Birth data updated");
     alert("Success updated data");
-    console.log(data);
-    // router.push({ name: "dashboardAdminKelahiran" });
+    router.push({ name: "dashboardAdminKelahiran" });
   } catch (error) {
     console.error("Error updating birth:", error);
   }
@@ -127,7 +124,7 @@ onMounted(() => {
           v-model="birthData.nik"
           label="NIK Anak"
           required
-          type="number"
+          @input="(event) => handleNumericInput(event, 'nik')"
         />
       </div>
       <div>

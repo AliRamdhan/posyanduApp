@@ -26,13 +26,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <!-- <div class="w-full flex justify-between"> -->
-  <!-- <Sidebar /> -->
-  <div class="w-4/5 py-8 sm:py-12">
+  <div class="w-full py-8 sm:py-12">
     <Header :username="user.username" />
     <div class="mx-auto w-full px-4 sm:px-6 lg:px-8">
-      <!-- <h1>Dashboard</h1>
-      <router-view></router-view> -->
       <div v-if="user" class="w-full">
         <Statistic />
         <div class="w-full grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -43,8 +39,4 @@ onMounted(() => {
       <p v-else>Loading...</p>
     </div>
   </div>
-  <!-- </div> -->
 </template>
-
-// CRUD IBU // Data Ibu Hamil di RW // Data Ibu Menyusui di RW // CRUD Bad //
-Data Baduta di RW // Data Balita di RW

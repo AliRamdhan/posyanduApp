@@ -65,7 +65,6 @@ const handleSubmit = async () => {
     console.log("Error adding mother:", err);
     alert(err);
     error.value = err;
-    alert(error);
   }
 };
 </script>

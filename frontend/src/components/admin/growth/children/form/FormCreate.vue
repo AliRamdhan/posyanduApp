@@ -13,7 +13,7 @@ const childrenGrowthData = ref({
   childrens: "",
   heightBody: null,
   weightBody: null,
-  imunisations: "",
+  imunisations: null,
 });
 
 const handleSubmit = async () => {
@@ -23,18 +23,16 @@ const handleSubmit = async () => {
   }
 
   try {
-    const child = store.getters.childBaduta.find(
+    const child = store.getters.children.find(
       (child) => child._id === childrenGrowthData.value.childrens
     );
 
     if (child) {
       childrenGrowthData.value.groupFase = child.isBaduta ? "Baduta" : "Balita";
     }
-
     await store.dispatch("createChildBaduta", childrenGrowthData.value);
-    console.log("Children growth record created");
     alert("Children growth record created");
-    router.push({ name: "dashboardAdminPerkembanganAnak" }); // Uncomment to enable redirect after creation
+    router.push({ name: "dashboardAdminPerkembanganAnak" });
   } catch (error) {
     console.error("Error creating children growth:", error);
   }

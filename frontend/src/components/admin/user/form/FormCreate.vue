@@ -28,7 +28,7 @@ const handleSubmit = async () => {
       alert(errorMessage);
     }
     alert("succesfully");
-    router.push({ name: "dashboardAdminUser" }); // Redirect to dashboardAdminAnak list after action
+    router.push({ name: "dashboardAdminUser" });
   } catch (error) {
     console.error("Error adding user:", error);
   }

@@ -35,6 +35,16 @@ class MotherService {
     }
   }
 
+  async getAllNoPage() {
+    try {
+      const response = await axios.get(`${API_URL}/all`);
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching data with:`, error);
+      throw error;
+    }
+  }
+
   async getById(id) {
     try {
       const response = await axios.get(`${API_URL}/${id}`);

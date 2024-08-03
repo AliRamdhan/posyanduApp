@@ -138,8 +138,9 @@ const actions = {
       return response.data;
     } catch (error) {
       console.error("Error creating child:", error);
+      throw new Error(error.response.data.message); 
     }
-  },
+  },  
   async updateChild({ commit }, { id, childData }) {
     try {
       const response = await ChildrenService.updateData(id, childData);

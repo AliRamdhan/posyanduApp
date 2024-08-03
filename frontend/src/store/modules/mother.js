@@ -2,6 +2,7 @@ import MotherService from "../../service/mother";
 
 const state = {
   mothers: [],
+  mothersSelect: [],
   mother: null,
   pagination: {
     page: 1,
@@ -13,6 +14,9 @@ const state = {
 const mutations = {
   setMothers(state, mothers) {
     state.mothers = mothers;
+  },
+  setMotherSelect(state, mothersSelect) {
+    state.mothersSelect = mothersSelect;
   },
   setPagination(state, pagination) {
     state.pagination = pagination;
@@ -37,6 +41,15 @@ const mutations = {
 };
 
 const actions = {
+  async fetchMothersSelect({ commit }) {
+    try {
+      const response = await MotherService.getAllNoPage();      
+      commit("setMotherSelect", response.data);
+      return response;
+    } catch (error) {
+      console.error("Error fetching mothers:", error);
+    }
+  },
   async fetchMothers({ commit }, params) {
     try {
       const response = await MotherService.getAll(params);
@@ -112,6 +125,7 @@ const actions = {
 
 const getters = {
   mothers: (state) => state.mothers,
+  mothersSelect: (state) => state.mothersSelect,
   mother: (state) => state.mother,
   pagination: (state) => state.pagination,
 };

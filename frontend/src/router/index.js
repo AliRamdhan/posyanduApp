@@ -7,8 +7,8 @@ import Home from "../views/Home.vue";
 import Contact from "../views/Contact.vue";
 import Articles from "../views/Articles.vue";
 import ArticleDetails from "../views/ArticleDetails.vue";
-import Service from "../views/Service.vue";
-import Chart from "../views/Chart.vue";
+// import Service from "../views/Service.vue";
+// import Chart from "../views/Chart.vue";
 import Statistic from "../views/Statistic.vue";
 
 // Auth
@@ -113,16 +113,6 @@ const routes = [
         name: "artikel-slug",
         component: ArticleDetails,
       },
-      // {
-      //   path: "/ibu-hamil",
-      //   name: "ibuHamil",
-      //   component: Pregnant,
-      // },
-      // {
-      //   path: "/baduta",
-      //   name: "baduta",
-      //   component: Baduta,
-      // },
     ],
   },
   {
@@ -130,15 +120,10 @@ const routes = [
     name: "forbidden",
     component: Forbidden,
   },
-  {
-    path: "/chart",
-    name: "chart",
-    component: Chart,
-  },
   // {
-  //   path: "/statistic",
-  //   name: "statistic",
-  //   component: Statistic,
+  //   path: "/chart",
+  //   name: "chart",
+  //   component: Chart,
   // },
   // AUTHENTICATION
   {
@@ -153,12 +138,6 @@ const routes = [
     component: DashboardUserTemplate,
     meta: { requiresAuth: true },
     children: [
-      // {
-      //   path: "admin",
-      //   name: "dashboardAdmin",
-      //   component: DashboardAdmin,
-      //   meta: { requiresAuth: true },
-      // },
       {
         path: "",
         name: "dashboardUser",

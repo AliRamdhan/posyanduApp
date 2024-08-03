@@ -21,6 +21,8 @@ const isStatus = [
   { value: "balita", name: "Bayi Usia Lima Tahun" },
 ];
 
+const mothersAll = store.getters.mothersSelect;
+
 const childData = ref({
   name: "",
   nik: "",
@@ -32,40 +34,42 @@ const childData = ref({
 const error = ref(null);
 const handleSubmit = async () => {
   try {
-    // const isBalita = isBalita(childData.value.dob);
-    // if (isBalita) {
-    //   // childData.value.isBalita = true;
-    //   childData.value.isBaduta = true;
-    // }
     const isNikValid = validateNomorKKNIK(childData.value.nik);
     if (isNikValid) {
-      const data = await store.dispatch("addChild", childData.value);
-      console.log("New child added");
+      await store.dispatch("createChild", childData.value);
       alert("Data berhasil ditambahkan");
-      console.log(data);
-      // router.push({ name: "dashboardAdminAnak" });
+      router.push({ name: "dashboardAdminAnak" });
     } else {
       let errorMessage = "";
       if (!isNikValid) errorMessage += "Nomor NIK tidak valid.\n";
       alert(errorMessage);
     }
-  } catch (error) {
-    if (err && err.error) {
-      if (err.error.includes("NIK telah digunakan")) {
-        alert("Data already exists. Please check the inputs.");
-      } else {
-        alert("An error occurred: " + err.response.data.error);
-      }
+  } catch (err) {
+    if (err.message === "NIK telah digunakan") {
+      alert("NIK telah digunakan. Mohon gunakan NIK lain.");
     } else {
-      alert("An unexpected error occurred.");
+      alert("Terjadi kesalahan saat menambahkan data.");
     }
-    error.value = err;
+    console.log("Error adding child:", err);
   }
 };
+
 
 const fetchMothers = async () => {
   try {
     await store.dispatch("fetchMothers");
+    await store.dispatch("fetchMothersSelect");
+  } catch (error) {
+    console.error("Error fetching mothers in component:", error);
+    console.error(
+      "Details:",
+      error.response ? error.response.data : error.message
+    );
+  }
+};
+const fetchMothersSelect = async () => {
+  try {
+    await store.dispatch("fetchMothersSelect");
   } catch (error) {
     console.error("Error fetching mothers in component:", error);
     console.error(
@@ -76,11 +80,15 @@ const fetchMothers = async () => {
 };
 
 const mothers = computed(() =>
-  store.getters.mothers.map((mother) => ({
+  store.getters.mothersSelect.map((mother) => ({
     value: mother._id,
     name: mother.name,
   }))
 );
+
+onMounted(() => {
+  fetchMothersSelect();
+});
 </script>
 
 <template>

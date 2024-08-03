@@ -70,13 +70,8 @@ class ChildrenService {
   }
 
   async createData(data) {
-    try {
-      const response = await axios.post(`${API_URL}/create`, data);
-      return response.data;
-    } catch (error) {
-      console.error("Error creating data:", error);
-      throw error;
-    }
+    const response = await axios.post(`${API_URL}/create`, data);
+    return response.data;
   }
 
   async updateData(id, data) {
