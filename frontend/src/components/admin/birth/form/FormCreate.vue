@@ -47,7 +47,7 @@ const fetchMothers = async () => {
 };
 
 const mothers = computed(() =>
-  store.getters.mothers.map((mother) => ({
+  store.getters.mothersSelect.map((mother) => ({
     value: mother._id,
     name: mother.name,
   }))

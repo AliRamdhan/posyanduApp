@@ -2,6 +2,7 @@ import ChildrenService from "../../service/children";
 import { calculateAge } from "../../utils/CalcurateAvg";
 
 const state = {
+  childrens: [],
   children: [],
   childrenMom: [],
   childBaduta: [],
@@ -45,6 +46,9 @@ const setStatus = async (child) => {
 };
 
 const mutations = {
+  setChildrens(state, childrens) {
+    state.childrens = childrens;
+  },
   setChildren(state, children) {
     children.forEach((child) => setStatus(child));
     state.children = children;
@@ -84,9 +88,18 @@ const mutations = {
 };
 
 const actions = {
+  async fetchChildrenAll({ commit }) {
+    try {
+      const response = await ChildrenService.getAll();
+      commit("setChildrens", response.data);
+      return response;
+    } catch (error) {
+      console.error("Error fetching mothers:", error);
+    }
+  },
   async fetchChildren({ commit }, params) {
     try {
-      const response = await ChildrenService.getAll(params);
+      const response = await ChildrenService.getAllChildrens(params);
       const { data, pagination } = response;
       commit("setChildren", data);
       commit("setPaginationChild", pagination);
@@ -138,9 +151,9 @@ const actions = {
       return response.data;
     } catch (error) {
       console.error("Error creating child:", error);
-      throw new Error(error.response.data.message); 
+      throw new Error(error.response.data.message);
     }
-  },  
+  },
   async updateChild({ commit }, { id, childData }) {
     try {
       const response = await ChildrenService.updateData(id, childData);
@@ -192,6 +205,7 @@ const actions = {
 };
 
 const getters = {
+  childrens: (state) => state.childrens,
   children: (state) => state.children,
   childrenMom: (state) => state.childrenMom,
   childBaduta: (state) => state.childBaduta,

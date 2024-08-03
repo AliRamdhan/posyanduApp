@@ -7,7 +7,7 @@ import Sidebar from "../../components/Sidebar.vue";
     <div>
       <Sidebar />
     </div>
-    <div class="w-full pl-64">
+    <div class="w-full lg:pl-64">
       <router-view></router-view>
     </div>
   </div>

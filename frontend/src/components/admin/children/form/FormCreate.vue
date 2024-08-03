@@ -54,7 +54,6 @@ const handleSubmit = async () => {
   }
 };
 
-
 const fetchMothers = async () => {
   try {
     await store.dispatch("fetchMothers");
@@ -97,13 +96,6 @@ onMounted(() => {
       <div>
         <fwb-input v-model="childData.name" label="Nama" required />
       </div>
-      <!-- <div>
-        <fwb-select
-          v-model="selectedStatus"
-          :options="isStatus"
-          label="Select Status"
-        />
-      </div> -->
       <div>
         <fwb-input
           v-model="childData.nik"
