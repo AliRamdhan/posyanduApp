@@ -128,32 +128,24 @@ const createGrowth = async (req, res) => {
 
   try {
     // Check if the provided children ID exists
-    if (childrens) {
+    if (childrens !== "") {
       const childrenExists = await Children.findById(childrens);
       if (!childrenExists) {
+        console.log(`Children ID ${childrens} not found`);
         return res.status(404).json({ message: "Children record not found" });
       }
     }
 
-    // Check if the provided imunisations ID exists if it is not null
-    if (imunisations) {
-      const imunisationsExists = await Imunisations.findById(imunisations);
-      if (!imunisationsExists) {
-        return res
-          .status(404)
-          .json({ message: "Imunisations record not found" });
-      }
-    }
-
+    console.log("imun", imunisations);
     const data = await service.createData(growthData);
-    // console.log(data);
-    if (data.imunisations != null) {
-      await Children.findByIdAndUpdate(data.childrens, {
+    if (data.imunisations !== null) {
+      await Children.findByIdAndUpdate(growthData.childrens, {
         $inc: { amountImunisation: 1 },
       });
     }
     res.status(201).json({ message: "Created data successfully", data });
   } catch (error) {
+    console.log(`Error: ${error.message}`);
     res.status(500).json({ message: error.message });
   }
 };

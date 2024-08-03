@@ -130,7 +130,7 @@ const CreateData = async (req, res) => {
     }
     const existNik = await Children.findOne({ nik: nik });
     if (existNik) {
-      throw new Error("NIK telah digunakan");
+      return res.status(400).json({ message: "NIK telah digunakan" });
     }
     const data = await new Children({
       name: name,
@@ -148,6 +148,7 @@ const CreateData = async (req, res) => {
     return res.status(400).json({ error: error.message });
   }
 };
+
 
 const UpdateData = async (req, res) => {
   const {

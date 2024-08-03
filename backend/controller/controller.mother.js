@@ -2,6 +2,15 @@ const Mother = require("../models/model.mother");
 const { Parser } = require("json2csv");
 const xl = require("excel4node");
 
+const GetAllDataNoPaging = async (req, res) => {
+  try {
+    const data = await Mother.find();
+    return res.status(200).json({ message: "List All Data", data });
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+
 const GetAllData = async (req, res) => {
   try {
     const {
@@ -13,7 +22,7 @@ const GetAllData = async (req, res) => {
       sortField,
       sortOrder = "asc",
       page = 1,
-      limit = 10,
+      limit,
     } = req.query;
 
     const filter = {};
@@ -333,6 +342,7 @@ const ExportDataToExcel = async (req, res) => {
 };
 
 module.exports = {
+  GetAllDataNoPaging,
   GetAllData,
   CreateData,
   GetDataById,
