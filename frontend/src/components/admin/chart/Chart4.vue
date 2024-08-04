@@ -34,7 +34,7 @@ const store = useStore();
 onMounted(() => {
   store.dispatch("fetchChildrenBaduta");
   store.dispatch("fetchChildrenBalita");
-  store.dispatch("fetchChildren");
+  store.dispatch("fetchChildrenAll");
 });
 
 const badutas = computed(() => store.getters.childBaduta);
@@ -64,19 +64,19 @@ const chartData = computed(() => {
 
   // Process Baduta data
   badutas.value.forEach((baduta) => {
-    const month = new Date(baduta.createdAt).getMonth();
+    const month = new Date(baduta.dob).getMonth();
     dataBaduta[month] += 1;
   });
 
   // Process Balita data
   balitas.value.forEach((balita) => {
-    const month = new Date(balita.createdAt).getMonth();
+    const month = new Date(balita.dob).getMonth();
     dataBalita[month] += 1;
   });
 
   // Process Children data
   childs.value.forEach((child) => {
-    const month = new Date(child.createdAt).getMonth();
+    const month = new Date(child.dob).getMonth();
     dataChildren[month] += 1;
   });
 

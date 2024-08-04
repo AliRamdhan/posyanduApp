@@ -115,7 +115,7 @@ onMounted(() => {
                   </p>
                 </router-link>
               </div>
-              <fwb-dropdown align-to-end class="hidden lg:block">
+              <fwb-dropdown align-to-end class="hidden lg:block w-28">
                 <template #trigger>
                   <span class="cursor-pointer"
                     >Data Publik
@@ -166,7 +166,7 @@ onMounted(() => {
             </div>
 
             <div class="flex w-full items-center mt-4 lg:mt-0">
-              <div v-if="isAuthenticated" class="flex w-full items-center">
+              <div v-if="isAuthenticated" class="flex items-center w-28">
                 <fwb-dropdown
                   :text="user.username"
                   align-to-end

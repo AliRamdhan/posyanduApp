@@ -1,7 +1,7 @@
 const Mother = require("../models/model.mother");
 const { Parser } = require("json2csv");
 const xl = require("excel4node");
-
+const formatTime = require("../utils/FormatTime");
 const GetAll = async (req, res) => {
   try {
     const data = await Mother.find();
@@ -260,23 +260,24 @@ const ExportDataToCSV = async (req, res) => {
 const ExportDataToExcel = async (req, res) => {
   try {
     const { month } = req.query;
+    console.log(`Received month: ${month}`); // Log the received month
     if (!month) {
       return res.status(400).json({ error: "Month is required" });
     }
 
     const [year, monthIndex] = month.split("-").map(Number);
+    console.log(`Parsed year: ${year}, monthIndex: ${monthIndex}`); // Log the parsed year and monthIndex
+    if (!year || !monthIndex || monthIndex < 1 || monthIndex > 12) {
+      return res.status(400).json({ error: "Invalid month format" });
+    }
+
     const startDate = new Date(year, monthIndex - 1, 1);
     const endDate = new Date(year, monthIndex, 0, 23, 59, 59);
+    console.log(`Start Date: ${startDate}, End Date: ${endDate}`); // Log the calculated start and end dates
 
-    const data = await Mother.find({
+    let data = await Mother.find({
       createdAt: { $gte: startDate, $lte: endDate },
     });
-
-    if (data.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "No data found for the specified month and year" });
-    }
 
     const wb = new xl.Workbook();
     const ws = wb.addWorksheet("Mothers Data");
@@ -305,27 +306,31 @@ const ExportDataToExcel = async (req, res) => {
     });
 
     // Write Data in Excel file
-    let rowIndex = 2;
-    data.forEach((record) => {
-      ws.cell(rowIndex, 1).string(record._id.toString());
-      ws.cell(rowIndex, 2).string(record.name);
-      ws.cell(rowIndex, 3).string(record.nik);
-      ws.cell(rowIndex, 4).string(record.husband);
-      ws.cell(rowIndex, 5).string(record.husbandnik);
-      ws.cell(rowIndex, 6).string(record.kk);
-      ws.cell(rowIndex, 7).date(new Date(record.dob));
-      ws.cell(rowIndex, 8).string(record.bpjs ? "Punya" : "Tidak Punya");
-      ws.cell(rowIndex, 9).string(record.ks);
-      ws.cell(rowIndex, 10).string(
-        record.isPregnant ? "Hamil" : record.isBreastfeed ? "Menyusui" : ""
-      );
-      ws.cell(rowIndex, 11).string(record.rt.toString());
-      ws.cell(rowIndex, 12).string(record.rw.toString());
-      ws.cell(rowIndex, 13).number(record.amountChild);
-      rowIndex++;
-    });
+    if (data.length > 0) {
+      let rowIndex = 2;
+      data.forEach((record) => {
+        ws.cell(rowIndex, 1).string(record._id.toString());
+        ws.cell(rowIndex, 2).string(record.name);
+        ws.cell(rowIndex, 3).string(record.nik);
+        ws.cell(rowIndex, 4).string(record.husband);
+        ws.cell(rowIndex, 5).string(record.husbandnik);
+        ws.cell(rowIndex, 6).string(record.kk);
+        ws.cell(rowIndex, 7).date(record.dob);
+        ws.cell(rowIndex, 8).string(record.bpjs ? "Punya" : "Tidak Punya");
+        ws.cell(rowIndex, 9).string(record.ks);
+        ws.cell(rowIndex, 10).string(
+          record.isPregnant ? "Hamil" : "Tidak Hamil"
+        );
+        ws.cell(rowIndex, 11).string(record.rt.toString());
+        ws.cell(rowIndex, 12).string(record.rw.toString());
+        ws.cell(rowIndex, 13).number(record.amountChild);
+        rowIndex++;
+      });
+    } else {
+      ws.cell(2, 1, 4, 2).string("Tidak ada data di bulan ini");
+    }
 
-    const fileName = `mothers_${year}_${monthIndex}.xlsx`;
+    const fileName = `Laporan Data Ibu tahun ${year} bulan ${monthIndex}.xlsx`;
 
     res.setHeader(
       "Content-Type",
@@ -335,6 +340,7 @@ const ExportDataToExcel = async (req, res) => {
 
     wb.write(fileName, res);
   } catch (error) {
+    console.error("Error in ExportDataToExcel:", error);
     return res.status(400).json({ error: error.message });
   }
 };
