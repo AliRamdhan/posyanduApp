@@ -266,21 +266,20 @@ const ExportDataToExcel = async (req, res) => {
     }
 
     const [year, monthIndex] = month.split("-").map(Number);
-    console.log(`Parsed year: ${year}, monthIndex: ${monthIndex}`); // Log the parsed year and monthIndex
+
     if (!year || !monthIndex || monthIndex < 1 || monthIndex > 12) {
       return res.status(400).json({ error: "Invalid month format" });
     }
 
     const startDate = new Date(year, monthIndex - 1, 1);
     const endDate = new Date(year, monthIndex, 0, 23, 59, 59);
-    console.log(`Start Date: ${startDate}, End Date: ${endDate}`); // Log the calculated start and end dates
 
     let data = await Mother.find({
       createdAt: { $gte: startDate, $lte: endDate },
     });
 
     const wb = new xl.Workbook();
-    const ws = wb.addWorksheet("Mothers Data");
+    const ws = wb.addWorksheet(`Laporan Data Ibu ${month}`);
 
     // Define the specific columns you want in the Excel
     const headingColumnNames = [
