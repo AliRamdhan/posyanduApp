@@ -74,7 +74,7 @@ const exportDataToExcel = async (year, monthIndex) => {
 
     const headingColumnNames = [
       "ID",
-      "Name",
+      "Nama",
       "Gender",
       "Tempat, Tanggal Lahir",
       "Lingkar Kepala",
@@ -91,7 +91,6 @@ const exportDataToExcel = async (year, monthIndex) => {
     if (data.length > 0) {
       let rowIndex = 2;
       data.forEach((record) => {
-        console.log(record);
         ws.cell(rowIndex, 1).string(record._id.toString());
         ws.cell(rowIndex, 2).string(record.children?.name || "");
         ws.cell(rowIndex, 3).string(record.children?.gender || "");

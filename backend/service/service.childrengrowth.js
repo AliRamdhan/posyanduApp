@@ -1,6 +1,7 @@
 const ChildrenGrowth = require("../models/model.children.growth");
 const Children = require("../models/model.children");
-
+const xl = require("excel4node");
+const { formatDate } = require("../utils/FormatTime");
 const getAll = async (req, res) => {
   try {
     const data = await ChildrenGrowth.find()
@@ -126,6 +127,76 @@ const deleteData = async (id) => {
   }
 };
 
+const exportDataToExcel = async (year, monthIndex) => {
+  try {
+    const startDate = new Date(year, monthIndex - 1, 1);
+    const endDate = new Date(year, monthIndex, 0, 23, 59, 59);
+
+    const data = await ChildrenGrowth.find({
+      checkDate: { $gte: startDate, $lte: endDate },
+    }).populate("childrens imunisations");
+
+    const wb = new xl.Workbook();
+    const ws = wb.addWorksheet(`Laporan Data Kelahiran ${monthIndex}`);
+    for (let i = 1; i <= 8; i++) {
+      ws.column(i).setWidth(15);
+    }
+
+    const headingColumnNames = [
+      "ID",
+      "Nama Anak",
+      "NIK Anak",
+      "Tinggi Badan",
+      "Berat Badan",
+      "Kelompok Umur",
+      "Gender",
+      "Tempat, Tanggal Lahir",
+      "Imunisasi Terakhir",
+      "Tanggal Periksa",
+    ];
+
+    let headingColumnIndex = 1;
+    headingColumnNames.forEach((heading) => {
+      ws.cell(1, headingColumnIndex++).string(heading);
+    });
+
+    if (data.length > 0) {
+      let rowIndex = 2;
+      data.forEach((record) => {
+        ws.cell(rowIndex, 1).string(record._id.toString());
+        ws.cell(rowIndex, 2).string(record.childrens?.name || "");
+        ws.cell(rowIndex, 3).string(record.childrens?.nik || "");
+        ws.cell(rowIndex, 4).string(`${record.heightBody.toString()} cm`);
+        ws.cell(rowIndex, 5).string(`${record.weightBody.toString()} kg`);
+        ws.cell(rowIndex, 6).string(record.groupFase || "");
+        ws.cell(rowIndex, 7).string(record.childrens?.gender || "");
+        ws.cell(rowIndex, 8).date(record.childrens?.dob || "");
+        ws.cell(rowIndex, 9).string(
+          record.imunisations?.name || "Tidak Imunisasi"
+        );
+        ws.cell(rowIndex, 10).date(record.checkDate);
+        rowIndex++;
+      });
+    } else {
+      ws.row(2).setHeight(20);
+      ws.cell(2, 1, 2, 8, true)
+        .string("Tidak ada data di bulan ini")
+        .style({
+          font: { bold: true },
+          alignment: {
+            wrapText: true,
+            horizontal: "center",
+            vertical: "center",
+          },
+        });
+    }
+
+    return wb;
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   getAll,
   getAllGrowth,
@@ -135,4 +206,5 @@ module.exports = {
   updateData,
   deleteData,
   getChild,
+  exportDataToExcel,
 };

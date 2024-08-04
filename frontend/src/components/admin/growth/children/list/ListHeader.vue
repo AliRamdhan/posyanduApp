@@ -21,7 +21,7 @@ const props = defineProps({
 });
 
 const exportData = () => {
-  store.dispatch("exportDataBirth", selectedMonth.value);
+  store.dispatch("exportDataChildGrowth", selectedMonth.value);
 };
 
 const addBirth = () => {
