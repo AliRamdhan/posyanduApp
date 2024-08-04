@@ -1,16 +1,17 @@
 const Imunisation = require("../models/model.immunisation");
 const xl = require("excel4node");
-// const GetAllData = async (req, res) => {
-//   try {
-//     const data = await Imunisation.find();
-//     return res.status(200).json({
-//       message: "List All Data",
-//       data,
-//     });
-//   } catch (error) {
-//     return res.status(400).json({ error: error.message });
-//   }
-// };
+
+const GetAll = async (req, res) => {
+  try {
+    const data = await Imunisation.find();
+    return res.status(200).json({
+      message: "List All Data",
+      data,
+    });
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
 
 const GetAllData = async (req, res) => {
   try {
@@ -146,7 +147,12 @@ const ExportDataToExcel = async (req, res) => {
     const ws = wb.addWorksheet("Childrens Data");
 
     // Define the specific columns you want in the Excel
-    const headingColumnNames = ["ID", "Name", "Group Age", "Description Disease Prevented"];
+    const headingColumnNames = [
+      "ID",
+      "Name",
+      "Group Age",
+      "Description Disease Prevented",
+    ];
 
     // Write Column Titles in Excel file
     let headingColumnIndex = 1;

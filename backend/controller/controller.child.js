@@ -2,6 +2,19 @@ const Children = require("../models/model.children");
 const Mother = require("../models/model.mother");
 const childService = require("../service/service.children");
 const xl = require("excel4node");
+
+const GetAll = async (req, res) => {
+  try {
+    const data = await childService.getAll();
+    return res.status(200).json({
+      message: "List All Data",
+      data,
+    });
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+
 const GetAllData = async (req, res) => {
   try {
     const {
@@ -149,7 +162,6 @@ const CreateData = async (req, res) => {
   }
 };
 
-
 const UpdateData = async (req, res) => {
   const {
     name,
@@ -291,6 +303,7 @@ const ExportDataToExcel = async (req, res) => {
 };
 
 module.exports = {
+  GetAll,
   GetAllData,
   CreateData,
   GetDataById,

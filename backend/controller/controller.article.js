@@ -1,8 +1,18 @@
 const articleService = require("../service/service.article");
 const cloudinary = require("../config/config.cloudinary");
-const storage = require("../config/config.multer");
 
-// Handle POST request to create a new article
+const getAll = async (req, res) => {
+  try {
+    const data = await articleService.getAll();
+    return res.status(200).json({
+      message: "List All Data",
+      data,
+    });
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+
 const createArticle = async (req, res) => {
   const { title, slug, shortDescription, content } = req.body;
   const result = await cloudinary.uploader.upload(req.file.path, {
@@ -140,6 +150,7 @@ const deleteArticle = async (req, res) => {
 };
 
 module.exports = {
+  getAll,
   createArticle,
   getAllArticles,
   getArticleById,

@@ -1,15 +1,15 @@
 const service = require("../service/service.mothergrowth");
 const Mother = require("../models/model.mother");
 
-// Handler to get all growth records
-// const getAllGrowth = async (req, res) => {
-//   try {
-//     const data = await service.getAll();
-//     res.status(200).json({ message: "List All Data", data });
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// };
+const getAll = async (req, res) => {
+  try {
+    const data = await service.getAll();
+    res.status(200).json({ message: "List All Data", data });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const getAllGrowth = async (req, res) => {
   try {
     const {
@@ -56,7 +56,7 @@ const getAllGrowth = async (req, res) => {
       ? { name: { $regex: new RegExp("^" + motherName, "i") } }
       : {};
 
-    const { data, total } = await service.getAll(
+    const { data, total } = await service.getAllMother(
       filter,
       sortOptions,
       skip,
@@ -209,6 +209,7 @@ const deleteGrowth = async (req, res) => {
 };
 
 module.exports = {
+  getAll,
   getAllGrowth,
   getGrowthById,
   getGrowthByMother,

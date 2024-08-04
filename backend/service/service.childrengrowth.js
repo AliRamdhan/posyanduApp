@@ -1,7 +1,25 @@
 const ChildrenGrowth = require("../models/model.children.growth");
 const Children = require("../models/model.children");
+
+const getAll = async (req, res) => {
+  try {
+    const data = await ChildrenGrowth.find()
+      .populate({
+        path: "childrens",
+        match: childrensMatch,
+      })
+      .populate("imunisations");
+    return res.status(200).json({
+      message: "List All Data",
+      data,
+    });
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+
 // Function to get all children growth records
-const getAll = async (
+const getAllGrowth = async (
   filter = {},
   sortOptions = {},
   skip = 0,
@@ -9,30 +27,20 @@ const getAll = async (
   childrensMatch = {}
 ) => {
   try {
+    const totalDocuments = await ChildrenGrowth.countDocuments(filter);
+
     const findQuery = await ChildrenGrowth.find(filter)
       .sort(sortOptions)
       .skip(skip)
       .limit(limit)
       .populate({
         path: "childrens",
-        match: childrensMatch, // Use match option for filtering based on populated field's properties
-      })
-      .populate("imunisations");
+        match: childrensMatch,
+      });
 
-    // Filter out documents where childrens do not match
     const filteredData = findQuery.filter((doc) => doc.childrens);
 
-    // const countDocumentsPromise = await ChildrenGrowth.countDocuments(filter);
-    // Count only documents where childrens match
-    const countDocumentsPromise = await ChildrenGrowth.countDocuments({
-      ...filter,
-      childrens: { $in: filteredData.map((doc) => doc.childrens._id) },
-    });
-    const [data, total] = await Promise.all([
-      filteredData,
-      countDocumentsPromise,
-    ]);
-    return { data: filteredData, total };
+    return { data: filteredData, total: totalDocuments };
   } catch (error) {
     throw error;
   }
@@ -52,7 +60,6 @@ const getBaduta = async () => {
 const getChild = async (childId) => {
   try {
     const existingChild = await Children.findOne({ _id: childId });
-    console.log(existingChild);
     if (!existingChild) {
       return null;
     }
@@ -121,6 +128,7 @@ const deleteData = async (id) => {
 
 module.exports = {
   getAll,
+  getAllGrowth,
   getBaduta,
   createData,
   getById,

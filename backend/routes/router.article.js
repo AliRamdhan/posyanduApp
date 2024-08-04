@@ -9,6 +9,7 @@ const upload = multer({ storage });
 router.post("/create", upload.single("image"), articleController.createArticle);
 
 // GET /articles - Retrieve all articles
+router.get("/all", articleController.getAll);
 router.get("/", articleController.getAllArticles);
 
 // GET /articles/:id - Retrieve an article by ID

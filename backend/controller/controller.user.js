@@ -1,11 +1,57 @@
 const UserService = require("../service/service.user");
 
-const getAllUsers = async (req, res) => {
+const getAll = async (req, res) => {
   try {
-    const users = await UserService.getAllUser();
+    const users = await UserService.getAll();
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+};
+
+const getAllUser = async (req, res) => {
+  try {
+    const {
+      email,
+      motherName,
+      sortField,
+      sortOrder = "asc",
+      page = 1,
+      limit = 10,
+    } = req.query;
+
+    const filter = {};
+    if (email) {
+      filter.email = { $regex: new RegExp("^" + email, "i") };
+    }
+
+    const sortOptions = {};
+    if (sortField) sortOptions[sortField] = sortOrder === "desc" ? -1 : 1;
+
+    const skip = (page - 1) * limit;
+    const limitNumber = parseInt(limit);
+    const motherMatch = motherName
+      ? { name: { $regex: new RegExp("^" + motherName, "i") } }
+      : {};
+    const { data, total } = await UserService.getAllUser(
+      filter,
+      sortOptions,
+      skip,
+      limitNumber,
+      motherMatch
+    );
+
+    return res.status(200).json({
+      message: "List All Data",
+      data,
+      pagination: {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        total,
+      },
+    });
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
   }
 };
 
@@ -47,7 +93,8 @@ const deleteUser = async (req, res) => {
 };
 
 module.exports = {
-  getAllUsers,
+  getAll,
+  getAllUser,
   getByIdUser,
   updateUser,
   deleteUser,

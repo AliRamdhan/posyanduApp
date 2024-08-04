@@ -2,7 +2,7 @@ const Mother = require("../models/model.mother");
 const { Parser } = require("json2csv");
 const xl = require("excel4node");
 
-const GetAllDataNoPaging = async (req, res) => {
+const GetAll = async (req, res) => {
   try {
     const data = await Mother.find();
     return res.status(200).json({ message: "List All Data", data });
@@ -307,8 +307,6 @@ const ExportDataToExcel = async (req, res) => {
     // Write Data in Excel file
     let rowIndex = 2;
     data.forEach((record) => {
-      // console.log(record.rt);
-      // console.log(record.rw);
       ws.cell(rowIndex, 1).string(record._id.toString());
       ws.cell(rowIndex, 2).string(record.name);
       ws.cell(rowIndex, 3).string(record.nik);
@@ -342,7 +340,7 @@ const ExportDataToExcel = async (req, res) => {
 };
 
 module.exports = {
-  GetAllDataNoPaging,
+  GetAll,
   GetAllData,
   CreateData,
   GetDataById,

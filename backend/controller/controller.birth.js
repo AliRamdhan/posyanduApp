@@ -3,6 +3,18 @@ const childService = require("../service/service.children");
 const Children = require("../models/model.children");
 const Mother = require("../models/model.mother");
 
+const getAll = async (req, res) => {
+  try {
+    const data = await birthService.getAll();
+    return res.status(200).json({
+      message: "List All Data",
+      data,
+    });
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+
 const getAllBirth = async (req, res) => {
   try {
     const {
@@ -96,9 +108,7 @@ const createBirth = async (req, res) => {
     }
 
     children = await childService.createChildren(childData);
-    // console.log(children);
-    // await Mother.findByIdAndUpdate(mother, { $inc: { amountChild: 1 } });
-    // return res.status(200).json({ message: "Success create data", data });
+  
     // Check if the provided children ID exists
     if (children) {
       const childrenExists = await Children.findById(children._id);
@@ -137,91 +147,6 @@ const createBirth = async (req, res) => {
   }
 };
 
-// Handler to update a birth record by ID
-// const updateBirth = async (req, res) => {
-//   const {
-//     name,
-//     nik,
-//     gender,
-//     amountImunisation,
-//     dob,
-//     circumHead,
-//     heightBody,
-//     weightBody,
-//     mother,
-//     children,
-//   } = req.body;
-
-//   const updateChildFields = {};
-//   const updateBirthFields = {};
-
-//   try {
-//     // Validate and update mother
-//     if (mother) {
-//       const existingMother = await Mother.findById(mother);
-//       if (!existingMother) {
-//         return res.status(404).json({ message: "Mother not found" });
-//       }
-//     }
-
-//     // Update child fields
-//     if (name) updateChildFields.name = name;
-//     if (nik) updateChildFields.nik = nik;
-//     if (gender) updateChildFields.gender = gender;
-//     if (amountImunisation)
-//       updateChildFields.amountImunisation = amountImunisation;
-//     if (mother) updateChildFields.mother = mother;
-
-//     // Update birth fields
-//     if (dob) updateBirthFields.dob = dob;
-//     if (circumHead) updateBirthFields.circumHead = circumHead;
-//     if (heightBody) updateBirthFields.heightBody = heightBody;
-//     if (weightBody) updateBirthFields.weightBody = weightBody;
-//     if (children) updateBirthFields.children = children;
-//     console.log("didwa",children)
-//     // Find the child by ID and update it
-//     // const childId = req.params.childId;
-//     const updatedChild = await childService.updateData(
-//       children,
-//       updateChildFields
-//     );
-//     if (!updatedChild) {
-//       return res.status(404).json({ message: "Child not found" });
-//     }
-
-//     // Update the birth record
-//     const birthId = req.params.id;
-//     const updatedBirth = await birthService.updateBirth(
-//       birthId,
-//       updateBirthFields
-//     );
-//     if (!updatedBirth) {
-//       return res.status(404).json({ message: "Birth record not found" });
-//     }
-
-//     res.status(200).json({
-//       message: "Data was updated successfully",
-//       data: { updatedChild, updatedBirth },
-//     });
-//   } catch (error) {
-//     // Rollback mechanism if child was updated but birth update failed
-//     // if (updateChildFields) {
-//     //   try {
-//     //     await childService.updateChildren(childId, {
-//     //       $unset: updateChildFields,
-//     //     });
-//     //     if (mother) {
-//     //       await Mother.findByIdAndUpdate(mother, { $inc: { amountChild: -1 } });
-//     //     }
-//     //   } catch (rollbackError) {
-//     //     return res
-//     //       .status(500)
-//     //       .json({ message: `Rollback failed: ${rollbackError.message}` });
-//     //   }
-//     // }
-//     res.status(500).json({ message: error.message });
-//   }
-// };
 const updateBirth = async (req, res) => {
   const {
     name,
@@ -313,15 +238,6 @@ const updateBirth = async (req, res) => {
   }
 };
 
-// Handler to delete a birth record by ID
-// const deleteBirth = async (req, res) => {
-//   try {
-//     const birth = await birthService.deleteBirth(req.params.id);
-//     return res.status(200).json({ message: "Data was deleted" });
-//   } catch (error) {
-//     res.status(404).json({ message: error.message });
-//   }
-// };
 const deleteBirth = async (req, res) => {
   try {
     const birth = await birthService.getBirthById(req.params.id);

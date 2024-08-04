@@ -3,6 +3,7 @@ const controller = require("../controller/controller.mother_growth");
 
 // Route to get all growth records
 router.get("/", controller.getAllGrowth);
+router.get("/all", controller.getAll);
 router.get("/pregnant", controller.getAllPregnant);
 
 router.get("/all/:motherId", controller.getGrowthByMother);

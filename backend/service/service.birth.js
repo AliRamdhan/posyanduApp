@@ -1,7 +1,28 @@
 const Birth = require("../models/model.birth");
 const Mother = require("../models/model.mother");
 const xl = require("excel4node");
-// Function to get all birth records
+
+// Function to get all birth records without paging
+const getAll = async (req, res) => {
+  try {
+    const data = await Birth.find()
+      .populate("children")
+      .populate({
+        path: "children",
+        populate: {
+          path: "mother",
+        },
+      })
+      .exec();
+    return res.status(200).json({
+      message: "List All Data",
+      data,
+    });
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+// Function to get all birth records with paging
 const getAllBirth = async (
   filter = {},
   sortOptions = {},
@@ -133,12 +154,6 @@ const deleteBirth = async (id) => {
     if (!birth) {
       throw new Error("Birth record not found");
     }
-    // const mother = birth.children?.mother?._id;
-    // if (mother) {
-    //   await Mother.findByIdAndUpdate(mother, {
-    //     $inc: { amountChild: -1 },
-    //   });
-    // }
     await Birth.deleteOne({ _id: id });
     return { message: "Birth record deleted successfully" };
   } catch (error) {
@@ -147,6 +162,7 @@ const deleteBirth = async (id) => {
 };
 
 module.exports = {
+  getAll,
   getAllBirth,
   createBirth,
   getBirthById,

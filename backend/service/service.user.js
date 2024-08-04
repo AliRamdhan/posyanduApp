@@ -1,10 +1,36 @@
 const User = require("../models/model.user");
 const Mother = require("../models/model.mother");
 
-const getAllUser = async () => {
+const getAll = async () => {
   try {
     const users = await User.find().populate("mother");
     return users;
+  } catch (error) {
+    throw error;
+  }
+};
+const getAllUser = async (
+  filter = {},
+  sortOptions = {},
+  skip = 0,
+  limit = 10,
+  populateMatch = {}
+) => {
+  try {
+    const totalDocuments = await User.countDocuments(filter);
+
+    const findQuery = await User.find(filter)
+      .sort(sortOptions)
+      .skip(skip)
+      .limit(limit)
+      .populate({
+        path: "mother",
+        match: populateMatch,
+      });
+
+    const filteredData = findQuery.filter((doc) => doc.mother);
+
+    return { data: filteredData, total: totalDocuments };
   } catch (error) {
     throw error;
   }
@@ -75,6 +101,7 @@ const deleteUser = async (id) => {
 };
 
 module.exports = {
+  getAll,
   getAllUser,
   getByIdUser,
   createUser,

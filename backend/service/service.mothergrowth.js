@@ -1,6 +1,16 @@
 const Growth = require("../models/model.mother.growth");
 const Mother = require("../models/model.mother");
-const getAll = async (
+
+const getAll = async (req, res) => {
+  try {
+    const mother = await Growth.find().populate("mother");
+    return mother;
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+
+const getAllMother = async (
   filter = {},
   sortOptions = {},
   skip = 0,
@@ -8,29 +18,20 @@ const getAll = async (
   populateMatch = {}
 ) => {
   try {
+    const totalDocuments = await Growth.countDocuments(filter);
+
     const findQuery = await Growth.find(filter)
       .sort(sortOptions)
       .skip(skip)
       .limit(limit)
       .populate({
         path: "mother",
-        match: populateMatch, // Use match option for filtering based on populated field's properties
+        match: populateMatch,
       });
 
-    // Filter out documents where childrens do not match
     const filteredData = findQuery.filter((doc) => doc.mother);
 
-    // const countDocumentsPromise = await Growth.countDocuments(filter);
-    // Count only documents where childrens match
-    const countDocumentsPromise = await Growth.countDocuments({
-      ...filter,
-      mother: { $in: filteredData.map((doc) => doc.mother._id) },
-    });
-    const [data, total] = await Promise.all([
-      filteredData,
-      countDocumentsPromise,
-    ]);
-    return { data: filteredData, total };
+    return { data: filteredData, total: totalDocuments };
   } catch (error) {
     throw error;
   }
@@ -48,7 +49,6 @@ const getPregnant = async () => {
 const getMother = async (motherId) => {
   try {
     const existingMother = await Mother.findOne({ _id: motherId });
-    // console.log(existingMother);
     if (!existingMother) {
       return null;
     }
@@ -115,6 +115,7 @@ const deleteData = async (id) => {
 
 module.exports = {
   getAll,
+  getAllMother,
   createData,
   getById,
   getMother,

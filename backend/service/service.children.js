@@ -1,5 +1,14 @@
 const Children = require("../models/model.children");
 
+const getAll = async (req, res) => {
+  try {
+    const children = await Children.find();
+    return children;
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+
 const getAllBaduta = async () => {
   try {
     const children = await Children.find({ isBaduta: true });
@@ -57,6 +66,7 @@ const deleteChildren = async (id) => {
 };
 
 module.exports = {
+  getAll,
   createChildren,
   updateData,
   deleteChildren,

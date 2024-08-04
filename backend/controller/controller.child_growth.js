@@ -2,15 +2,15 @@ const service = require("../service/service.childrengrowth");
 const Children = require("../models/model.children");
 const Imunisations = require("../models/model.immunisation");
 
-// Handler to get all children growth records
-// const getAllGrowth = async (req, res) => {
-//   try {
-//     const data = await service.getAll();
-//     res.status(200).json({ message: "List All Data", data });
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// };
+const getAll = async (req, res) => {
+  try {
+    const data = await service.getAll();
+    res.status(200).json({ message: "List All Data", data });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const getAllGrowth = async (req, res) => {
   try {
     const {
@@ -47,7 +47,7 @@ const getAllGrowth = async (req, res) => {
       ? { name: { $regex: new RegExp("^" + childrensName, "i") } }
       : {};
 
-    const { data, total } = await service.getAll(
+    const { data, total } = await service.getAllGrowth(
       filter,
       sortOptions,
       skip,
@@ -131,12 +131,10 @@ const createGrowth = async (req, res) => {
     if (childrens !== "") {
       const childrenExists = await Children.findById(childrens);
       if (!childrenExists) {
-        console.log(`Children ID ${childrens} not found`);
         return res.status(404).json({ message: "Children record not found" });
       }
     }
 
-    console.log("imun", imunisations);
     const data = await service.createData(growthData);
     if (data.imunisations !== null) {
       await Children.findByIdAndUpdate(growthData.childrens, {
@@ -145,7 +143,6 @@ const createGrowth = async (req, res) => {
     }
     res.status(201).json({ message: "Created data successfully", data });
   } catch (error) {
-    console.log(`Error: ${error.message}`);
     res.status(500).json({ message: error.message });
   }
 };
