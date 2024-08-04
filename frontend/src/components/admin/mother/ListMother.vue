@@ -32,7 +32,7 @@ const fetchMothers = async () => {
     const params = {
       name: searchName.value,
       husband: searchHusband.value,
-      dob: searchTime.value, // adjust field name according to your API
+      dob: searchTime.value,
       KS: selectedKS.value,
       bpjs: bpjs.value,
       sortField: sortField.value,
@@ -53,7 +53,7 @@ const ks = [
 ];
 
 const selectLimit = [
-  { value: "1", name: "5" },
+  { value: "5", name: "5" },
   { value: "10", name: "10" },
   { value: "25", name: "25" },
   { value: "50", name: "50" },
@@ -72,7 +72,6 @@ const editMother = (id) => {
 const deleteMother = async (id) => {
   try {
     await store.dispatch("deleteMother", id); // Removed namespacing
-    console.log(`Deleted mother with id ${id}`);
   } catch (error) {
     console.error(`Error deleting mother with id ${id} in component:`, error);
     console.error(
@@ -128,29 +127,12 @@ onMounted(() => {
             </template>
           </fwb-input>
 
-          <!-- <fwb-input
-            v-model="searchHusband"
-            @input="fetchMothers"
-            placeholder="Search by husband"
-          >
-            <template #prefix>
-              <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
-            </template>
-          </fwb-input> -->
-
           <fwb-input v-model="searchTime" @input="fetchMothers" type="date">
             <template #prefix>
               <font-awesome-icon icon="fa-solid fa-calendar" />
             </template>
           </fwb-input>
 
-          <!-- Dropdown for KS -->
-          <!-- <select v-model="selectedKS">
-          <option value="">Select KS</option>
-          <option value="KS1">KS1</option>
-          <option value="KS2">KS2</option>
-          <option value="KS3">KS3</option>
-        </select> -->
           <div class="flex gap-2 items-center">
             <p>Kesejahteraan Sosial</p>
             <fwb-select
@@ -159,11 +141,7 @@ onMounted(() => {
               :options="ks"
             />
           </div>
-          <!-- Checkbox for BPJS -->
-          <!-- <label>
-            <input type="checkbox"   />
-            BPJS
-          </label> -->
+
           <fwb-checkbox v-model="bpjs" @change="fetchMothers" label="BPJS" />
         </div>
       </div>

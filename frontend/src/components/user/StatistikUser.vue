@@ -14,7 +14,7 @@ import {
 const store = useStore();
 const router = useRouter();
 
-const children = computed(() => store.getters.children);
+const children = computed(() => store.getters.childrens);
 const childrenGrowth = computed(() => store.getters.childrensGrowth);
 const mothersGrowth = computed(() => store.getters.motherGrowths);
 const mothers = computed(() => store.getters.mothers);

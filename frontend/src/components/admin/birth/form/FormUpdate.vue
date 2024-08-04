@@ -61,7 +61,7 @@ const handleUpdate = async () => {
         children: birthData.value.children,
       },
     });
-    alert("Success updated data");
+    alert("Berhasil update data kelahiran");
     router.push({ name: "dashboardAdminKelahiran" });
   } catch (error) {
     console.error("Error updating birth:", error);

@@ -16,7 +16,7 @@ const mutations = {
   setMotherGrowths(state, motherGrowths) {
     state.motherGrowths = motherGrowths;
   },
-  setMotherGrowths(state, motherGrowthByMom) {
+  setMotherGrowthsByMom(state, motherGrowthByMom) {
     state.motherGrowthByMom = motherGrowthByMom;
   },
   setPaginationMothersGrowth(state, paginationMotherGrowth) {
@@ -61,7 +61,6 @@ const actions = {
   async fetchMotherPregnants({ commit }) {
     try {
       const response = await MotherService.getPregnant();
-      console.log(response.data);
       commit("setMotherPregnant", response.data);
       return response.data;
     } catch (error) {
@@ -71,8 +70,7 @@ const actions = {
   async fetchMotherGrowthbyMom({ commit }, motherId) {
     try {
       const response = await MotherService.getByMom(motherId);
-      console.log(response.data);
-      commit("setMotherPregnant", response.data);
+      commit("setMotherGrowthsByMom", response.data);
       return response.data;
     } catch (error) {
       console.error("Error fetching motherGrowths:", error);
@@ -83,7 +81,6 @@ const actions = {
     try {
       const response = await MotherService.getById(id);
       commit("setMotherGrowth", response.data);
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error(`Error fetching motherGrowth with id ${id}:`, error);

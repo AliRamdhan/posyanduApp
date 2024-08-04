@@ -79,7 +79,7 @@ const handleSubmit = async () => {
       if (!isNumberValid) errorMessage += "Nomor HP tidak valid.\n";
       alert(errorMessage);
     }
-    alert(`User with ID ${route.params.id} updated`);
+    alert(`Berhasil update data user`);
     router.push({ name: "dashboardAdminUser" }); // Redirect to user list after action
   } catch (error) {
     console.error("Error updating user:", error);

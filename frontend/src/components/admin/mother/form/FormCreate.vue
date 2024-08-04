@@ -50,10 +50,9 @@ const handleSubmit = async () => {
     const isNikSuamiValid = validateNomorKKNIK(data.value.husbandnik);
 
     if (isNikValid && isKkValid && isNikSuamiValid) {
-      const dataS = await store.dispatch("createMother", data.value);
-      console.log(dataS);
+      await store.dispatch("createMother", data.value);
       alert("New data added");
-      // router.push({ name: "dashboardAdminIbu" });
+      router.push({ name: "dashboardAdminIbu" });
     } else {
       let errorMessage = "";
       if (!isNikValid) errorMessage += "Nomor NIK tidak valid.\n";
@@ -62,7 +61,7 @@ const handleSubmit = async () => {
       alert(errorMessage);
     }
   } catch (err) {
-    console.log("Error adding mother:", err);
+    console.error("Error adding mother:", err);
     alert(err);
     error.value = err;
   }
@@ -118,7 +117,6 @@ const handleSubmit = async () => {
         />
       </div>
       <div>
-        <!-- <fwb-input v-model="data.bpjs" label="BPJS" /> -->
         <fwb-select v-model="data.bpjs" :options="bpjs" label="BPJS" />
       </div>
       <div>

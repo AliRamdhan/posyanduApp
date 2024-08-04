@@ -7,7 +7,6 @@ class ArticleService {
     try {
       const response = await axios.get(`${API_URL}`, { params });
       if (response.data && response.data.data && response.data.pagination) {
-        // console.log("edqdwq", response.data.data);
         return {
           data: response.data.data,
           pagination: response.data.pagination,

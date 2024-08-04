@@ -4,18 +4,11 @@ import Footer from "./components/Footer.vue";
 import { ref } from "vue";
 const nodeEnv = ref(import.meta.env.MODE); // Vite uses import.meta.env
 const appTitle = ref(import.meta.env.VITE_APP_TITLE);
-
-console.log(nodeEnv.value);
-console.log(appTitle.value);
 </script>
 
 <template>
   <main class="w-full min-h-screen">
-    <!-- <Header /> -->
-
     <router-view></router-view>
-
-    <!-- <Footer /> -->
   </main>
 </template>
 

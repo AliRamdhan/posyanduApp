@@ -27,10 +27,11 @@ const handleSubmit = async () => {
       if (!isNumberValid) errorMessage += "Nomor HP tidak valid.\n";
       alert(errorMessage);
     }
-    alert("succesfully");
+    alert("Berhasil menambahkan data user");
     router.push({ name: "dashboardAdminUser" });
   } catch (error) {
     console.error("Error adding user:", error);
+    alert(error.message);
   }
 };
 

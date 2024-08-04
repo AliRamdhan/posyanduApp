@@ -29,19 +29,17 @@ const props = defineProps({
     required: true,
   },
 });
-
-onMounted(() => {
-  console.log("dQWDQ", props.mother);
-});
 </script>
 
 <template>
-  <section class="container px-4">
+  <section class="container lg:px-4">
     <div class="flow-root grid grid-cols-1 lg:grid-cols-2 gap-x-4">
       <div class="my-4 p-4 border-2 rounded-lg">
         <dl class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
           <dt class="font-medium text-gray-900">Name</dt>
-          <dd class="text-gray-700 sm:col-span-2">{{ mother?.name }}</dd>
+          <dd class="text-gray-700 sm:col-span-2">
+            {{ mother.name ? mother.name : "" }}
+          </dd>
 
           <dt class="font-medium text-gray-900">Suami</dt>
           <dd class="text-gray-700 sm:col-span-2">{{ mother?.husband }}</dd>

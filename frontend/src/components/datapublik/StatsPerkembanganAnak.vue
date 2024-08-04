@@ -14,10 +14,8 @@ import {
 const store = useStore();
 const router = useRouter();
 
-const children = computed(() => store.getters.children);
-console.log("children", children);
+const children = computed(() => store.getters.childrens);
 const childrenGrowth = computed(() => store.getters.childrensGrowth);
-console.log("children growth", childrenGrowth);
 
 const fetchChildrenGrowth = async () => {
   try {
@@ -30,6 +28,7 @@ const fetchChildrenGrowth = async () => {
 const fetchChildren = async () => {
   try {
     await store.dispatch("fetchChildren");
+    await store.dispatch("fetchChildrenAll");
   } catch (error) {
     console.error("Error fetching children in component:", error);
   }
@@ -43,7 +42,6 @@ onMounted(() => {
 const childrenIsBaduta = computed(() =>
   children.value.filter((child) => child.isBaduta)
 );
-console.log("sa", childrenIsBaduta);
 const childrenIsBalita = computed(() =>
   children.value.filter((child) => child.isBalita)
 );
@@ -58,7 +56,6 @@ const WBIsBalita = computed(() =>
     (child) => child.weightBody && child.childrens.isBalita
   )
 );
-console.log("dd", WBIsBalita);
 
 const HBIsBaduta = computed(() =>
   childrenGrowth.value.filter(
@@ -70,7 +67,6 @@ const WBIsBaduta = computed(() =>
     (child) => child.weightBody && child.childrens.isBaduta
   )
 );
-console.log("bad", WBIsBaduta);
 
 // BADUTA WB HB AGE
 const averageAgeBaduta = computed(() => averageAge(childrenIsBaduta.value));

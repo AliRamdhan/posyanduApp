@@ -21,7 +21,6 @@ const fetchProfile = async () => {
 
 onMounted(() => {
   fetchProfile();
-  console.log("Dashboard component mounted");
 });
 </script>
 

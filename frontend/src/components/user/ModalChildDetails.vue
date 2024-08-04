@@ -15,8 +15,7 @@ const store = useStore();
 
 const child = computed(() => store.getters.child);
 const childGrowth = computed(() => store.getters.childGrowth);
-console.log("c", child);
-// console.log(childGrowth);
+
 const fetchChild = async (id) => {
   try {
     await store.dispatch("fetchChild", id);
@@ -42,7 +41,9 @@ onMounted(async () => {
           </div>
           <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
             <dt class="font-medium text-gray-900">Nama</dt>
-            <dd class="text-gray-700 sm:col-span-2">{{ child.name }}</dd>
+            <dd class="text-gray-700 sm:col-span-2">
+              {{ child.name ? child.name : "Anak" }}
+            </dd>
           </div>
 
           <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
@@ -69,35 +70,52 @@ onMounted(async () => {
           >
             <dt class="font-medium text-gray-100 text-xl">Perkembangan Anak</dt>
           </div>
-          <div class="w-full" v-if="childGrowth && childGrowth.length">
+          <div class="w-full" v-if="childGrowth && childGrowth.length > 0">
             <div
               v-for="growth in childGrowth"
               :key="growth._id"
               class="my-4 p-2 border-2 rounded-lg"
             >
-              <div class="flex justify-around items-center sm:gap-4">
-                <dt class="font-medium text-gray-900">
-                  <p>Perkembangan {{ child.name }}</p>
+              <div
+                class="flex flex-col lg:flex-row justify-around items-center sm:gap-4"
+              >
+                <dt class="font-semibold text-gray-900 mb-4">
+                  <p>Perkembangan {{ growth?.childrens?.name || 'N/A' }}</p>
                   <p>
                     {{ growth.checkDate ? formatTime(growth.checkDate) : null }}
                   </p>
                 </dt>
                 <dd class="text-gray-700 sm:col-span-2">
                   <ul>
-                    <li>Fase Umur : {{ growth.groupFase }}</li>
-                    <li>Tinggi Badan : {{ growth.heightBody }}</li>
-                    <li>Berat Badan : {{ growth.weightBody }}</li>
                     <li>
-                      Imunisasi yg diberikan : {{ growth.imunisations.name }}
+                      Fase Umur :
+                      {{ growth.groupFase ? growth.groupFase : null }}
+                    </li>
+                    <li>
+                      Tinggi Badan :
+                      {{ growth.heightBody ? growth.heightBody : null }}
+                    </li>
+                    <li>
+                      Berat Badan :
+                      {{ growth.weightBody ? growth.weightBody : null }}
+                    </li>
+                    <li>
+                      Imunisasi yg diberikan :
+                      {{
+                        growth.imunisations == null
+                          ? growth.imunisations.name
+                          : "Tidak Imunisasi"
+                      }}
                     </li>
                   </ul>
                 </dd>
               </div>
             </div>
             <div class="w-full">
-              <div>
+              <div v-if="childId">
                 <ChartAnak :child-id="childId" />
               </div>
+              <div v-else>Loading...</div>
             </div>
           </div>
           <div v-else>

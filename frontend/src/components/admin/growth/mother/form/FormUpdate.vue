@@ -28,8 +28,7 @@ const handleSubmit = async () => {
       id: route.params.id,
       motherGrowthData: motherGrowthData.value,
     });
-    console.log("Mother growth record updated");
-    alert(`Mother growth record with ID ${route.params.id} updated`);
+    alert(`Berhasil update pertumbuhan ibu`);
     router.push({ name: "dashboardAdminPerkembanganIbu" });
   } catch (error) {
     console.error("Error updating mother growth:", error);

@@ -10,7 +10,6 @@ const store = useStore();
 const router = useRouter();
 
 const articles = computed(() => store.getters.articles);
-console.log("Dwqdqw", articles);
 const fetchArticles = async () => {
   try {
     await store.dispatch("fetchArticles");

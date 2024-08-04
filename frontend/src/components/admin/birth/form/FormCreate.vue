@@ -26,8 +26,7 @@ const birthData = ref({
 const handleSubmit = async () => {
   try {
     await store.dispatch("createBirth", birthData.value);
-    console.log("New birth added");
-    alert("Success created data");
+    alert("Berhasil menambahkan data kelahiran baru");
     router.push({ name: "dashboardAdminKelahiran" }); // Redirect to births list after action
   } catch (error) {
     console.error("Error adding birth:", error);
@@ -36,7 +35,7 @@ const handleSubmit = async () => {
 
 const fetchMothers = async () => {
   try {
-    await store.dispatch("fetchMothers");
+    await store.dispatch("fetchMothersAll");
   } catch (error) {
     console.error("Error fetching mothers in component:", error);
     console.error(
@@ -47,7 +46,7 @@ const fetchMothers = async () => {
 };
 
 const mothers = computed(() =>
-  store.getters.mothersSelect.map((mother) => ({
+  store.getters.mothersAll.map((mother) => ({
     value: mother._id,
     name: mother.name,
   }))

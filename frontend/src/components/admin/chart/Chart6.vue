@@ -1,8 +1,7 @@
 <template>
-  <div v-if="chartData" style="height: 300px">
+  <div style="height: 400px">
     <Line :data="chartData" :options="chartOptions" />
   </div>
-  <div v-else>Loading...</div>
 </template>
 
 <script setup>

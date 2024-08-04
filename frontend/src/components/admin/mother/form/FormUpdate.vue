@@ -117,7 +117,7 @@ const handleSubmit = async () => {
           amountChild: existData.value.amountChild,
         },
       });
-      alert(`Data with ID ${route.params.id} updated`, data);
+      alert(`Berhasil update data ibu`);
       router.push({ name: "dashboardAdminIbu" }); // Redirect to mothers list after action
     } else {
       let errorMessage = "";

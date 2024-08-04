@@ -325,7 +325,6 @@ router.beforeEach((to, from, next) => {
   if (requiresAuth && !isAuthenticated) {
     next({ name: "signin" });
   } else if (requiresAuth) {
-    console.log(user.role);
     if (to.name === "dashboardAdmin" && user.role !== "Admin") {
       next({ name: "forbidden" });
     } else if (to.name === "dashboardUser" && user.role !== "User") {

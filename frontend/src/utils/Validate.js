@@ -1,10 +1,8 @@
 export const validateNomorKKNIK = (number) => {
   const regex = /^\d{16}$/;
   if (regex.test(number)) {
-    console.log("Nomor KK / NIK valid.");
     return true;
   } else {
-    console.log("Nomor KK / NIK tidak valid.");
     return false;
   }
 };
@@ -12,10 +10,8 @@ export const validateNomorKKNIK = (number) => {
 export const validateNomorHp = (number) => {
   const regex = /^\d{12,}$/;
   if (regex.test(number)) {
-    console.log("Nomor HP valid.");
     return true;
   } else {
-    console.log("Nomor HP tidak valid.");
     return false;
   }
 };
@@ -37,10 +33,8 @@ export const isBalita = (dob) => {
     age--;
   }
   if (age < 2) {
-    console.log("Baduta");
     return true;
   } else {
-    console.log("Balita");
     return false;
   }
 };

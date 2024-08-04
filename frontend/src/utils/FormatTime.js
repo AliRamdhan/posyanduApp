@@ -12,7 +12,3 @@ export default function formatTime(time) {
 
   return formattedDate;
 }
-
-// const isoDateString = "2015-06-15T00:00:00.000Z";
-// const formattedDateString = formatDate(isoDateString);
-// console.log(formattedDateString); // Output: "Senin, 15 Juni 2015"

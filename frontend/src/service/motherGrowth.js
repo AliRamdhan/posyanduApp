@@ -22,7 +22,6 @@ class ImunisationService {
   async getPregnant() {
     try {
       const response = await axios.get(`${API_URL}/pregnant`);
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error("Error fetching all data:", error);
@@ -32,7 +31,6 @@ class ImunisationService {
   async getByMom(motherId) {
     try {
       const response = await axios.get(`${API_URL}/all/${motherId}`);
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error("Error fetching all data:", error);

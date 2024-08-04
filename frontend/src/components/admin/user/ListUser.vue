@@ -9,13 +9,29 @@ import formatTime from "../../../utils/FormatTime";
 
 const store = useStore();
 const router = useRouter();
-const users = computed(() => store.getters.users);
-console.log("wqdq", users);
+const users = computed(() => store.getters.usersAll);
+const pagination = computed(() => store.getters.paginationUsersAll);
+console.log("page", pagination);
+const searchEmail = ref("");
+const searchMotherName = ref("");
+const sortField = ref("");
+const sortOrder = ref("asc");
+const currentPage = ref(1);
+const limit = ref(10);
+
 const fetchUser = async () => {
+  const params = {
+    email: searchEmail.value,
+    motherName: searchMotherName.value,
+    sortField: sortField.value,
+    sortOrder: sortOrder.value,
+    page: currentPage.value,
+    limit: limit.value,
+  };
   try {
-    await store.dispatch("fetchUsers");
+    await store.dispatch("fetchUserAll", params);
   } catch (error) {
-    console.error("Error fetching children in component:", error);
+    console.error("Error fetching users all in component:", error);
   }
 };
 
@@ -30,7 +46,6 @@ const addUser = () => {
 const deleteUser = async (id) => {
   try {
     await store.dispatch("deleteUser", id); // Removed namespacing
-    console.log(`Deleted mother with id ${id}`);
   } catch (error) {
     console.error(`Error deleting mother with id ${id} in component:`, error);
     console.error(
@@ -53,6 +68,14 @@ const removeChild = async (id) => {
   }
 };
 
+const selectLimit = [
+  { value: "5", name: "5" },
+  { value: "10", name: "10" },
+  { value: "25", name: "25" },
+  { value: "50", name: "50" },
+  { value: "100", name: "100" },
+];
+
 const handlePageChange = (page) => {
   currentPage.value = page;
   fetchUser();
@@ -66,6 +89,40 @@ onMounted(() => {
   <section class="w-96 md:w-full flex justify-end px-4 overflow-hidden">
     <div class="w-full">
       <ListHeader name="Data Anak" :numberData="users.length" />
+      <div class="mt-6 md:flex md:items-center md:justify-between">
+        <div
+          class="w-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4"
+        >
+          <div class="flex gap-2 items-center text-sm">
+            <p>Show</p>
+            <fwb-select
+              v-model="limit"
+              @change="fetchUser"
+              :options="selectLimit"
+              class="w-20"
+            />
+            Entries
+          </div>
+          <fwb-input
+            v-model="searchEmail"
+            @input="fetchUser"
+            placeholder="Search by Email"
+          >
+            <template #prefix>
+              <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
+            </template>
+          </fwb-input>
+          <fwb-input
+            v-model="searchMotherName"
+            @input="fetchUser"
+            placeholder="Search by Nama Ibu"
+          >
+            <template #prefix>
+              <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
+            </template>
+          </fwb-input>
+        </div>
+      </div>
       <div class="flex flex-col mt-6">
         <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div
@@ -164,12 +221,12 @@ onMounted(() => {
                   </div>
                 </div>
               </table>
-              <!-- <div v-if="children.length > 0">
+              <div v-if="users.length > 0">
                 <ListPagination
                   :pagination="pagination"
                   @page-changed="handlePageChange"
                 />
-              </div> -->
+              </div>
             </div>
           </div>
         </div>

@@ -12,8 +12,6 @@ const router = useRouter();
 
 const mothersGrowth = computed(() => store.getters.motherGrowths);
 const mothers = computed(() => store.getters.mothers);
-// console.log("mother g", mothersGrowth);
-// console.log("mother", mothers);
 
 const fetchMothersGrowth = async () => {
   try {

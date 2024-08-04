@@ -9,8 +9,6 @@ import { FwbButton, FwbModal } from "flowbite-vue";
 const store = useStore();
 const router = useRouter();
 
-// const children = computed(() => store.getters["children"]); // Directly access the getter
-// Define props for the main component
 const props = defineProps({
   children: {
     type: Array,
@@ -30,16 +28,12 @@ function showModal(childId) {
   selectedChildId.value = childId;
   isShowModal.value = true;
 }
-
-onMounted(() => {
-  console.log(props.children);
-});
 </script>
 
 <template>
-  <section class="container px-4">
+  <section class="container lg:px-4">
     <div v-if="children.length > 0">
-      <div class="flow-root grid grid-cols-1 lg:grid-cols-2 gap-x-4">
+      <div class="flow-root grid grid-cols-1 lg:grid-cols-2 lg:gap-x-4">
         <div
           v-for="child in children"
           :key="child._id"

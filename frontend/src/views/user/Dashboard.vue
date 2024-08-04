@@ -16,14 +16,10 @@ const user = computed(() => store.getters.user);
 const childrenMom = computed(() => store.getters.childrenMom);
 const mother = computed(() => store.getters.mother);
 
-// console.log("user", user);
-// console.log("child", childrenMom.value);
-// console.log("mother", mother.value);
 onMounted(async () => {
   await fetchChildrenMom(user.value.motherId);
   await fetchMom(user.value.motherId);
   await fetchProfile();
-  console.log("Dashboard component mounted");
 });
 
 const fetchChildrenMom = async (motherId) => {
@@ -52,16 +48,13 @@ const fetchProfile = async () => {
 </script>
 
 <template>
-  <div>
-    <!-- <Header :username="user.username" /> -->
-    <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-      <!-- <h1>Dashboard</h1>
-      <router-view></router-view> -->
+  <div class="w-full">
+    <div class="w-full px-4 sm:px-6 lg:px-8">
       <div v-if="user" class="w-full">
         <Header :username="user.username ? user.username : null" />
         <Statistic />
-        <div class="px-4">
-          <div class="my-8">
+        <div class="w-full flex flex-col justify-center items-center px-4">
+          <div class="w-full my-8">
             <h2 class="text-2xl font-bold text-gray-700">Profile Data</h2>
             <ProfileBox :mother="mother" />
             <div class="w-full">

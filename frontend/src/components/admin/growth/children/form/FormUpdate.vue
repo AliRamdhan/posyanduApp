@@ -46,8 +46,7 @@ const handleSubmit = async () => {
       id: childGrowthId,
       childData: childrenGrowthData.value,
     });
-    // console.log("Children growth record updated");
-    alert("Successs update data");
+    alert("Berhasil update data pertumbuhan");
     router.push({ name: "dashboardAdminPerkembanganAnak" }); // Redirect to list after update
   } catch (error) {
     console.error("Error updating children growth:", error);

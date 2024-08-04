@@ -13,8 +13,6 @@ const store = useStore();
 const router = useRouter();
 const pagination = computed(() => store.getters.paginationBirth);
 const births = computed(() => store.getters.births);
-console.log(births);
-// const children = computed(() => store.getters.children);
 
 const searchHeight = ref("");
 const searchWeight = ref("");
@@ -46,7 +44,6 @@ const fetchBirths = async () => {
       limit: limit.value,
     };
     const data = await store.dispatch("fetchBirths", params);
-    console.log("dwqdq", data);
   } catch (error) {
     console.error("Error fetching data:", error);
   }
@@ -55,7 +52,6 @@ const fetchBirths = async () => {
 const deleteBirth = async (id) => {
   try {
     await store.dispatch("deleteBirth", id);
-    console.log(`Deleted birth with id ${id}`);
   } catch (error) {
     console.error(`Error deleting birth with id ${id}:`, error);
   }
@@ -77,10 +73,6 @@ const handlePageChange = (page) => {
   currentPage.value = page;
   fetchBirths();
 };
-
-// onMounted(() => {
-//   fetchChildren();
-// });
 
 onMounted(() => {
   fetchBirths();

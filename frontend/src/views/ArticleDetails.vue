@@ -19,8 +19,7 @@ const articleData = ref({
 
 const fetchArticle = async () => {
   try {
-    const data = await store.dispatch("fetchArticleBySlug", route.params.slug);
-    console.log(data);
+    await store.dispatch("fetchArticleBySlug", route.params.slug);
     articleData.value = {
       title: data.title,
       slug: data.slug,

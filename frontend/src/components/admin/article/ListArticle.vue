@@ -7,6 +7,8 @@ import { computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import formatTime from "../../../utils/FormatTime";
+import { FwbButton, FwbModal } from "flowbite-vue";
+import ModalDetailsArticle from "./ModalDetailsArticle.vue";
 
 const store = useStore();
 const router = useRouter();
@@ -48,7 +50,6 @@ const fetchArticles = async () => {
 const deleteArticle = async (id) => {
   try {
     await store.dispatch("deleteArticle", id);
-    console.log(`Deleted article with id ${id}`);
     fetchArticles(); // Refetch articles after deletion
   } catch (error) {
     console.error(`Error deleting article with id ${id}:`, error);
@@ -63,6 +64,19 @@ const handlePageChange = (page) => {
   currentPage.value = page;
   fetchArticles();
 };
+
+const isShowModal = ref(false);
+const selectedArticle = ref(null);
+
+function closeModal() {
+  isShowModal.value = false;
+  selectedArticle.value = null;
+}
+
+function showModal(articleId) {
+  selectedArticle.value = articleId;
+  isShowModal.value = true;
+}
 
 onMounted(() => {
   fetchArticles();
@@ -168,22 +182,27 @@ onMounted(() => {
                       </h2>
                     </td>
                     <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
-                      <!-- <h2 class="font-medium text-gray-800 dark:text-white">
-                        {{ article?.shortDescription }}
-                      </h2> -->
                       <img
                         :src="article?.images"
                         alt="Article Image"
                         class="w-32 h-20"
                       />
                     </td>
-                    <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
-                      <h2 class="font-medium text-gray-800 dark:text-white">
+                    <td
+                      class="w-20 px-4 py-4 text-sm font-medium whitespace-nowrap"
+                    >
+                      <h2
+                        class="w-56 truncate font-medium text-gray-800 dark:text-white"
+                      >
                         {{ article?.shortDescription }}
                       </h2>
                     </td>
-                    <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
-                      <h2 class="font-medium text-gray-800 dark:text-white">
+                    <td
+                      class="w-20 px-4 py-4 text-sm font-medium whitespace-nowrap"
+                    >
+                      <h2
+                        class="w-56 truncate font-medium text-gray-800 dark:text-white"
+                      >
                         {{ article?.content }}
                       </h2>
                     </td>
@@ -197,8 +216,14 @@ onMounted(() => {
                       </h2>
                     </td>
                     <td
-                      class="px-12 py-4 text-sm font-medium whitespace-nowrap flex gap-4"
+                      class="px-12 py-8 text-sm font-medium whitespace-nowrap flex gap-4"
                     >
+                      <button
+                        @click="showModal(article._id)"
+                        class="inline px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-500"
+                      >
+                        View
+                      </button>
                       <button
                         @click="updateArticle(article._id)"
                         class="inline px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-500"
@@ -232,6 +257,23 @@ onMounted(() => {
         @page-change="handlePageChange"
       />
     </div>
+    <fwb-modal v-if="isShowModal" @close="closeModal" size="5xl">
+      <template #header>
+        <div class="flex items-center text-2xl font-semibold">
+          Article Details
+        </div>
+      </template>
+      <template #body>
+        <ModalDetailsArticle :articleId="selectedArticle" />
+      </template>
+      <template #footer>
+        <div class="flex justify-end">
+          <fwb-button @click="closeModal" color="dark" class="px-16">
+            Back
+          </fwb-button>
+        </div>
+      </template>
+    </fwb-modal>
   </section>
 </template>
 

@@ -12,6 +12,22 @@ class UserService {
       throw error;
     }
   }
+  async getAllUser(params) {
+    try {
+      const response = await axios.get(`${API_URL}/page`, { params });
+      if (response.data && response.data.data && response.data.pagination) {
+        return {
+          data: response.data.data,
+          pagination: response.data.pagination,
+        };
+      } else {
+        throw new Error("Unexpected response format");
+      }
+    } catch (error) {
+      console.error("Error fetching all data:", error);
+      throw error;
+    }
+  }
 
   async getById(id) {
     try {

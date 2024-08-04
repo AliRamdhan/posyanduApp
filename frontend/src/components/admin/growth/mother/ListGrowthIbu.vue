@@ -26,18 +26,6 @@ const sortOrder = ref("asc");
 const currentPage = ref(1);
 const limit = ref(10);
 
-// checkDate
-// height
-// weight
-// kbtype
-// pregnantStatus
-// wombAge
-// numbChild
-// groupFase
-// circumStomach
-// circumHand
-// sortField
-
 const fetchMothers = async () => {
   try {
     const params = {
@@ -77,8 +65,7 @@ const handlePageChange = (page) => {
 
 const deleteGrowth = async (id) => {
   try {
-    await store.dispatch("deleteMotherGrowth", id); // Removed namespacing
-    console.log(`Deleted mother with id ${id}`);
+    await store.dispatch("deleteMotherGrowth", id);
   } catch (error) {
     console.error(`Error deleting mother with id ${id} in component:`, error);
     console.error(
@@ -215,13 +202,6 @@ onMounted(() => {
                       >
                         Kehamilan
                       </th>
-
-                      <!-- <th
-                    scope="col"
-                    class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                  >
-                    Kehamilan
-                  </th> -->
                       <th
                         scope="col"
                         class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
@@ -252,15 +232,11 @@ onMounted(() => {
                       >
                         Cek Tanggal
                       </th>
-                      <!-- <th scope="col" class="relative py-3.5 px-4">
-                    <span class="sr-only">Edit</span>
-                  </th> -->
                     </tr>
                   </thead>
                   <tbody
                     class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900"
                   >
-                    <!-- <tr v-for="child in children" :key="child._id"> -->
                     <tr v-for="mother in mothers" :key="mother._id">
                       <td
                         class="px-4 py-4 text-sm font-medium whitespace-nowrap"
@@ -272,7 +248,6 @@ onMounted(() => {
                           <p
                             class="text-sm font-normal text-gray-600 dark:text-gray-400"
                           >
-                            <!-- NIK : {{ child.nik }} -->
                             NIK : {{ mother.mother?.nik }}
                           </p>
                         </div>
@@ -280,19 +255,29 @@ onMounted(() => {
                       <td
                         class="px-4 py-4 text-sm font-medium whitespace-nowrap"
                       >
-                        <!-- {{ child.gender }} -->
                         {{ mother.height }} cm / {{ mother.weight }} kg
                       </td>
 
                       <td
                         class="px-4 py-4 text-sm font-medium whitespace-nowrap"
                       >
-                        <h2 class="font-medium text-gray-800 dark:text-white">
-                          <!-- {{ formatTime(child.dob) }} -->
-                          {{ mother.pregnantStatus }} /
+                        <h2
+                          v-if="
+                            mother.wombAge === 0 ||
+                            mother.wombAge === null ||
+                            mother.groupFase === 'None'
+                          "
+                        >
+                          Tidak Hamil
+                        </h2>
+                        <h2
+                          class="font-medium text-gray-800 dark:text-white"
+                          v-else
+                        >
                           {{ mother.wombAge }} Bulan
                         </h2>
                       </td>
+
                       <td
                         class="px-4 py-4 text-sm font-medium whitespace-nowrap"
                       >

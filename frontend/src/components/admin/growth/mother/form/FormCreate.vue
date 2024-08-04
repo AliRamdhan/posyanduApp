@@ -26,20 +26,8 @@ const handleSubmit = async () => {
     return;
   }
   try {
-    // const child = store.getters.childrenMom.find(
-    //   (child) => child._id === childrenGrowthData.value.childrens
-    // );
-
-    // if (child) {
-    //   motherGrowthData.value.numbChild = child.isBaduta ? "Baduta" : "Balita";
-    // }
-
-    const data = await store.dispatch(
-      "createMotherGrowth",
-      motherGrowthData.value
-    );
-    console.log("Mother growth record created");
-    console.log(data);
+    await store.dispatch("createMotherGrowth", motherGrowthData.value);
+    alert("Data perkembangan ibu terbaru berhasil ditambahkan");
     router.push({ name: "dashboardAdminPerkembanganIbu" });
   } catch (error) {
     console.error("Error creating mother growth:", error);
@@ -106,7 +94,7 @@ watch(
 watch(
   () => motherGrowthData.value.wombAge,
   (newWombAge) => {
-    if (newWombAge === null || newWombAge === undefined) {
+    if (newWombAge === null || newWombAge === undefined || newWombAge === 0) {
       motherGrowthData.value.groupFase = "None";
     } else if (newWombAge >= 1 && newWombAge < 14) {
       motherGrowthData.value.groupFase = "Trimester 1";
@@ -178,7 +166,7 @@ onMounted(() => {
         <fwb-input
           type="number"
           v-model.number="motherGrowthData.wombAge"
-          label="Usia Kandungan (minggu)"
+          label="Usia Kandungan (minggu) / jika tidak hamil isi 0 atau lewati"
         />
       </div>
       <div>

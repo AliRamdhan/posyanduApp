@@ -39,7 +39,7 @@ onMounted(() => {
 
 const badutas = computed(() => store.getters.childBaduta);
 const balitas = computed(() => store.getters.childBalita);
-const childs = computed(() => store.getters.children);
+const childs = computed(() => store.getters.childrens);
 
 const chartData = computed(() => {
   const labels = [

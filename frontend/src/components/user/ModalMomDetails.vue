@@ -122,8 +122,8 @@ onMounted(async () => {
               :key="growth._id"
               class="my-4 p-2 border-2 rounded-lg"
             >
-              <div class="flex justify-around items-center sm:gap-4">
-                <dt class="font-medium text-gray-900">
+              <div class="flex flex-col lg:flex-row justify-around items-center sm:gap-4">
+                <dt class="font-semibold text-gray-900 mb-4">
                   Perkembangan {{ mother.name }} -
                   {{ formatTime(growth.checkDate) }}
                 </dt>

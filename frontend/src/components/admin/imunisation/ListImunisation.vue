@@ -13,7 +13,6 @@ const router = useRouter();
 
 const pagination = computed(() => store.getters.paginationImmunisation);
 const immunisations = computed(() => store.getters.immunisations);
-console.log(immunisations);
 
 const searchName = ref("");
 const searchGroupAge = ref("");
@@ -57,7 +56,6 @@ const fetchImmunisations = async () => {
 const deleteImmunisation = async (id) => {
   try {
     await store.dispatch("deleteImmunisation", id);
-    console.log(`Deleted immunisation with id ${id}`);
   } catch (error) {
     console.error(`Error deleting immunisation with id ${id}:`, error);
   }
@@ -84,14 +82,9 @@ onMounted(() => {
 <template>
   <section class="w-96 lg:w-full flex justify-end px-4 overflow-hidden">
     <div class="w-full">
-      <ListHeader
-        nameData="Imunisasi"
-        :numberData="immunisations.length"
-      />
+      <ListHeader nameData="Imunisasi" :numberData="immunisations.length" />
       <div class="mt-6 md:flex md:items-center md:justify-between">
-        <div
-          class="w-full grid grid-cols-1 lg:grid-cols-4 gap-4"
-        >
+        <div class="w-full grid grid-cols-1 lg:grid-cols-4 gap-4">
           <div class="flex gap-2 items-center text-sm">
             <p>Show</p>
             <fwb-select

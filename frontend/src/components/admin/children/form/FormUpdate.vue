@@ -17,13 +17,6 @@ const gender = [
   { value: "Female", name: "Perempuan" },
 ];
 
-// const isStatus = [
-//   { value: "baduta", name: "Bayi Usia Dua Tahun" },
-//   { value: "balita", name: "Bayi Usia Lima Tahun" },
-// ];
-
-// const selectedStatus = ref(null);
-
 const childData = ref({
   name: "",
   nik: "",
@@ -37,19 +30,6 @@ onMounted(async () => {
   await fetchMothers();
   await fetchChild(route.params.id);
 });
-
-// watch(selectedStatus, (newValue) => {
-//   if (newValue === "baduta") {
-//     childData.value.isBaduta = true;
-//     childData.value.isBalita = false;
-//   } else if (newValue === "balita") {
-//     childData.value.isBalita = true;
-//     childData.value.isBaduta = false;
-//   } else {
-//     childData.value.isBaduta = null;
-//     childData.value.isBalita = false;
-//   }
-// });
 
 const fetchMothers = async () => {
   try {

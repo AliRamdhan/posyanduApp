@@ -16,7 +16,7 @@ const store = useStore();
 const router = useRouter();
 
 const childrens = computed(() => store.getters.childrensGrowth);
-console.log(childrens);
+
 const pagination = computed(() => store.getters.paginationChildrensGrowth);
 const searchCheck = ref("");
 const searchGroupFase = ref("");
@@ -67,7 +67,6 @@ const editGrowth = (id) => {
 const deleteGrowth = async (id) => {
   try {
     await store.dispatch("deleteChildBaduta", id); // Removed namespacing
-    console.log(`Deleted mother with id ${id}`);
   } catch (error) {
     console.error(`Error deleting mother with id ${id} in component:`, error);
     console.error(

@@ -32,10 +32,10 @@ ChartJS.register(
 const store = useStore();
 
 onMounted(() => {
-  store.dispatch("fetchMothers"); // Fetch all mothers data
+  store.dispatch("fetchMothersAll"); // Fetch all mothers data
 });
 
-const mothers = computed(() => store.getters.mothers);
+const mothers = computed(() => store.getters.mothersAll);
 
 const chartData = computed(() => {
   const labels = [

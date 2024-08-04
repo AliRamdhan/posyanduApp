@@ -2,13 +2,25 @@ import axios from "axios";
 import userService from "../../service/user";
 const state = {
   users: [],
+  usersAll: [],
   userone: null,
   error: null,
+  paginationUsersAll: {
+    page: 1,
+    limit: 10,
+    total: 0,
+  },
 };
 
 const mutations = {
   setUsers(state, users) {
     state.users = users;
+  },
+  setUsersAll(state, usersAll) {
+    state.usersAll = usersAll;
+  },
+  setPaginationUsersAll(state, paginationUsersAll) {
+    state.paginationUsersAll = paginationUsersAll;
   },
   setUserOne(state, userone) {
     state.userone = userone;
@@ -30,10 +42,20 @@ const actions = {
   async fetchUsers({ commit }) {
     try {
       const response = await userService.getAll();
-      // console.log("dwdwq", response);
       commit("setUsers", response);
     } catch (error) {
       commit("setError", error.response.data);
+    }
+  },
+  async fetchUserAll({ commit }, params) {
+    try {
+      const response = await userService.getAllUser(params);
+      const { data, pagination } = response;
+      commit("setUsersAll", data);
+      commit("setPaginationUsersAll", pagination);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching children:", error);
     }
   },
   async fetchUserOne({ commit }, id) {
@@ -66,6 +88,8 @@ const actions = {
 const getters = {
   users: (state) => state.users,
   userone: (state) => state.userone,
+  usersAll: (state) => state.usersAll,
+  paginationUsersAll: (state) => state.paginationUsersAll,
   error: (state) => state.error,
 };
 

@@ -57,7 +57,6 @@ class MotherService {
 
   async createData(data) {
     const response = await axios.post(`${API_URL}/create`, data);
-    console.log(response.data);
     return response.data;
   }
 

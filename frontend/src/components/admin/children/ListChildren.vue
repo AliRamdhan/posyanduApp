@@ -17,8 +17,6 @@ const router = useRouter();
 const pagination = computed(() => store.getters.paginationChild);
 const children = computed(() => store.getters.children);
 const age = computed(() => store.getters.children);
-// console.log("dqw", age);
-console.log(children);
 
 const searchName = ref("");
 const searchNIK = ref("");
@@ -63,15 +61,6 @@ const fetchChildren = async () => {
   }
 };
 
-// const deleteChild = async (id) => {
-//   try {
-//     await store.dispatch("deleteChild", id);
-//     fetchChildren();
-//   } catch (error) {
-//     console.error(`Error deleting child with id ${id} in component:`, error);
-//   }
-// };
-
 const editChild = (id) => {
   router.push({ name: "anak-update", params: { id } });
 };
@@ -83,7 +72,6 @@ const addChild = () => {
 const deleteChild = async (id) => {
   try {
     await store.dispatch("deleteChild", id); // Removed namespacing
-    console.log(`Deleted mother with id ${id}`);
   } catch (error) {
     console.error(`Error deleting mother with id ${id} in component:`, error);
     console.error(

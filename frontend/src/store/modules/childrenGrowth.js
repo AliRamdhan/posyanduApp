@@ -3,7 +3,7 @@
 import ChildrenGrowthService from "../../service/childrenGrowth";
 
 const state = {
-  childrensGrowth: [],  
+  childrensGrowth: [],
   childBaduta: null,
   childGrowth: [],
   paginationChildrensGrowth: {
@@ -56,22 +56,10 @@ const actions = {
       console.error("Error fetching children:", error);
     }
   },
-  // async fetchChildrenBadutas({ commit }) {
-  //   try {
-  //     const response = await ChildrenGrowthService.getAll();
-  //     const { data, pagination } = response;
-  // commit("setChildrenGrowth", data);
-  // commit("setPaginationChildrensGrowth", pagination);
-  //     return response.data;
-  //   } catch (error) {
-  //     console.error("Error fetching children:", error);
-  //   }
-  // },
   async fetchChildrenBaduta({ commit }) {
     try {
       const response = await ChildrenGrowthService.getAll();
       commit("setChildBaduta", response.data);
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error("Error fetching children:", error);
@@ -81,7 +69,6 @@ const actions = {
     try {
       const response = await ChildrenGrowthService.getByChildren(childId);
       commit("setChildGrowth", response.data);
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error("Error fetching children:", error);
@@ -91,7 +78,6 @@ const actions = {
     try {
       const response = await ChildrenGrowthService.getAll();
       commit("setChildBaduta", response.data);
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error("Error fetching children:", error);

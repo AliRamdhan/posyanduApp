@@ -41,7 +41,6 @@ const actions = {
     try {
       const response = await ArticleService.getAll(params);
       const { data, pagination } = response;
-      console.log("dwqqwd", data);
       commit("setArticles", data);
       commit("setPaginationArticle", pagination);
       return response.data;

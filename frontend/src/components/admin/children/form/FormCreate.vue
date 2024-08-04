@@ -21,7 +21,7 @@ const isStatus = [
   { value: "balita", name: "Bayi Usia Lima Tahun" },
 ];
 
-const mothersAll = store.getters.mothersSelect;
+const mothersAll = store.getters.mothersAll;
 
 const childData = ref({
   name: "",
@@ -50,25 +50,24 @@ const handleSubmit = async () => {
     } else {
       alert("Terjadi kesalahan saat menambahkan data.");
     }
-    console.log("Error adding child:", err);
+    console.error("Error adding child:", err);
   }
 };
 
-const fetchMothers = async () => {
-  try {
-    await store.dispatch("fetchMothers");
-    await store.dispatch("fetchMothersSelect");
-  } catch (error) {
-    console.error("Error fetching mothers in component:", error);
-    console.error(
-      "Details:",
-      error.response ? error.response.data : error.message
-    );
-  }
-};
+// const fetchMothers = async () => {
+//   try {
+//     await store.dispatch("fetchMothersAll");
+//   } catch (error) {
+//     console.error("Error fetching mothers in component:", error);
+//     console.error(
+//       "Details:",
+//       error.response ? error.response.data : error.message
+//     );
+//   }
+// };
 const fetchMothersSelect = async () => {
   try {
-    await store.dispatch("fetchMothersSelect");
+    await store.dispatch("fetchMothersAll");
   } catch (error) {
     console.error("Error fetching mothers in component:", error);
     console.error(
@@ -79,7 +78,7 @@ const fetchMothersSelect = async () => {
 };
 
 const mothers = computed(() =>
-  store.getters.mothersSelect.map((mother) => ({
+  store.getters.mothersAll.map((mother) => ({
     value: mother._id,
     name: mother.name,
   }))

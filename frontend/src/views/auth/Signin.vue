@@ -3,7 +3,7 @@ import { ref, computed, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { FwbButton, FwbInput, FwbAlert } from "flowbite-vue";
-// import { HiInformationCircle } from "react-icons/hi";
+
 const email = ref("");
 const password = ref("");
 const error = ref(null);
@@ -39,7 +39,6 @@ const redirectUser = () => {
     router.push({ name: "dashboardUser" });
   } else {
     alert(user.value.role);
-    console.log(user);
     router.push("/unauthorize");
   }
 };
@@ -93,7 +92,7 @@ watch(isAuthenticated, (newValue) => {
       <div class="flex items-center justify-between">
         <p class="text-sm text-gray-500">
           Belum punya akun?
-          <router-link class="underline" to="signup">Hubungi admin</router-link>
+          <router-link class="underline" to="#">Hubungi admin</router-link>
         </p>
 
         <fwb-button
