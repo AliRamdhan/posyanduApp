@@ -57,20 +57,26 @@ const exportDataToExcel = async (year, monthIndex) => {
 
     const data = await Birth.find({
       createdAt: { $gte: startDate, $lte: endDate },
-    }).populate("mother children");
-
-    if (data.length === 0) {
-      throw new Error("No data found for the specified month and year");
-    }
+    })
+      .populate("children")
+      .populate({
+        path: "children",
+        populate: {
+          path: "mother",
+        },
+      });
 
     const wb = new xl.Workbook();
-    const ws = wb.addWorksheet("Births Data");
+    const ws = wb.addWorksheet(`Laporan Data Kelahiran ${monthIndex}`);
+    for (let i = 1; i <= 8; i++) {
+      ws.column(i).setWidth(15);
+    }
 
     const headingColumnNames = [
       "ID",
       "Name",
       "Gender",
-      "Date of Birth",
+      "Tempat, Tanggal Lahir",
       "Lingkar Kepala",
       "Tinggi Badan",
       "Berat Badan",
@@ -82,19 +88,34 @@ const exportDataToExcel = async (year, monthIndex) => {
       ws.cell(1, headingColumnIndex++).string(heading);
     });
 
-    let rowIndex = 2;
-    data.forEach((record) => {
-      ws.cell(rowIndex, 1).string(record._id.toString());
-      ws.cell(rowIndex, 2).string(record.children?.name || "");
-      ws.cell(rowIndex, 3).string(record.children?.gender || "");
-      ws.cell(rowIndex, 4).date(new Date(record.dob));
-      ws.cell(rowIndex, 5).string(record.circumHead.toString());
-      ws.cell(rowIndex, 6).string(record.heightBody.toString());
-      ws.cell(rowIndex, 7).string(record.weightBody.toString());
-      ws.cell(rowIndex, 8).string(record.mother?.name || "");
+    if (data.length > 0) {
+      let rowIndex = 2;
+      data.forEach((record) => {
+        console.log(record);
+        ws.cell(rowIndex, 1).string(record._id.toString());
+        ws.cell(rowIndex, 2).string(record.children?.name || "");
+        ws.cell(rowIndex, 3).string(record.children?.gender || "");
+        ws.cell(rowIndex, 4).date(record.dob);
+        ws.cell(rowIndex, 5).string(`${record.circumHead.toString()} cm`);
+        ws.cell(rowIndex, 6).string(`${record.heightBody.toString()} cm`);
+        ws.cell(rowIndex, 7).string(`${record.weightBody.toString()} kg`);
+        ws.cell(rowIndex, 8).string(record.children?.mother?.name || "");
 
-      rowIndex++;
-    });
+        rowIndex++;
+      });
+    } else {
+      ws.row(2).setHeight(20);
+      ws.cell(2, 1, 2, 8, true)
+        .string("Tidak ada data di bulan ini")
+        .style({
+          font: { bold: true },
+          alignment: {
+            wrapText: true,
+            horizontal: "center",
+            vertical: "center",
+          },
+        });
+    }
 
     return wb;
   } catch (error) {

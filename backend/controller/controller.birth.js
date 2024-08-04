@@ -88,7 +88,6 @@ const createBirth = async (req, res) => {
     weightBody,
     mother,
   } = req.body;
-  // const { name, nik, gender, dob, amountImunisation, mother } = req.body; ANAK
   const childData = {
     name,
     nik,
@@ -108,7 +107,7 @@ const createBirth = async (req, res) => {
     }
 
     children = await childService.createChildren(childData);
-  
+
     // Check if the provided children ID exists
     if (children) {
       const childrenExists = await Children.findById(children._id);
@@ -268,7 +267,7 @@ const exportDataExcel = async (req, res) => {
 
     const wb = await birthService.exportDataToExcel(year, monthIndex);
 
-    const fileName = `childrens_${year}_${monthIndex}.xlsx`;
+    const fileName = `Laporan Data Kelahiran tahun ${year} bulan ${monthIndex}.xlsx`;
 
     res.setHeader(
       "Content-Type",
