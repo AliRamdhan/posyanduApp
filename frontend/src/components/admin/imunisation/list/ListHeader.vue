@@ -20,9 +20,9 @@ const props = defineProps({
     required: true,
   },
 });
-// store.dispatch("exportDataImunisation", selectedMonth.value);
+
 const exportData = () => {
-  store.dispatch("exportDataSample");
+  store.dispatch("exportDataImunisation", selectedMonth.value);
 };
 
 const addImunisation = () => {

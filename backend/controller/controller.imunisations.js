@@ -121,7 +121,6 @@ const DeleteData = async (req, res) => {
     return res.status(400).json({ error: error.message });
   }
 };
-
 const ExportDataToExcel = async (req, res) => {
   try {
     const { month } = req.query;
@@ -137,21 +136,17 @@ const ExportDataToExcel = async (req, res) => {
       createdAt: { $gte: startDate, $lte: endDate },
     });
 
-    if (data.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "No data found for the specified month and year" });
-    }
-
     const wb = new xl.Workbook();
-    const ws = wb.addWorksheet("Childrens Data");
-
+    const ws = wb.addWorksheet(`Laporan Data Imunisasi ${month}`);
+    for (let i = 1; i <= 4; i++) {
+      ws.column(i).setWidth(20);
+    }
     // Define the specific columns you want in the Excel
     const headingColumnNames = [
       "ID",
-      "Name",
-      "Group Age",
-      "Description Disease Prevented",
+      "Nama Imunisasi",
+      "Kelompok Umur Imunisasi",
+      "Deskripsi Imunisasi",
     ];
 
     // Write Column Titles in Excel file
@@ -160,18 +155,33 @@ const ExportDataToExcel = async (req, res) => {
       ws.cell(1, headingColumnIndex++).string(heading);
     });
 
-    // Write Data in Excel file
-    let rowIndex = 2;
-    data.forEach((record) => {
-      ws.cell(rowIndex, 1).string(record._id.toString());
-      ws.cell(rowIndex, 2).string(record.name || "");
-      ws.cell(rowIndex, 3).string(record.groupAge || "");
-      ws.cell(rowIndex, 3).string(record.descriptionPrevented || "");
+    if (data.length > 0) {
+      let rowIndex = 2;
+      data.forEach((record) => {
+        ws.cell(rowIndex, 1).string(record._id.toString());
+        ws.cell(rowIndex, 2).string(record.name || "");
+        ws.cell(rowIndex, 3).string(`${record.groupAge}` || "");
+        ws.cell(rowIndex, 4).string(record.descriptionPrevented || "");
 
-      rowIndex++;
-    });
+        rowIndex++;
+      });
+    } else {
+      ws.row(2).setHeight(20);
+      ws.cell(2, 1, 2, 5, true)
+        .string("Tidak ada data di bulan ini")
+        .style({
+          font: {
+            bold: true,
+          },
+          alignment: {
+            wrapText: true,
+            horizontal: "center",
+            vertical: "center",
+          },
+        });
+    }
 
-    const fileName = `imunisasi_${year}_${monthIndex}.xlsx`;
+    const fileName = `Laporan Data Imunisasi tahun ${year} bulan ${monthIndex}.xlsx`;
 
     res.setHeader(
       "Content-Type",

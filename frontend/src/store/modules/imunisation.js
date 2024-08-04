@@ -54,36 +54,33 @@ const actions = {
   },
   async exportDataImunisation({ commit }, month) {
     try {
+      const [year, monthIndex] = month.split("-");
+      const monthName = new Date(`${year}-${monthIndex}-01`).toLocaleString(
+        "id-ID",
+        { month: "long" }
+      );
+      const formattedMonth = `${monthName} ${year}`;
+
       const data = await ImmunisationService.exportImunisationData(month);
-      if (data.size === 0) {
-        console.error("No data found for the selected month");
-        alert("No data found for the selected month");
-        return;
-      }
-      // Perform file download
-      const blob = new Blob([data], { type: "text/csv" });
+      const blob = new Blob([data], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `imunisasi_${month}.xlsx`;
+      a.download = `Laporan Data Imunisasi pada ${formattedMonth}.xlsx`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Error exporting data:", error);
-      alert("Error exporting data. Please try again later.");
+      alert("Terjadi kesalahan saat mengunduh data.");
     }
   },
   async exportDataSample({ commit }) {
     try {
       const data = await ImmunisationService.exportImunisationDataSample();
-      // if (data.size === 0) {
-      //   console.error("No data found for the selected month");
-      //   alert("No data found for the selected month");
-      //   return;
-      // }
-      // Perform file download
       const blob = new Blob([data], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
