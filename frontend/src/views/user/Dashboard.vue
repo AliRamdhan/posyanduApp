@@ -55,13 +55,13 @@ const fetchProfile = async () => {
         <Statistic />
         <div class="w-full flex flex-col justify-center items-center px-4">
           <div class="w-full my-8">
-            <h2 class="text-2xl font-bold text-gray-700">Profile Data</h2>
+            <h2 class="text-2xl font-bold text-gray-700 text-center lg:text-left">Profile Data</h2>
             <ProfileBox :mother="mother" />
             <div class="w-full">
               <ChartUser :mother-id="user.motherId" />
             </div>
           </div>
-          <h2 class="text-2xl font-bold text-gray-700">Table Data Anak</h2>
+          <h2 class="text-2xl lg:text-3xl font-bold text-gray-700">Table Data Anak</h2>
           <ListChild :children="childrenMom" />
         </div>
       </div>

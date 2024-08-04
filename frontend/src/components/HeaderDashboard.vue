@@ -13,11 +13,11 @@ const props = defineProps({
     <div class="mx-auto max-w-screen-xl px-4 py-8 sm:py-12">
       <div class="sm:flex sm:items-center sm:justify-between">
         <div class="text-center sm:text-left">
-          <h1 class="text-2xl font-bold text-gray-900 sm:text-3xl">
+          <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl">
             Welcome Back, {{ username }}!
           </h1>
 
-          <p class="mt-1.5 text-base text-gray-500">Welcome PosCare RW 10</p>
+          <p class="mt-1.5 text-lg lg:text-xl text-gray-500">Welcome PosCare RW 10</p>
         </div>
       </div>
     </div>
