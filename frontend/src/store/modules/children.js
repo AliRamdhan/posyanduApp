@@ -182,24 +182,33 @@ const actions = {
   },
   async exportDataChildren({ commit }, month) {
     try {
+      const [year, monthIndex] = month.split("-");
+      const monthName = new Date(`${year}-${monthIndex}-01`).toLocaleString(
+        "id-ID",
+        { month: "long" }
+      );
+      const formattedMonth = `${monthName} ${year}`;
+
       const data = await ChildrenService.exportData(month);
       if (data.size === 0) {
         console.error("No data found for the selected month");
         alert("No data found for the selected month");
         return;
       }
-      const blob = new Blob([data], { type: "text/csv" });
+      const blob = new Blob([data], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `children_${month}.csv`;
+      a.download = `Laporan Data Anak pada ${formattedMonth}.xlsx`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Error exporting data:", error);
-      alert("Error exporting data. Please try again later.");
+      alert("Terjadi kesalahan saat mengunduh data.");
     }
   },
 };

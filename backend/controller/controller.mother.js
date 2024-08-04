@@ -260,7 +260,6 @@ const ExportDataToCSV = async (req, res) => {
 const ExportDataToExcel = async (req, res) => {
   try {
     const { month } = req.query;
-    console.log(`Received month: ${month}`); // Log the received month
     if (!month) {
       return res.status(400).json({ error: "Month is required" });
     }
@@ -280,7 +279,9 @@ const ExportDataToExcel = async (req, res) => {
 
     const wb = new xl.Workbook();
     const ws = wb.addWorksheet(`Laporan Data Ibu ${month}`);
-
+    for (let i = 1; i <= 13; i++) {
+      ws.column(i).setWidth(15);
+    }
     // Define the specific columns you want in the Excel
     const headingColumnNames = [
       "ID",
@@ -289,7 +290,7 @@ const ExportDataToExcel = async (req, res) => {
       "Suami",
       "NIK Suami",
       "No KK",
-      "Date of Birth",
+      "Tempat,Tanggal,Lahir",
       "Punya BPJS",
       "Tipe ks",
       "Status",
@@ -322,11 +323,23 @@ const ExportDataToExcel = async (req, res) => {
         );
         ws.cell(rowIndex, 11).string(record.rt.toString());
         ws.cell(rowIndex, 12).string(record.rw.toString());
-        ws.cell(rowIndex, 13).number(record.amountChild);
+        ws.cell(rowIndex, 13).string(`${record.amountChild} anak`);
         rowIndex++;
       });
     } else {
-      ws.cell(2, 1, 4, 2).string("Tidak ada data di bulan ini");
+      ws.row(2).setHeight(20);
+      ws.cell(2, 1, 2, 7, true)
+        .string("Tidak ada data di bulan ini")
+        .style({
+          font: {
+            bold: true,
+          },
+          alignment: {
+            wrapText: true,
+            horizontal: "center",
+            vertical: "center",
+          },
+        });
     }
 
     const fileName = `Laporan Data Ibu tahun ${year} bulan ${monthIndex}.xlsx`;

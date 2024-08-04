@@ -232,7 +232,6 @@ const DeleteData = async (req, res) => {
     return res.status(400).json({ error: error.message });
   }
 };
-
 const ExportDataToExcel = async (req, res) => {
   try {
     const { month } = req.query;
@@ -241,6 +240,11 @@ const ExportDataToExcel = async (req, res) => {
     }
 
     const [year, monthIndex] = month.split("-").map(Number);
+
+    if (!year || !monthIndex || monthIndex < 1 || monthIndex > 12) {
+      return res.status(400).json({ error: "Invalid month format" });
+    }
+
     const startDate = new Date(year, monthIndex - 1, 1);
     const endDate = new Date(year, monthIndex, 0, 23, 59, 59);
 
@@ -248,22 +252,18 @@ const ExportDataToExcel = async (req, res) => {
       createdAt: { $gte: startDate, $lte: endDate },
     }).populate("mother");
 
-    if (data.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "No data found for the specified month and year" });
-    }
-
     const wb = new xl.Workbook();
-    const ws = wb.addWorksheet("Childrens Data");
-
+    const ws = wb.addWorksheet(`Laporan Data Anak ${month}`);
+    for (let i = 1; i <= 8; i++) {
+      ws.column(i).setWidth(i === 5 ? 20 : 15);
+    }
     // Define the specific columns you want in the Excel
     const headingColumnNames = [
       "ID",
       "Name",
       "NIK",
       "Gender",
-      "Date of Birth",
+      "Tempat,Tanggal,Lahir",
       "Jumlah Imunisasi",
       "Nama Ibu",
     ];
@@ -274,21 +274,36 @@ const ExportDataToExcel = async (req, res) => {
       ws.cell(1, headingColumnIndex++).string(heading);
     });
 
-    // Write Data in Excel file
-    let rowIndex = 2;
-    data.forEach((record) => {
-      ws.cell(rowIndex, 1).string(record._id.toString());
-      ws.cell(rowIndex, 2).string(record.name || "");
-      ws.cell(rowIndex, 3).string(record.nik || "");
-      ws.cell(rowIndex, 4).string(record.gender || "");
-      ws.cell(rowIndex, 5).date(new Date(record.dob));
-      ws.cell(rowIndex, 6).number(record.amountImunisation || 0);
-      ws.cell(rowIndex, 7).string(record.mother?.name || "");
+    if (data.length > 0) {
+      // Write Data in Excel file
+      let rowIndex = 2;
+      data.forEach((record) => {
+        ws.cell(rowIndex, 1).string(record._id.toString());
+        ws.cell(rowIndex, 2).string(record.name || "");
+        ws.cell(rowIndex, 3).string(record.nik || "");
+        ws.cell(rowIndex, 4).string(record.gender || "");
+        ws.cell(rowIndex, 5).string(record.dob);
+        ws.cell(rowIndex, 6).string((record.amountImunisation || 0) + " kali");
+        ws.cell(rowIndex, 7).string(record.mother?.name || "");
+        rowIndex++;
+      });
+    } else {
+      ws.row(2).setHeight(20);
+      ws.cell(2, 1, 2, 7, true)
+        .string("Tidak ada data di bulan ini")
+        .style({
+          font: {
+            bold: true,
+          },
+          alignment: {
+            wrapText: true,
+            horizontal: "center",
+            vertical: "center",
+          },
+        });
+    }
 
-      rowIndex++;
-    });
-
-    const fileName = `childrens_${year}_${monthIndex}.xlsx`;
+    const fileName = `Laporan Data Anak tahun ${year} bulan ${monthIndex}.xlsx`;
 
     res.setHeader(
       "Content-Type",
