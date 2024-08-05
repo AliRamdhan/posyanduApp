@@ -12,11 +12,7 @@ import Blog from "./Blog.vue";
     <StatsNumber />
     <Profile />
     <Service />
-    <!-- <Faq /> -->
     <Blog />
-    <!-- <div>JADWAL PELAYANAN</div>
-    <div>Statistic</div>
-    <div>FAQ</div> -->
   </main>
 </template>
 

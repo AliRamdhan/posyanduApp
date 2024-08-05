@@ -24,7 +24,7 @@ const currentPage = ref(1);
 const limit = ref(10);
 
 const selectLimit = [
-  { value: "1", name: "5" },
+  { value: "5", name: "5" },
   { value: "10", name: "10" },
   { value: "25", name: "25" },
   { value: "50", name: "50" },
@@ -66,7 +66,7 @@ const addBirth = () => {
 };
 
 const formatDOB = (dob) => {
-  return formatTime(dob); // Assuming formatTime is correctly implemented elsewhere
+  return formatTime(dob);
 };
 
 const handlePageChange = (page) => {
@@ -82,7 +82,7 @@ onMounted(() => {
 <template>
   <section class="w-96 md:w-full flex justify-end px-4 overflow-hidden">
     <div class="w-full">
-      <ListHeader nameData="Kelahiran" :numberData="births.length" />
+      <ListHeader nameData="Kelahiran" :numberData="pagination.total" />
       <div class="mt-6 md:flex md:items-center md:justify-between">
         <div
           class="w-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4"
@@ -100,7 +100,7 @@ onMounted(() => {
           <fwb-input
             v-model="searchWeight"
             @input="fetchBirths"
-            placeholder="Search by weight body"
+            placeholder="Search by berat badan"
           >
             <template #prefix>
               <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
@@ -109,7 +109,7 @@ onMounted(() => {
           <fwb-input
             v-model="searchHeight"
             @input="fetchBirths"
-            placeholder="Search by height body"
+            placeholder="Search by tinggi badan"
           >
             <template #prefix>
               <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
@@ -119,7 +119,7 @@ onMounted(() => {
             v-model="searchDob"
             @input="fetchBirths"
             type="date"
-            placeholder="Search by DOB"
+            placeholder="Search by TTL"
           >
             <template #prefix>
               <font-awesome-icon icon="fa-solid fa-calendar" />
@@ -128,20 +128,12 @@ onMounted(() => {
           <fwb-input
             v-model="searchCircumHead"
             @input="fetchBirths"
-            placeholder="Search by circum head"
+            placeholder="Search by Lingkar Kepala"
           >
             <template #prefix>
               <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
             </template>
           </fwb-input>
-          <!-- <div class="flex gap-2 items-center">
-            <p>Gender</p>
-            <fwb-select
-              v-model="searchGender"
-              @change="fetchBirths"
-              :options="genderOptions"
-            />
-          </div> -->
         </div>
       </div>
 

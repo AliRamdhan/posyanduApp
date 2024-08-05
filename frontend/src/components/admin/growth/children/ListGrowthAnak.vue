@@ -48,7 +48,7 @@ const fetchChildrens = async () => {
 };
 
 const selectLimit = [
-  { value: "1", name: "5" },
+  { value: "5", name: "5" },
   { value: "10", name: "10" },
   { value: "25", name: "25" },
   { value: "50", name: "50" },
@@ -97,9 +97,9 @@ onMounted(() => {
 <template>
   <section class="w-96 md:w-full flex justify-end px-4 overflow-hidden">
     <div class="w-full">
-      <ListHeader nameData="Perkembangan Anak" :numberData="childrens.length" />
+      <ListHeader nameData="Perkembangan Anak" :numberData="pagination.total" />
       <div class="mt-6 md:flex md:items-center md:justify-between">
-        <div class="w-full grid grid-cols-1 lg:grid-cols-4 gap-4">
+        <div class="w-full lg:w-4/5 grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div class="flex gap-2 items-center text-sm">
             <p>Show</p>
             <fwb-select
@@ -111,12 +111,12 @@ onMounted(() => {
             Entries
           </div>
           <div class="flex gap-2 items-center text-sm">
-            <p>Check Date</p>
+            <p>Tanggal Periksa</p>
             <fwb-input
               v-model="searchCheck"
               @input="fetchChildrens"
               type="date"
-              placeholder="Search by check date"
+              placeholder="Search by Tanggal Periksa"
             />
           </div>
           <fwb-input

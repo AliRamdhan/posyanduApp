@@ -70,7 +70,7 @@ onMounted(async () => {
           >
             <dt class="font-medium text-gray-100 text-xl">Perkembangan Anak</dt>
           </div>
-          <div class="w-full" v-if="childGrowth && childGrowth.length > 0">
+          <div class="w-full" v-if="child && childGrowth && childGrowth.length > 0">
             <div
               v-for="growth in childGrowth"
               :key="growth._id"

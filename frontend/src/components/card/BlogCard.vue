@@ -37,7 +37,7 @@ const props = defineProps({
       </a>
       <p class="line-clamp-3">{{ shortDescription }}</p>
       <span class="text-sm text-gray-500 dark:text-gray-300"
-        >On: {{ formatTime(createdAt) }}</span
+        >Dibuat pada: {{ formatTime(createdAt) }}</span
       >
     </div>
   </div>

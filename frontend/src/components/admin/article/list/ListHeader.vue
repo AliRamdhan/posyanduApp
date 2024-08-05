@@ -34,7 +34,7 @@ const addArticle = () => {
     <div>
       <div class="flex items-center gap-x-3">
         <h2 class="text-lg font-medium text-gray-800 dark:text-white">
-          {{ nameData }}
+          Data {{ nameData }}
         </h2>
 
         <span
@@ -44,7 +44,7 @@ const addArticle = () => {
       </div>
 
       <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">
-        Artikel yang dibuat oleh PosCare
+        Statistik Data {{ nameData }} di Posyandu RW 10
       </p>
     </div>
 
@@ -68,7 +68,7 @@ const addArticle = () => {
           />
         </svg>
 
-        <span>Tambah Data</span>
+        <span>Tambah Data Artikel</span>
       </button>
     </div>
   </div>

@@ -22,7 +22,7 @@ const currentPage = ref(1);
 const limit = ref(10);
 
 const selectLimit = [
-  { value: "1", name: "5" },
+  { value: "5", name: "5" },
   { value: "10", name: "10" },
   { value: "25", name: "25" },
   { value: "50", name: "50" },
@@ -82,9 +82,9 @@ onMounted(() => {
 <template>
   <section class="w-96 lg:w-full flex justify-end px-4 overflow-hidden">
     <div class="w-full">
-      <ListHeader nameData="Imunisasi" :numberData="immunisations.length" />
+      <ListHeader nameData="Imunisasi" :numberData="pagination.total" />
       <div class="mt-6 md:flex md:items-center md:justify-between">
-        <div class="w-full grid grid-cols-1 lg:grid-cols-4 gap-4">
+        <div class="w-full lg:w-4/5 grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div class="flex gap-2 items-center text-sm">
             <p>Show</p>
             <fwb-select
@@ -105,13 +105,13 @@ onMounted(() => {
             </template>
           </fwb-input>
           <div class="flex gap-2 items-center text-sm">
-            <p>Group</p>
+            <p>Kelompok</p>
             <fwb-select
               v-model="searchGroupAge"
               @change="fetchImmunisations"
               :options="selectGroupAge"
             />
-            <p>Age</p>
+            <p>Umur</p>
           </div>
         </div>
       </div>
@@ -144,7 +144,7 @@ onMounted(() => {
                       scope="col"
                       class="px-4 py-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400"
                     >
-                      Create At
+                      Dibuat pada tanggal
                     </th>
                     <th scope="col" class="relative py-3.5 px-4">
                       <span class="sr-only">Edit</span>

@@ -38,15 +38,15 @@ onMounted(() => {
         </p>
       </div>
 
-      <div v-for="(article, index) in articles" :key="index">
-        <div class="grid grid-cols-1 gap-10 mt-8 md:mt-16 md:grid-cols-2">
+      <div class="w-full grid grid-cols-1 gap-10 mt-8 md:mt-16 md:grid-cols-2">
+        <div v-for="(article, index) in articles" :key="index">
           <BlogCard
             :title="article?.title"
             :slug="article?.slug"
             :image="article?.images"
             :shortDescription="article?.shortDescription"
             :createdAt="article?.createdAt"
-          />      
+          />
         </div>
       </div>
     </div>

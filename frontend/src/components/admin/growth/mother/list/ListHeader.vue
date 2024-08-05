@@ -43,7 +43,7 @@ const addMotherGrowth = () => {
       </div>
 
       <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">
-        These companies have purchased in the last 12 months.
+        Statistik Data {{ nameData }} di Posyandu RW 10
       </p>
     </div>
 

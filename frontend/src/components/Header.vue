@@ -166,11 +166,11 @@ onMounted(() => {
             </div>
 
             <div class="flex w-full items-center mt-4 lg:mt-0">
-              <div v-if="isAuthenticated" class="flex items-center w-28">
+              <div v-if="isAuthenticated" class="flex items-center w-full">
                 <fwb-dropdown
                   :text="user.username"
                   align-to-end
-                  class="hidden lg:block"
+                  class="hidden lg:block w-28"
                 >
                   <fwb-list-group>
                     <fwb-list-group-item>
@@ -181,12 +181,14 @@ onMounted(() => {
                     </fwb-list-group-item>
                   </fwb-list-group>
                 </fwb-dropdown>
-                <button
-                  @click="handleLogout"
-                  class="w-full px-3 py-2 text-gray-700 transition-colors duration-300 transform rounded-md dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 border-2"
-                >
-                  Logout
-                </button>
+                <div class="w-full">
+                  <button
+                    @click="handleLogout"
+                    class="flex lg:hidden w-full px-3 py-2 text-gray-700 transition-colors duration-300 transform rounded-md dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 border-2"
+                  >
+                    Logout
+                  </button>
+                </div>
               </div>
               <router-link v-else to="/signin" class="w-full">
                 <button

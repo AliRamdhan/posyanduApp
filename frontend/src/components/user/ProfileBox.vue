@@ -33,7 +33,10 @@ const props = defineProps({
 
 <template>
   <section class="container lg:px-4">
-    <div class="flow-root grid grid-cols-1 lg:grid-cols-2 gap-x-4">
+    <div
+      v-if="mother"
+      class="flow-root grid grid-cols-1 lg:grid-cols-2 gap-x-4"
+    >
       <div class="my-4 p-4 border-2 rounded-lg">
         <dl class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
           <dt class="font-medium text-gray-900">Name</dt>
@@ -79,6 +82,9 @@ const props = defineProps({
           </dd>
         </dl>
       </div>
+    </div>
+    <div v-else>
+      <p>Loading...</p>
     </div>
     <fwb-modal v-if="isShowModal" @close="closeModal" size="5xl">
       <template #header>

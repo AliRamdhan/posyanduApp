@@ -24,7 +24,7 @@ const currentPage = ref(1);
 const limit = ref(10);
 
 const selectLimit = [
-  { value: "1", name: "5" },
+  { value: "5", name: "5" },
   { value: "10", name: "10" },
   { value: "25", name: "25" },
   { value: "50", name: "50" },
@@ -86,7 +86,7 @@ onMounted(() => {
 <template>
   <section class="w-96 lg:w-full flex justify-end px-4 overflow-hidden">
     <div class="w-full">
-      <ListHeader nameData="Data Imunisasi" :numberData="articles.length" />
+      <ListHeader nameData="Artikel" :numberData="pagination.total" />
       <div class="mt-6 md:flex md:items-center md:justify-between">
         <div class="w-full grid grid-cols-1 lg:grid-cols-4 gap-4">
           <div class="flex gap-2 items-center text-sm">

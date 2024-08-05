@@ -102,7 +102,7 @@ const chartData = computed(() => {
         tension: 0.1,
       },
       {
-        label: "Children",
+        label: "Total Anak",
         data: dataChildren,
         backgroundColor: "rgba(75, 192, 192, 0.2)",
         borderColor: "rgba(75, 192, 192, 1)",
