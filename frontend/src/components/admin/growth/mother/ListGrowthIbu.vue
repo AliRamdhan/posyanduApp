@@ -100,7 +100,7 @@ onMounted(() => {
 <template>
   <section class="w-96 md:w-full flex justify-end px-4 overflow-hidden">
     <div class="w-full">
-      <ListHeader nameData="Perkembangan Anak" :numberData="pagination.total" />
+      <ListHeader nameData="Perkembangan Ibu" :numberData="pagination.total" />
       <div class="mt-6 md:flex md:items-center md:justify-between">
         <div class="w-full lg:w-4/5 grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div class="flex gap-2 items-center text-sm">
@@ -263,7 +263,7 @@ onMounted(() => {
                           class="font-medium text-gray-800 dark:text-white"
                           v-else
                         >
-                          {{ mother.wombAge }} Bulan - {{ mother.groupFase }}
+                          {{ mother.wombAge }} Minggu - {{ mother.groupFase }}
                         </h2>
                       </td>
 

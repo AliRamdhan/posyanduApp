@@ -124,16 +124,6 @@ onMounted(() => {
             @input="fetchChildrens"
             placeholder="Search by Nama"
           />
-          <!-- <fwb-input
-            v-model="searchWeight"
-            @input="fetchChildrens"
-            placeholder="Search by weigth"
-          />
-          <fwb-input
-            v-model="searchHeight"
-            @input="fetchChildrens"
-            placeholder="Search by heigth"
-          /> -->
         </div>
       </div>
       <div class="flex flex-col mt-6">
@@ -196,7 +186,7 @@ onMounted(() => {
                         scope="col"
                         class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
                       >
-                        Group Fase
+                        Kelompok Umur
                       </th>
                       <th
                         scope="col"
@@ -250,7 +240,7 @@ onMounted(() => {
                       <td
                         class="px-4 py-4 text-sm font-medium whitespace-nowrap"
                       >
-                        {{ child.heightBody }} / {{ child.weightBody }}
+                        {{ child.heightBody }} cm / {{ child.weightBody }} kg
                       </td>
                       <td
                         class="px-4 py-4 text-sm font-medium whitespace-nowrap"
@@ -289,7 +279,7 @@ onMounted(() => {
                       >
                         <!-- {{ child.childrens?.amountImunisation }} x / -->
                         {{
-                          child.imunisations?.name
+                          child.imunisations
                             ? child.imunisations?.name
                             : "Tidak Imunisasi"
                         }}

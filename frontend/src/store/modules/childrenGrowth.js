@@ -4,7 +4,7 @@ import ChildrenGrowthService from "../../service/childrenGrowth";
 
 const state = {
   childrensGrowth: [],
-  childBaduta: null,
+  childBadutaGrowth: null,
   childGrowth: [],
   paginationChildrensGrowth: {
     page: 1,
@@ -23,11 +23,11 @@ const mutations = {
   setChildGrowth(state, childGrowth) {
     state.childGrowth = childGrowth;
   },
-  setChild(state, childBaduta) {
-    state.childBaduta = childBaduta;
+  setChild(state, childBadutaGrowth) {
+    state.childBadutaGrowth = childBadutaGrowth;
   },
-  addChild(state, childBaduta) {
-    state.childrensGrowth.push(childBaduta);
+  addChild(state, childBadutaGrowth) {
+    state.childrensGrowth.push(childBadutaGrowth);
   },
   updateChild(state, updatedChild) {
     const index = state.childrensGrowth.findIndex(
@@ -159,7 +159,7 @@ const actions = {
 const getters = {
   childrensGrowth: (state) => state.childrensGrowth,
   childGrowth: (state) => state.childGrowth,
-  childBaduta: (state) => state.child,
+  childBadutaGrowth: (state) => state.childBadutaGrowth,
   paginationChildrensGrowth: (state) => state.paginationChildrensGrowth,
 };
 

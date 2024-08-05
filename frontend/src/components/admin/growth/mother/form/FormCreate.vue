@@ -182,14 +182,14 @@ onMounted(() => {
         <fwb-input
           type="number"
           v-model.number="motherGrowthData.circumStomach"
-          label="Lingkar Kepala (cm)"
+          label="Lingkar Perut (cm)"
         />
       </div>
       <div>
         <fwb-input
           type="number"
           v-model.number="motherGrowthData.circumHand"
-          label="Lingkar Tangan (cm)"
+          label="Lingkar Lengan (cm)"
         />
       </div>
     </div>

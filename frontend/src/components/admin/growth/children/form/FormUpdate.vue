@@ -77,6 +77,7 @@ const fetchImmunisations = async () => {
   }
 };
 
+
 onMounted(() => {
   fetchChildrenGrowth();
   fetchChildren();
@@ -89,13 +90,7 @@ const imunisations = computed(() =>
     name: immunisation.name,
   }))
 );
-// const immunisations = computed(() => [
-//   { value: null, name: "Tidak Imunisasi" }, // Adding the "No Immunization" option
-//   ...store.getters.immunisations.map((immunisation) => ({
-//     value: immunisation._id,
-//     name: immunisation.name,
-//   })),
-// ]);
+
 
 const children = computed(() =>
   store.getters.children.map((child) => ({
@@ -127,20 +122,21 @@ const children = computed(() =>
         <fwb-input
           type="number"
           v-model.number="childrenGrowthData.heightBody"
-          label="Tinggi Badan"
+          label="Tinggi Badan (cm)"
+          
         />
       </div>
       <div>
         <fwb-input
           type="number"
           v-model.number="childrenGrowthData.weightBody"
-          label="Berat Badan"
+          label="Berat Badan (kg)"
         />
       </div>
       <div>
         <fwb-select
           v-model="childrenGrowthData.imunisations"
-          :options="immunisations"
+          :options="imunisations"
           label="Pilih Imunisasi"
         />
       </div>

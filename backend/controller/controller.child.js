@@ -282,7 +282,7 @@ const ExportDataToExcel = async (req, res) => {
         ws.cell(rowIndex, 2).string(record.name || "");
         ws.cell(rowIndex, 3).string(record.nik || "");
         ws.cell(rowIndex, 4).string(record.gender || "");
-        ws.cell(rowIndex, 5).string(record.dob);
+        ws.cell(rowIndex, 5).date(record.dob || "");
         ws.cell(rowIndex, 6).string((record.amountImunisation || 0) + " kali");
         ws.cell(rowIndex, 7).string(record.mother?.name || "");
         rowIndex++;

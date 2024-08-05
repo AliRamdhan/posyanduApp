@@ -37,7 +37,8 @@ const getAllGrowth = async (
       .populate({
         path: "childrens",
         match: childrensMatch,
-      });
+      })
+      .populate("imunisations");
 
     const filteredData = findQuery.filter((doc) => doc.childrens);
 

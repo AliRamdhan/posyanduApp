@@ -31,7 +31,7 @@ const handleSubmit = async () => {
       childrenGrowthData.value.groupFase = child.isBaduta ? "Baduta" : "Balita";
     }
     await store.dispatch("createChildBaduta", childrenGrowthData.value);
-    alert("Children growth record created");
+    alert("Data pertumbuhan anak berhasil ditambahkan");
     router.push({ name: "dashboardAdminPerkembanganAnak" });
   } catch (error) {
     console.error("Error creating children growth:", error);
