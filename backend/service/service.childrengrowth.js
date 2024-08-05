@@ -137,7 +137,7 @@ const exportDataToExcel = async (year, monthIndex) => {
     }).populate("childrens imunisations");
 
     const wb = new xl.Workbook();
-    const ws = wb.addWorksheet(`Laporan Data Kelahiran ${monthIndex}`);
+    const ws = wb.addWorksheet(`Laporan Data Perkembangan Anak ${monthIndex}`);
     for (let i = 1; i <= 8; i++) {
       ws.column(i).setWidth(15);
     }

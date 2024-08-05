@@ -1,6 +1,6 @@
 const Growth = require("../models/model.mother.growth");
 const Mother = require("../models/model.mother");
-
+const xl = require("excel4node");
 const getAll = async (req, res) => {
   try {
     const mother = await Growth.find().populate("mother");
@@ -113,6 +113,84 @@ const deleteData = async (id) => {
   }
 };
 
+const exportDataToExcel = async (year, monthIndex) => {
+  try {
+    const startDate = new Date(year, monthIndex - 1, 1);
+    const endDate = new Date(year, monthIndex, 0, 23, 59, 59);
+
+    const data = await Growth.find({
+      checkDate: { $gte: startDate, $lte: endDate },
+    }).populate("mother");
+
+    const wb = new xl.Workbook();
+    const ws = wb.addWorksheet(`Laporan Data Perkembangan Ibu ${monthIndex}`);
+    for (let i = 1; i <= 8; i++) {
+      ws.column(i).setWidth(15);
+    }
+
+    const headingColumnNames = [
+      "ID",
+      "Nama Ibu",
+      "NIK Ibu",
+      "Tinggi Badan",
+      "Berat Badan",
+      "Hamil",
+      "Anak ke-",
+      "Lingkar Badan",
+      "Lingkar Tangan",
+      "Tipe KB",
+      "Tempat, Tanggal Lahir",
+      "Tanggal Periksa",
+    ];
+
+    let headingColumnIndex = 1;
+    headingColumnNames.forEach((heading) => {
+      ws.cell(1, headingColumnIndex++).string(heading);
+    });
+
+    if (data.length > 0) {
+      let rowIndex = 2;
+      data.forEach((record) => {
+        ws.cell(rowIndex, 1).string(record._id.toString());
+        ws.cell(rowIndex, 2).string(record.mother?.name || "");
+        ws.cell(rowIndex, 3).string(record.mother?.nik || "");
+        ws.cell(rowIndex, 4).string(`${record.height.toString()} cm`);
+        ws.cell(rowIndex, 5).string(`${record.weight.toString()} kg`);
+        ws.cell(rowIndex, 6).string(
+          record.wombAge === 0 ||
+            record.wombAge === null ||
+            record.groupFase === "None"
+            ? "Tidak Hamil"
+            : `${record.wombAge} Bulan`
+        );
+        ws.cell(rowIndex, 7).string(`ke-${record.numbChild}`);
+        ws.cell(rowIndex, 8).string(`${record.circumStomach.toString()} cm`);
+        ws.cell(rowIndex, 9).string(`${record.circumHand.toString()} cm`);
+        ws.cell(rowIndex, 10).string(record.kbtype || "");
+        ws.cell(rowIndex, 11).date(record.mother?.dob || "");
+        ws.cell(rowIndex, 12).date(record.checkDate);
+        rowIndex++;
+      });
+    } else {
+      ws.row(2).setHeight(20);
+      ws.cell(2, 1, 2, 8, true)
+        .string("Tidak ada data di bulan ini")
+        .style({
+          font: { bold: true },
+          alignment: {
+            wrapText: true,
+            horizontal: "center",
+            vertical: "center",
+          },
+        });
+    }
+
+    return wb;
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   getAll,
   getAllMother,
@@ -122,4 +200,5 @@ module.exports = {
   updateData,
   deleteData,
   getPregnant,
+  exportDataToExcel,
 };

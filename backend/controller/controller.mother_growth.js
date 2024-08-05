@@ -208,6 +208,31 @@ const deleteGrowth = async (req, res) => {
   }
 };
 
+const exportDataExcel = async (req, res) => {
+  try {
+    const { month } = req.query;
+    if (!month) {
+      return res.status(400).json({ error: "Month is required" });
+    }
+
+    const [year, monthIndex] = month.split("-").map(Number);
+
+    const wb = await service.exportDataToExcel(year, monthIndex);
+
+    const fileName = `Laporan Data Perkembangan Ibu tahun ${year} bulan ${monthIndex}.xlsx`;
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader("Content-Disposition", `attachment; filename="${fileName}"`);
+
+    wb.write(fileName, res);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getAll,
   getAllGrowth,
@@ -217,4 +242,5 @@ module.exports = {
   updateGrowth,
   deleteGrowth,
   getAllPregnant,
+  exportDataExcel,
 };

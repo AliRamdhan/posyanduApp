@@ -19,4 +19,5 @@ router.put("/update/:id", controller.updateGrowth);
 // Route to delete a growth record by ID
 router.delete("/delete/:id", controller.deleteGrowth);
 
+router.get("/export/excel", controller.exportDataExcel);
 module.exports = router;

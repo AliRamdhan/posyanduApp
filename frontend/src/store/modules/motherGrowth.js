@@ -112,6 +112,32 @@ const actions = {
       console.error(`Error deleting motherGrowth with id ${id}:`, error);
     }
   },
+  async exportDataMotherGrowth({ commit }, month) {
+    try {
+      const [year, monthIndex] = month.split("-");
+      const monthName = new Date(`${year}-${monthIndex}-01`).toLocaleString(
+        "id-ID",
+        { month: "long" }
+      );
+      const formattedMonth = `${monthName} ${year}`;
+
+      const data = await MotherService.exportGrowthIbuData(month);
+      const blob = new Blob([data], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Laporan Data Perkembangan Ibu pada ${formattedMonth}.xlsx`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error exporting data:", error);
+      alert("Terjadi kesalahan saat mengunduh data.");
+    }
+  },
 };
 
 const getters = {

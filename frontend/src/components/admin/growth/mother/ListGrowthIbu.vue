@@ -274,7 +274,7 @@ onMounted(() => {
                           class="font-medium text-gray-800 dark:text-white"
                           v-else
                         >
-                          {{ mother.wombAge }} Bulan
+                          {{ mother.wombAge }} Bulan - {{mother.groupFase}}
                         </h2>
                       </td>
 
