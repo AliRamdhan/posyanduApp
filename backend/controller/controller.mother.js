@@ -2,9 +2,19 @@ const Mother = require("../models/model.mother");
 const { Parser } = require("json2csv");
 const xl = require("excel4node");
 const formatTime = require("../utils/FormatTime");
+
 const GetAll = async (req, res) => {
   try {
     const data = await Mother.find();
+    return res.status(200).json({ message: "List All Data", data });
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+
+const GetAllPregnant = async (req, res) => {
+  try {
+    const data = await Mother.find({ isPregnant: true });
     return res.status(200).json({ message: "List All Data", data });
   } catch (error) {
     return res.status(400).json({ error: error.message });
@@ -359,6 +369,7 @@ const ExportDataToExcel = async (req, res) => {
 
 module.exports = {
   GetAll,
+  GetAllPregnant,
   GetAllData,
   CreateData,
   GetDataById,

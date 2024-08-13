@@ -126,7 +126,10 @@ const createBirth = async (req, res) => {
         children,
         birth,
       };
-      await Mother.findByIdAndUpdate(mother, { $inc: { amountChild: 1 } });
+      await Mother.findByIdAndUpdate(mother, {
+        $inc: { amountChild: 1 },
+        $set: { isPregnant: false },
+      });
       res.status(201).json({ message: "Created data successfully", data });
     } else {
       return res.status(404).json({ message: "Children record failed found" });

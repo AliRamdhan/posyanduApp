@@ -43,6 +43,15 @@ class MotherService {
       throw error;
     }
   }
+  async getAllPregnant() {
+    try {
+      const response = await axios.get(`${API_URL}/all/pregnant`);
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching data with:`, error);
+      throw error;
+    }
+  }
 
   async getById(id) {
     try {

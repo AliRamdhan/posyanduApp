@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {
   GetAllData,
+  GetAllPregnant,
   CreateData,
   GetDataById,
   UpdateData,
@@ -9,15 +10,15 @@ const {
   ExportDataToCSV,
   ExportDataToExcel,
   GetAll,
-} = require("../controller/controller.mother"); // Adjust path as per your project structure
+} = require("../controller/controller.mother");
 
-// Define routes
-router.get("/", GetAllData); // Route to get all data
-router.get("/all", GetAll); // Route to get all data
-router.get("/:id", GetDataById); // Route to get data by ID
-router.post("/create", CreateData); // Route to create new data
-router.put("/update/:id", UpdateData); // Route to update data by ID
-router.delete("/delete/:id", DeleteData); // Route to delete data by ID
+router.get("/", GetAllData);
+router.get("/all/pregnant", GetAllPregnant);
+router.get("/all", GetAll);
+router.get("/:id", GetDataById);
+router.post("/create", CreateData);
+router.put("/update/:id", UpdateData);
+router.delete("/delete/:id", DeleteData);
 router.get("/export/csv", ExportDataToCSV);
 router.get("/export/excel", ExportDataToExcel);
 module.exports = router;

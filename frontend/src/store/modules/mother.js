@@ -3,6 +3,7 @@ import MotherService from "../../service/mother";
 const state = {
   mothers: [],
   mothersAll: [],
+  mothersAllPregnant: [],
   mother: null,
   pagination: {
     page: 1,
@@ -17,6 +18,9 @@ const mutations = {
   },
   setMothersAll(state, mothersAll) {
     state.mothersAll = mothersAll;
+  },
+  setMothersAllPregnant(state, mothersAllPregnant) {
+    state.mothersAllPregnant = mothersAllPregnant;
   },
   setPagination(state, pagination) {
     state.pagination = pagination;
@@ -45,6 +49,15 @@ const actions = {
     try {
       const response = await MotherService.getAllNoPage();
       commit("setMothersAll", response.data);
+      return response;
+    } catch (error) {
+      console.error("Error fetching mothers:", error);
+    }
+  },
+  async fetchMothersAllPregnant({ commit }) {
+    try {
+      const response = await MotherService.getAllPregnant();
+      commit("setMothersAllPregnant", response.data);
       return response;
     } catch (error) {
       console.error("Error fetching mothers:", error);
@@ -129,6 +142,7 @@ const actions = {
 const getters = {
   mothers: (state) => state.mothers,
   mothersAll: (state) => state.mothersAll,
+  mothersAllPregnant: (state) => state.mothersAllPregnant,
   mother: (state) => state.mother,
   pagination: (state) => state.pagination,
 };

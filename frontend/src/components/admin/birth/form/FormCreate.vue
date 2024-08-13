@@ -39,7 +39,7 @@ const handleSubmit = async () => {
 
 const fetchMothers = async () => {
   try {
-    await store.dispatch("fetchMothersAll");
+    await store.dispatch("fetchMothersAllPregnant");
   } catch (error) {
     console.error("Error fetching mothers in component:", error);
     console.error(
@@ -50,7 +50,7 @@ const fetchMothers = async () => {
 };
 
 const mothers = computed(() =>
-  store.getters.mothersAll.map((mother) => ({
+  store.getters.mothersAllPregnant.map((mother) => ({
     value: mother._id,
     name: `${mother.name} - ${formatTime(mother.dob)}`,
   }))
