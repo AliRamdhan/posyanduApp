@@ -10,6 +10,7 @@ import formatTime from "../../../../utils/FormatTime";
 const store = useStore();
 const router = useRouter();
 const route = useRoute();
+const today = new Date().toISOString().split("T")[0];
 
 const birthData = ref({
   name: "",
@@ -142,6 +143,7 @@ onMounted(() => {
           v-model="birthData.dob"
           label="Tanggal Lahir"
           required
+          :max="today"
         />
       </div>
       <div>

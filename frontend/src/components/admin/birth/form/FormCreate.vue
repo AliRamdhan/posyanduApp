@@ -10,7 +10,7 @@ import {
 import formatTime from "../../../../utils/FormatTime";
 const store = useStore();
 const router = useRouter();
-
+const today = new Date().toISOString().split('T')[0]; 
 const gender = [
   { value: "Male", name: "Laki-laki" },
   { value: "Female", name: "Perempuan" },
@@ -109,6 +109,7 @@ onMounted(() => {
           v-model="birthData.dob"
           label="Tanggal Lahir"
           required
+          :max="today"
         />
       </div>
       <div>

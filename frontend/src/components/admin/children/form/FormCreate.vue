@@ -23,6 +23,7 @@ const isStatus = [
 ];
 
 const mothersAll = store.getters.mothersAll;
+const today = new Date().toISOString().split('T')[0]; 
 
 const childData = ref({
   name: "",
@@ -106,6 +107,7 @@ onMounted(() => {
           v-model="childData.dob"
           label="Tanggal Lahir"
           required
+          :max="today"
         />
       </div>
       <div>

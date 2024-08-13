@@ -9,6 +9,7 @@ const store = useStore();
 const router = useRouter();
 const route = useRoute();
 const childGrowthId = route.params.id;
+const today = new Date().toISOString().split("T")[0];
 
 const childrenGrowthData = ref({
   checkDate: "",
@@ -108,6 +109,7 @@ onMounted(() => {
           v-model="childrenGrowthData.checkDate"
           label="Tanggal Periksa"
           required
+          :max="today"
         />
       </div>
       <div>
@@ -119,18 +121,16 @@ onMounted(() => {
       </div>
       <div>
         <fwb-input
-          type="number"
           v-model.number="childrenGrowthData.heightBody"
           label="Tinggi Badan (cm)"
-          min="0"
+          @input="(event) => handleNumericInputDecimal(event, 'heightBody')"
         />
       </div>
       <div>
         <fwb-input
-          type="number"
           v-model.number="childrenGrowthData.weightBody"
           label="Berat Badan (kg)"
-          min="0"
+          @input="(event) => handleNumericInputDecimal(event, 'weightBody')"
         />
       </div>
       <div>

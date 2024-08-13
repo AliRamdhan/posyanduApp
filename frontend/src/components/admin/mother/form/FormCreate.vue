@@ -40,8 +40,8 @@ const data = ref({
   amountChild: 0,
 });
 const error = ref(null);
-
-const selectedStatus = ref(null); // new ref to track the selected status
+const today = new Date().toISOString().split('T')[0]; 
+const selectedStatus = ref(null);
 
 const handleSubmit = async () => {
   try {
@@ -114,6 +114,7 @@ const handleSubmit = async () => {
           type="date"
           label="Tanggal Lahir"
           required
+          :max="today"
         />
       </div>
       <div>

@@ -8,6 +8,7 @@ import formatTime from "../../../../../utils/FormatTime";
 const store = useStore();
 const router = useRouter();
 const route = useRoute();
+const today = new Date().toISOString().split('T')[0]; 
 
 const motherGrowthData = ref({
   checkDate: "",
@@ -123,6 +124,7 @@ onMounted(async () => {
           v-model="motherGrowthData.checkDate"
           label="Tanggal Periksa"
           required
+          :max="today"
         />
       </div>
       <div>

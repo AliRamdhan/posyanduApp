@@ -7,6 +7,7 @@ import { handleNumericInputDecimal } from "../../../../../utils/Validate";
 import formatTime from "../../../../../utils/FormatTime";
 const store = useStore();
 const router = useRouter();
+const today = new Date().toISOString().split('T')[0]; 
 
 const childrenGrowthData = ref({
   checkDate: "",
@@ -98,6 +99,7 @@ onMounted(() => {
           v-model="childrenGrowthData.checkDate"
           label="Tanggal Periksa"
           required
+          :max="today"
         />
       </div>
       <div>

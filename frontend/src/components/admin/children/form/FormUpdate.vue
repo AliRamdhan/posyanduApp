@@ -12,6 +12,7 @@ import formatTime from "../../../../utils/FormatTime";
 const store = useStore();
 const router = useRouter();
 const route = useRoute();
+const today = new Date().toISOString().split("T")[0];
 
 const gender = [
   { value: "Male", name: "Laki-laki" },
@@ -131,6 +132,7 @@ const handleSubmit = async () => {
           v-model="childData.dob"
           label="Tanggal Lahir"
           required
+          :max="today"
         />
       </div>
       <div>

@@ -42,7 +42,7 @@ const isStatus = [
   { value: true, name: "Hamil" },
   { value: false, name: "Tidak Hamil" },
 ];
-
+const today = new Date().toISOString().split('T')[0]; 
 const fetchMother = async (id) => {
   try {
     const data = await store.dispatch("fetchMother", id);
@@ -159,6 +159,7 @@ const handleSubmit = async () => {
           type="date"
           label="Tanggal Lahir"
           required
+          :max="today"
         />
       </div>
       <div>
