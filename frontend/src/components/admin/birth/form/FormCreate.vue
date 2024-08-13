@@ -7,6 +7,7 @@ import {
   handleNumericInput,
   handleNumericInputDecimal,
 } from "../../../../utils/Validate";
+import formatTime from "../../../../utils/FormatTime";
 const store = useStore();
 const router = useRouter();
 
@@ -51,7 +52,7 @@ const fetchMothers = async () => {
 const mothers = computed(() =>
   store.getters.mothersAll.map((mother) => ({
     value: mother._id,
-    name: mother.name,
+    name: `${mother.name} - ${formatTime(mother.dob)}`,
   }))
 );
 
@@ -111,12 +112,6 @@ onMounted(() => {
         />
       </div>
       <div>
-        <!-- <fwb-input
-          type="text"
-          v-model.number="birthData.circumHead"
-          label="Lingkar Kepala"
-          min="0"
-        /> -->
         <fwb-input
           v-model.number="birthData.circumHead"
           label="Lingkar Kepala (cm)"
@@ -124,12 +119,6 @@ onMounted(() => {
         />
       </div>
       <div>
-        <!-- <fwb-input
-          type="number"
-          v-model.number="birthData.heightBody"
-          label="Tinggi Badan"
-          min="0"
-        /> -->
         <fwb-input
           v-model.number="birthData.heightBody"
           label="Tinggi Badan (cm)"
@@ -137,12 +126,6 @@ onMounted(() => {
         />
       </div>
       <div>
-        <!-- <fwb-input
-          type="number"
-          v-model.number="birthData.weightBody"
-          label="Berat Badan"
-          min="0"
-        /> -->
         <fwb-input
           v-model.number="birthData.weightBody"
           label="Berat Badan (kg)"

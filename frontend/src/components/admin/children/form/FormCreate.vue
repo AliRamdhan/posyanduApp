@@ -8,6 +8,7 @@ import {
   handleNumericInput,
   validateNomorKKNIK,
 } from "../../../../utils/Validate";
+import formatTime from "../../../../utils/FormatTime";
 const store = useStore();
 const router = useRouter();
 
@@ -54,17 +55,6 @@ const handleSubmit = async () => {
   }
 };
 
-// const fetchMothers = async () => {
-//   try {
-//     await store.dispatch("fetchMothersAll");
-//   } catch (error) {
-//     console.error("Error fetching mothers in component:", error);
-//     console.error(
-//       "Details:",
-//       error.response ? error.response.data : error.message
-//     );
-//   }
-// };
 const fetchMothersSelect = async () => {
   try {
     await store.dispatch("fetchMothersAll");
@@ -80,7 +70,7 @@ const fetchMothersSelect = async () => {
 const mothers = computed(() =>
   store.getters.mothersAll.map((mother) => ({
     value: mother._id,
-    name: mother.name,
+    name: `${mother.name} - ${formatTime(mother.dob)}`,
   }))
 );
 

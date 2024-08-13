@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { FwbInput, FwbButton, FwbSelect, FwbCheckbox } from "flowbite-vue";
+import formatTime from "../../../../../utils/FormatTime";
 
 const store = useStore();
 const router = useRouter();
@@ -77,12 +78,6 @@ const fetchImmunisations = async () => {
   }
 };
 
-onMounted(() => {
-  fetchChildrenGrowth();
-  fetchChildren();
-  fetchImmunisations();
-});
-
 const imunisations = computed(() =>
   store.getters.immunisations.map((immunisation) => ({
     value: immunisation._id,
@@ -91,11 +86,17 @@ const imunisations = computed(() =>
 );
 
 const children = computed(() =>
-  store.getters.children.map((child) => ({
+  store.getters.childrens.map((child) => ({
     value: child._id,
-    name: child.name,
+    name: `${child.name} - ${formatTime(child.dob)}`,
   }))
 );
+
+onMounted(() => {
+  fetchChildrenGrowth();
+  fetchChildren();
+  fetchImmunisations();
+});
 </script>
 
 <template>

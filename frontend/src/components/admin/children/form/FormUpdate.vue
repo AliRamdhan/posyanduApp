@@ -8,6 +8,7 @@ import {
   handleNumericInput,
   validateNomorKKNIK,
 } from "../../../../utils/Validate";
+import formatTime from "../../../../utils/FormatTime";
 const store = useStore();
 const router = useRouter();
 const route = useRoute();
@@ -46,7 +47,7 @@ const fetchMothers = async () => {
 const mothers = computed(() =>
   store.getters.mothers.map((mother) => ({
     value: mother._id,
-    name: mother.name,
+    name: `${mother.name} - ${formatTime(mother.dob)}`,
   }))
 );
 

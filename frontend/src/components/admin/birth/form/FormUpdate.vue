@@ -5,6 +5,7 @@ import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { FwbInput, FwbButton, FwbSelect } from "flowbite-vue";
 import { handleNumericInput } from "../../../../utils/Validate";
+import formatTime from "../../../../utils/FormatTime";
 
 const store = useStore();
 const router = useRouter();
@@ -83,7 +84,7 @@ const fetchMothers = async () => {
 const mothers = computed(() =>
   store.getters.mothers.map((mother) => ({
     value: mother._id,
-    name: mother.name,
+    name: `${mother.name} - ${formatTime(mother.dob)}`,
   }))
 );
 
@@ -145,23 +146,23 @@ onMounted(() => {
       </div>
       <div>
         <fwb-input
-          type="number"
           v-model.number="birthData.circumHead"
-          label="Lingkar Kepala"
+          label="Lingkar Kepala (cm)"
+          @input="(event) => handleNumericInputDecimal(event, 'circumHead')"
         />
       </div>
       <div>
         <fwb-input
-          type="number"
           v-model.number="birthData.heightBody"
-          label="Tinggi Badan"
+          label="Tinggi Badan (cm)"
+          @input="(event) => handleNumericInputDecimal(event, 'heightBody')"
         />
       </div>
       <div>
         <fwb-input
-          type="number"
           v-model.number="birthData.weightBody"
-          label="Berat Badan"
+          label="Berat Badan (kg)"
+          @input="(event) => handleNumericInputDecimal(event, 'weightBody')"
         />
       </div>
       <div>

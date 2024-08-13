@@ -4,6 +4,7 @@ import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { FwbInput, FwbButton, FwbSelect } from "flowbite-vue";
 import { handleNumericInputDecimal } from "../../../../../utils/Validate";
+import formatTime from "../../../../../utils/FormatTime";
 const store = useStore();
 const router = useRouter();
 
@@ -73,7 +74,7 @@ const fetchChildren = async () => {
 const children = computed(() =>
   store.getters.childrens.map((child) => ({
     value: child._id,
-    name: child.name,
+    name: `${child.name} - ${formatTime(child.dob)}`,
   }))
 );
 

@@ -3,6 +3,7 @@ import { ref, computed, onMounted, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { FwbInput, FwbButton, FwbSelect } from "flowbite-vue";
+import formatTime from "../../../../../utils/FormatTime";
 
 const store = useStore();
 const router = useRouter();
@@ -73,7 +74,7 @@ const fetchMotherGrowth = async (id) => {
 const mothers = computed(() =>
   store.getters.mothers.map((mother) => ({
     value: mother._id,
-    name: mother.name,
+    name: `${mother.name} - ${formatTime(mother.dob)}`,
   }))
 );
 
