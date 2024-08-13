@@ -75,8 +75,8 @@ const averageHBBaduta = computed(() => averageHeigtBody(HBIsBaduta.value));
 
 // BALITA WB HB AGE
 const averageAgeBalita = computed(() => averageAge(childrenIsBalita.value));
-const averageWBBalita = computed(() => averageWeightBody(WBIsBaduta.value));
-const averageHBBalita = computed(() => averageHeigtBody(HBIsBaduta.value));
+const averageWBBalita = computed(() => averageWeightBody(WBIsBalita.value));
+const averageHBBalita = computed(() => averageHeigtBody(HBIsBalita.value));
 
 const isShowModal = ref(false);
 const modalType = ref(null);
@@ -163,16 +163,8 @@ function showModal(type) {
               ).length || 0
             "
             :statsNumberUsia="averageAgeBalita"
-            :statsNumberTB="averageWBBalita"
             :statsNumberBB="averageHBBalita"
-            :statsNumberUrutan="
-              childrenGrowth?.filter((growth) => growth.groupFase === 'Balita')
-                .length || 0
-            "
-            :statsNumberGroup="
-              childrenGrowth?.filter((growth) => growth.groupFase === 'Balita')
-                .length || 0
-            "
+            :statsNumberTB="averageWBBalita"
           />
         </div>
       </template>
