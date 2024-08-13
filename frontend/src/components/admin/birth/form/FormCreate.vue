@@ -3,7 +3,10 @@ import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { FwbInput, FwbButton, FwbSelect } from "flowbite-vue";
-import { handleNumericInput } from "../../../../utils/Validate";
+import {
+  handleNumericInput,
+  handleNumericInputDecimal,
+} from "../../../../utils/Validate";
 const store = useStore();
 const router = useRouter();
 
@@ -108,27 +111,42 @@ onMounted(() => {
         />
       </div>
       <div>
-        <fwb-input
-          type="number"
+        <!-- <fwb-input
+          type="text"
           v-model.number="birthData.circumHead"
           label="Lingkar Kepala"
           min="0"
+        /> -->
+        <fwb-input
+          v-model.number="birthData.circumHead"
+          label="Lingkar Kepala (cm)"
+          @input="(event) => handleNumericInputDecimal(event, 'circumHead')"
         />
       </div>
       <div>
-        <fwb-input
+        <!-- <fwb-input
           type="number"
           v-model.number="birthData.heightBody"
           label="Tinggi Badan"
           min="0"
+        /> -->
+        <fwb-input
+          v-model.number="birthData.heightBody"
+          label="Tinggi Badan (cm)"
+          @input="(event) => handleNumericInputDecimal(event, 'heightBody')"
         />
       </div>
       <div>
-        <fwb-input
+        <!-- <fwb-input
           type="number"
           v-model.number="birthData.weightBody"
           label="Berat Badan"
           min="0"
+        /> -->
+        <fwb-input
+          v-model.number="birthData.weightBody"
+          label="Berat Badan (kg)"
+          @input="(event) => handleNumericInputDecimal(event, 'weightBody')"
         />
       </div>
       <div>

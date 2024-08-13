@@ -3,7 +3,7 @@ import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { FwbInput, FwbButton, FwbSelect } from "flowbite-vue";
-
+import { handleNumericInputDecimal } from "../../../../../utils/Validate";
 const store = useStore();
 const router = useRouter();
 
@@ -109,18 +109,16 @@ onMounted(() => {
       </div>
       <div>
         <fwb-input
-          type="number"
           v-model.number="childrenGrowthData.heightBody"
           label="Tinggi Badan (cm)"
-          min="0"
+          @input="(event) => handleNumericInputDecimal(event, 'heightBody')"
         />
       </div>
       <div>
         <fwb-input
-          type="number"
           v-model.number="childrenGrowthData.weightBody"
           label="Berat Badan (kg)"
-          min="0"
+          @input="(event) => handleNumericInputDecimal(event, 'weightBody')"
         />
       </div>
       <div>

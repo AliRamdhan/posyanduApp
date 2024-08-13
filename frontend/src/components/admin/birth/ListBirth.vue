@@ -225,17 +225,17 @@ onMounted(() => {
                       <td
                         class="px-4 py-4 text-sm font-medium whitespace-nowrap"
                       >
-                        {{ birth.circumHead }}
+                        {{ birth.circumHead }} cm
                       </td>
                       <td
                         class="px-4 py-4 text-sm font-medium whitespace-nowrap"
                       >
-                        {{ birth.weightBody }}
+                        {{ birth.weightBody }} kg
                       </td>
                       <td
                         class="px-4 py-4 text-sm font-medium whitespace-nowrap"
                       >
-                        {{ birth.heightBody }}
+                        {{ birth.heightBody }} cm
                       </td>
                       <td
                         class="px-4 py-4 text-sm font-medium whitespace-nowrap"

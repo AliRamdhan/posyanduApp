@@ -18,7 +18,12 @@ export const validateNomorHp = (number) => {
 
 export const handleNumericInput = (event, field) => {
   event.target.value = event.target.value.replace(/\D/g, "");
-  // data.value[field] = event.target.value;
+};
+
+export const handleNumericInputDecimal = (event, field) => {
+  event.target.value = event.target.value
+    .replace(/[^0-9.]/g, "")
+    .replace(/(\..*)\./g, "$1");
 };
 
 export const isBalita = (dob) => {

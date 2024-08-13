@@ -132,20 +132,16 @@ onMounted(() => {
       </div>
       <div>
         <fwb-input
-          type="number"
           v-model.number="motherGrowthData.height"
           label="Tinggi Badan (Cm)"
-          required
-          min="0"
+          @input="(event) => handleNumericInputDecimal(event, 'height')"
         />
       </div>
       <div>
         <fwb-input
-          type="number"
           v-model.number="motherGrowthData.weight"
           label="Berat Badan (Kg)"
-          required
-          min="0"
+          @input="(event) => handleNumericInputDecimal(event, 'weight')"
         />
       </div>
       <div>
@@ -183,18 +179,16 @@ onMounted(() => {
       </div>
       <div>
         <fwb-input
-          type="number"
           v-model.number="motherGrowthData.circumStomach"
           label="Lingkar Perut (cm)"
-          min="0"
+          @input="(event) => handleNumericInputDecimal(event, 'circumStomach')"
         />
       </div>
       <div>
         <fwb-input
-          type="number"
           v-model.number="motherGrowthData.circumHand"
           label="Lingkar Lengan (cm)"
-          min="0"
+          @input="(event) => handleNumericInputDecimal(event, 'circumHand')"
         />
       </div>
     </div>

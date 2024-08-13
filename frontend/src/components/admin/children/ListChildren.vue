@@ -284,7 +284,7 @@ onMounted(() => {
                       <td
                         class="px-4 py-4 text-sm font-medium whitespace-nowrap"
                       >
-                        {{ child.amountImunisation }}x
+                        {{ child.amountImunisation }} x
                       </td>
                       <td
                         class="px-4 py-4 text-sm font-medium whitespace-nowrap"
