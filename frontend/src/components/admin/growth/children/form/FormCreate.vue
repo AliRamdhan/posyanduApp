@@ -112,6 +112,7 @@ onMounted(() => {
           type="number"
           v-model.number="childrenGrowthData.heightBody"
           label="Tinggi Badan (cm)"
+          min="0"
         />
       </div>
       <div>
@@ -119,15 +120,9 @@ onMounted(() => {
           type="number"
           v-model.number="childrenGrowthData.weightBody"
           label="Berat Badan (kg)"
+          min="0"
         />
       </div>
-      <!-- <div>
-        <fwb-select
-          v-model="childrenGrowthData.groupFase"
-          :options="groupFase"
-          label="Pilih Fase"
-        />
-      </div> -->
       <div>
         <fwb-select
           v-model="childrenGrowthData.imunisations"

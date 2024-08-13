@@ -8,7 +8,7 @@ export const validateNomorKKNIK = (number) => {
 };
 
 export const validateNomorHp = (number) => {
-  const regex = /^\d{12,}$/;
+  const regex = /^\d{10,13}$/;
   if (regex.test(number)) {
     return true;
   } else {

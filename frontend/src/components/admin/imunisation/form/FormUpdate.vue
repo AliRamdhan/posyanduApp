@@ -44,8 +44,8 @@ const handleSubmit = async () => {
         descriptionPrevented: existData.value.descriptionPrevented,
       },
     });
-    alert(`Data with ID ${route.params.id} updated`);
-    router.push({ name: "dashboardAdminImunisasi" }); // Redirect to children list after action
+    alert("Data imunisasi berhasil di update");
+    router.push({ name: "dashboardAdminImunisasi" });
   } catch (error) {
     console.error("Error updating child:", error);
   }
@@ -63,6 +63,7 @@ const handleSubmit = async () => {
           v-model="existData.groupAge"
           type="number"
           label="Kelompok Usia Imunisasi"
+          min="0"
           required
         />
       </div>

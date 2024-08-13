@@ -33,7 +33,7 @@ const fetchMothers = async () => {
       name: searchName.value,
       husband: searchHusband.value,
       dob: searchTime.value,
-      KS: selectedKS.value,
+      ks: selectedKS.value,
       bpjs: bpjs.value,
       sortField: sortField.value,
       sortOrder: sortOrder.value,
@@ -49,7 +49,7 @@ const fetchMothers = async () => {
 const ks = [
   { value: "KS1", name: "KS1" },
   { value: "KS2", name: "KS2" },
-  { value: "K3", name: "KS3" },
+  { value: "KS3", name: "KS3" },
 ];
 
 const selectLimit = [

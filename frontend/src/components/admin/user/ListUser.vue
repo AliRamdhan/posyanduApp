@@ -11,7 +11,6 @@ const store = useStore();
 const router = useRouter();
 const users = computed(() => store.getters.usersAll);
 const pagination = computed(() => store.getters.paginationUsersAll);
-console.log("page", pagination);
 const searchEmail = ref("");
 const searchMotherName = ref("");
 const sortField = ref("");
@@ -88,7 +87,7 @@ onMounted(() => {
 <template>
   <section class="w-96 md:w-full flex justify-end px-4 overflow-hidden">
     <div class="w-full">
-      <ListHeader name="User" :numberData="pagination.total" />
+      <ListHeader name="User" :numberData="pagination.total - 1" />
       <div class="mt-6 md:flex md:items-center md:justify-between">
         <div
           class="w-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4"

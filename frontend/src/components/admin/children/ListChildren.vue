@@ -251,15 +251,14 @@ onMounted(() => {
                       <td
                         class="px-4 py-4 text-sm font-medium whitespace-nowrap"
                       >
-                        {{ child.gender }}
+                        {{
+                          child.gender === "Male" ? "Laki-laki" : "Perempuan"
+                        }}
                       </td>
                       <td
                         class="px-4 py-4 text-sm font-medium whitespace-nowrap"
                       >
                         <h2 class="font-medium text-gray-800 dark:text-white">
-                          <!-- {{ child.dob ? formatTime(child.dob) : null }} - ({{
-                            calculateAge(child.dob).years
-                          }}) tahun ({{ calculateAge(child.dob).months }}) bulan -->
                           {{
                             child.dob
                               ? `${formatTime(child.dob)} - (${

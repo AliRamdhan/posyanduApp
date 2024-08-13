@@ -116,6 +116,15 @@ onMounted(() => {
             </template>
           </fwb-input>
           <fwb-input
+            v-model="searchCircumHead"
+            @input="fetchBirths"
+            placeholder="Search by Lingkar Kepala"
+          >
+            <template #prefix>
+              <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
+            </template>
+          </fwb-input>
+          <fwb-input
             v-model="searchDob"
             @input="fetchBirths"
             type="date"
@@ -123,15 +132,6 @@ onMounted(() => {
           >
             <template #prefix>
               <font-awesome-icon icon="fa-solid fa-calendar" />
-            </template>
-          </fwb-input>
-          <fwb-input
-            v-model="searchCircumHead"
-            @input="fetchBirths"
-            placeholder="Search by Lingkar Kepala"
-          >
-            <template #prefix>
-              <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
             </template>
           </fwb-input>
         </div>

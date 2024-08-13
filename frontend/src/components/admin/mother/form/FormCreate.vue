@@ -51,7 +51,7 @@ const handleSubmit = async () => {
 
     if (isNikValid && isKkValid && isNikSuamiValid) {
       await store.dispatch("createMother", data.value);
-      alert("New data added");
+      alert("Data berhasil ditambahkan");
       router.push({ name: "dashboardAdminIbu" });
     } else {
       let errorMessage = "";
@@ -127,10 +127,10 @@ const handleSubmit = async () => {
         />
       </div>
       <div>
-        <fwb-input v-model="data.rt" type="number" label="RT" />
+        <fwb-input v-model="data.rt" type="number" label="RT" min="0"/>
       </div>
       <div>
-        <fwb-input v-model="data.rw" type="number" label="RW" />
+        <fwb-input v-model="data.rw" type="number" label="RW" min="0"/>
       </div>
       <div v-if="error" class="w-full">
         <div class="absolute top-24 right-8">

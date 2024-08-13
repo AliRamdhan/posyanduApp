@@ -112,6 +112,7 @@ onMounted(() => {
           type="number"
           v-model.number="birthData.circumHead"
           label="Lingkar Kepala"
+          min="0"
         />
       </div>
       <div>
@@ -119,6 +120,7 @@ onMounted(() => {
           type="number"
           v-model.number="birthData.heightBody"
           label="Tinggi Badan"
+          min="0"
         />
       </div>
       <div>
@@ -126,6 +128,7 @@ onMounted(() => {
           type="number"
           v-model.number="birthData.weightBody"
           label="Berat Badan"
+          min="0"
         />
       </div>
       <div>

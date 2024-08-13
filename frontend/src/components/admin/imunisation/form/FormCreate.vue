@@ -17,7 +17,7 @@ const data = ref({
 const handleSubmit = async () => {
   try {
     await store.dispatch("createImmunisation", data.value);
-    alert("New data added");
+    alert("Data berhasil ditambahkan");
     router.push({ name: "dashboardAdminImunisasi" }); // Redirect to children list after action
   } catch (error) {
     console.error("Error adding child:", error);

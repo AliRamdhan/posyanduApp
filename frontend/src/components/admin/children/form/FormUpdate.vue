@@ -95,7 +95,7 @@ const handleSubmit = async () => {
       if (!isNikValid) errorMessage += "Nomor NIK tidak valid.\n";
       alert(errorMessage);
     }
-    alert(`Child with ID ${route.params.id} updated`);
+    alert("Data anak berhasil di update");
     router.push({ name: "dashboardAdminAnak" }); // Redirect to children list after action
   } catch (error) {
     console.error("Error updating child:", error);
@@ -109,13 +109,6 @@ const handleSubmit = async () => {
       <div>
         <fwb-input v-model="childData.name" label="Nama" required />
       </div>
-      <!-- <div>
-        <fwb-select
-          v-model="selectedStatus"
-          :options="isStatus"
-          label="Select Status"
-        />
-      </div> -->
       <div>
         <fwb-input
           v-model="childData.nik"
@@ -140,7 +133,6 @@ const handleSubmit = async () => {
         />
       </div>
       <div>
-        <!-- <p>{{childData.mother}}</p> -->
         <fwb-select
           v-model="childData.mother"
           :options="mothers"

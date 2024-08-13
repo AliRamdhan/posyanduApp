@@ -27,8 +27,7 @@ onMounted(async () => {
 
 const fetchMothers = async () => {
   try {
-    const data = await store.dispatch("fetchMothers");
-    console.log("DWqdwq", data);
+    await store.dispatch("fetchMothers");
   } catch (error) {
     console.error("Error fetching mothers in component:", error);
     console.error("Details:", error.message);
@@ -45,7 +44,6 @@ const mothers = computed(() =>
 const fetchUser = async (id) => {
   try {
     const data = await store.dispatch("fetchUserOne", id);
-    console.log("user", data);
     userData.value = {
       username: data.username,
       email: data.email,
@@ -80,7 +78,7 @@ const handleSubmit = async () => {
       alert(errorMessage);
     }
     alert(`Berhasil update data user`);
-    router.push({ name: "dashboardAdminUser" }); // Redirect to user list after action
+    router.push({ name: "dashboardAdminUser" });
   } catch (error) {
     console.error("Error updating user:", error);
     console.error(

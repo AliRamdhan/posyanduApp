@@ -77,7 +77,6 @@ const fetchImmunisations = async () => {
   }
 };
 
-
 onMounted(() => {
   fetchChildrenGrowth();
   fetchChildren();
@@ -90,7 +89,6 @@ const imunisations = computed(() =>
     name: immunisation.name,
   }))
 );
-
 
 const children = computed(() =>
   store.getters.children.map((child) => ({
@@ -123,7 +121,7 @@ const children = computed(() =>
           type="number"
           v-model.number="childrenGrowthData.heightBody"
           label="Tinggi Badan (cm)"
-          
+          min="0"
         />
       </div>
       <div>
@@ -131,6 +129,7 @@ const children = computed(() =>
           type="number"
           v-model.number="childrenGrowthData.weightBody"
           label="Berat Badan (kg)"
+          min="0"
         />
       </div>
       <div>

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { FwbInput, FwbButton, FwbSelect } from "flowbite-vue";
@@ -13,7 +13,7 @@ const motherGrowthData = ref({
   height: null,
   weight: null,
   kbtype: "",
-  pregnantStatus: false, // Initial value set to false
+  pregnantStatus: false,
   wombAge: null,
   numbChild: null,
   groupFase: "",
@@ -93,6 +93,21 @@ const kbTypes = [
   { value: "Alami", name: "KB Alami" },
 ];
 
+watch(
+  () => motherGrowthData.value.wombAge,
+  (newWombAge) => {
+    if (newWombAge === null || newWombAge === undefined || newWombAge === 0) {
+      motherGrowthData.value.groupFase = "None";
+    } else if (newWombAge >= 1 && newWombAge < 14) {
+      motherGrowthData.value.groupFase = "Trimester 1";
+    } else if (newWombAge >= 14 && newWombAge < 27) {
+      motherGrowthData.value.groupFase = "Trimester 2";
+    } else if (newWombAge >= 28 && newWombAge < 50) {
+      motherGrowthData.value.groupFase = "Trimester 3";
+    }
+  }
+);
+
 onMounted(async () => {
   await fetchMothers();
   await fetchMotherGrowth(route.params.id);
@@ -123,6 +138,7 @@ onMounted(async () => {
           v-model.number="motherGrowthData.height"
           label="Tinggi Badan (cm)"
           required
+          min="0"
         />
       </div>
       <div>
@@ -131,6 +147,7 @@ onMounted(async () => {
           v-model.number="motherGrowthData.weight"
           label="Berat Badan (kg)"
           required
+          min="0"
         />
       </div>
       <div>
@@ -144,17 +161,20 @@ onMounted(async () => {
       <div>
         <fwb-input
           type="number"
-          v-model.number="motherGrowthData.wombAge"
-          label="Usia Kandungan (minggu) / jika tidak hamil isi 0 atau lewati"
+          v-model.number="motherGrowthData.numbChild"
+          label="Anak ke-berapa"
+          :disabled="true"
         />
       </div>
       <div>
         <fwb-input
           type="number"
-          v-model.number="motherGrowthData.numbChild"
-          label="Anak ke-berapa"
+          v-model.number="motherGrowthData.wombAge"
+          label="Usia Kandungan (minggu) / jika tidak hamil isi 0 atau lewati"
+          min="0"
         />
       </div>
+
       <div>
         <fwb-select
           v-model="motherGrowthData.groupFase"
@@ -169,6 +189,7 @@ onMounted(async () => {
           type="number"
           v-model.number="motherGrowthData.circumStomach"
           label="Lingkar Perut (cm)"
+          min="0"
         />
       </div>
       <div>
@@ -176,6 +197,7 @@ onMounted(async () => {
           type="number"
           v-model.number="motherGrowthData.circumHand"
           label="Lingkar Lengan (cm)"
+          min="0"
         />
       </div>
     </div>
